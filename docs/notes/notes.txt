@@ -1,0 +1,14 @@
+### Ideas & Selection Rationale
+
+Between the 3 projects, I've decided on the following 2: A client intake system (Final project), and the digital card management system (Assignment). 
+
+I sell digital cards both in-person, and online. There have been numerous occasions where clients would call back asking if they could change certain details about their cards (how it looks, or the URL). I'd like for the customers to have a way of signing in and managing how their card behaves to reduce the amount of touchpoints in my onboarding process. So I chose to spend the semester doing just that with this project
+
+### Wireframe Notes
+
+### Branching Strategy
+
+### Branch usage reflection
+
+### Django setup
+
