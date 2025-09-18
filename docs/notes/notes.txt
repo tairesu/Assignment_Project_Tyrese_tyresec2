@@ -18,3 +18,6 @@ From experience, I know that I can forget to take care of smaller tasks. Those s
 
 ### Django setup
 
+I chose the project name tcDigitalCards because I am planning to merge my web services and digital cards into a company called TC Digital. the camel case makes it easier to remember for when I need to reference the project name down the line. 
+
+The name of this app was a little trickier. To make things simpler, I made my goal more clear: I'm building the application to manage digital cards. After that, i stumbled upon cardManager. 
