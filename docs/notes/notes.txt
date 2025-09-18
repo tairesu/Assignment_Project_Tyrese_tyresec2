@@ -15,9 +15,47 @@ Before this class, I'd only use the main and dev branches in my code. For this p
 From experience, I know that I can forget to take care of smaller tasks. Those smaller changes often get lost inside of the mountain of staged code, so I'll try hotfix to track the smaller changes. 
 
 ### Branch usage reflection
-
+My proposed setup is keeping the main branch, and my stash list clean. I've been able to move between branches without having to solve git errors/warnings. 
 ### Django setup
 
 I chose the project name tcDigitalCards because I am planning to merge my web services and digital cards into a company called TC Digital. the camel case makes it easier to remember for when I need to reference the project name down the line. 
 
 The name of this app was a little trickier. To make things simpler, I made my goal more clear: I'm building the application to manage digital cards. After that, i stumbled upon cardManager. 
+
+### Virtual Environment Choices
+
+I chose conda's venv: conda 24.9.2
+i had it setup from a previous class to provide me with django and tools.
+>: conda list
+Name                    Version                   Build  Channel
+_libgcc_mutex             0.1                        main  
+_openmp_mutex             5.1                       1_gnu  
+asgiref                   3.8.1           py312h06a4308_0  
+bzip2                     1.0.8                h5eee18b_6  
+ca-certificates           2024.12.31           h06a4308_0  
+django                    5.1.3           py312h06a4308_0  
+expat                     2.6.4                h6a678d5_0  
+iniconfig                 1.1.1              pyhd3eb1b0_0  
+ld_impl_linux-64          2.40                 h12ee557_0  
+libffi                    3.4.4                h6a678d5_1  
+libgcc-ng                 11.2.0               h1234567_1  
+libgomp                   11.2.0               h1234567_1  
+libstdcxx-ng              11.2.0               h1234567_1  
+libuuid                   1.41.5               h5eee18b_0  
+ncurses                   6.4                  h6a678d5_0  
+openssl                   3.0.15               h5eee18b_0  
+packaging                 24.2            py312h06a4308_0  
+pillow                    11.1.0                   pypi_0    pypi
+pip                       25.0            py312h06a4308_0  
+pluggy                    1.5.0           py312h06a4308_0  
+pytest                    8.3.4           py312h06a4308_0  
+python                    3.12.9               h5148396_0  
+readline                  8.2                  h5eee18b_0  
+setuptools                75.8.0          py312h06a4308_0  
+sqlite                    3.45.3               h5eee18b_0  
+sqlparse                  0.5.2           py312h06a4308_0  
+tk                        8.6.14               h39e8969_0  
+tzdata                    2025a                h04d1e81_0  
+wheel                     0.45.1          py312h06a4308_0  
+xz                        5.4.6                h5eee18b_1  
+zlib                      1.2.13               h5eee18b_1
