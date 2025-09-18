@@ -8,6 +8,12 @@ I sell digital cards both in-person, and online. There have been numerous occasi
 
 ### Branching Strategy
 
+Branches: main, dev, hotfix, features
+
+Before this class, I'd only use the main and dev branches in my code. For this project, I know that there will be features that I want to try independent of dev, so I'm using a feature branch to act as a playground. It'll mainly pull from dev. 
+
+From experience, I know that I can forget to take care of smaller tasks. Those smaller changes often get lost inside of the mountain of staged code, so I'll try hotfix to track the smaller changes. 
+
 ### Branch usage reflection
 
 ### Django setup
