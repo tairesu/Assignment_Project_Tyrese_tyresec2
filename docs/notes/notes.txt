@@ -82,3 +82,6 @@ In models.py:
 	Card model should certainly have a unique token. Im wondering if the combination of both fields user and alias should be unique as well. I can't name 2 cards the same thing...unless I was a church who ordered 50 cards. theoretically each church member would activate their own cards (including accounts)... so there shouldn't be a case where a user has the same alias. Each member may have the same card name of "X Church Card". I'll leave these rwo fields alone for now. 
 
 	I do want to change the format for the card model to show unclaimed if user is not attached. Cards that are already on display or in my current inventory should be easily retrievable in the database. I'll add some conditions to the __Str__ method of Card
+
+
+	Whoops. It looks like i shouldve made profile slug's blank = False
