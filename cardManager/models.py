@@ -26,3 +26,21 @@ class Profile(models.Model):
 	def __str__(self):
 		return f"{self.profile_slug}"
 
+
+class Card(models.Model):
+	card_id = models.AutoField(primary_key=True)
+	token = models.CharField(max_length=7)
+	user = models.ForeignKey(User, on_delete=models.PROTECT, related_name='cards',null=True, blank=True)
+	alias = models.CharField(max_length=60, blank=True)
+	show_profile = models.BooleanField(default=False)
+	front_design = models.ImageField(upload_to='cardDesigns/', blank=True)
+	rear_design = models.ImageField(upload_to='cardDesigns/', blank=True)
+	reroute_url = models.URLField(max_length=200, blank=True)
+
+	class Meta:
+		constraints = [
+			UniqueConstraint(fields=['token'], name='unique_card_token')
+		]
+
+	def __str__(self):
+		return f"Card {self.token}" if self.user else f"[Unclaimed] Card {self.token}"
