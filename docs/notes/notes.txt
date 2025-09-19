@@ -59,3 +59,19 @@ tzdata                    2025a                h04d1e81_0
 wheel                     0.45.1          py312h06a4308_0  
 xz                        5.4.6                h5eee18b_1  
 zlib                      1.2.13               h5eee18b_1
+
+### Model Talk
+I chose my 3 models to make the process of scanning cards and handling Django reroutes easier. There are 4 different possible ways of handling a card. 
+
+1) A browser is opened and it points to the URL in the card model
+2) A customer can activate the card if there is no user attached to the card
+3) A browser is opened and it points to the attached users profile
+
+4) (Error Case: Opens a 404 not found )
+
+The attributes that determines the handling logic are found in one table.
+
+Relationships: 
+
+-A user has many cards
+-A user has 0 or 1 profile

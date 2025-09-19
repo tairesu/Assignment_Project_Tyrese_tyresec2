@@ -1,3 +1,28 @@
 from django.db import models
+from django.utils import timezone
+from django.db.models import UniqueConstraint
+from django.contrib.auth.models import User
 
-# Create your models here.
+
+class Profile(models.Model):
+	profile_id = models.AutoField(primary_key=True)
+	user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile', blank=True)
+	name = models.CharField(max_length=60)
+	profile_slug = models.CharField(max_length=25, blank=True)
+	cell = models.CharField(max_length=12, blank=True)
+	linked_in = models.URLField(max_length=200, blank=True)
+	snapchat = models.CharField(max_length=50, blank=True)
+	profile_photo = models.ImageField(upload_to='userPhotos/profile/', blank=True)
+	banner_photo = models.ImageField(upload_to='userPhotos/banners/', blank=True)
+	instagram = models.CharField(max_length=50, blank=True)
+	whatsapp = models.CharField(max_length=12, blank=True)
+	date_created = models.DateTimeField(default=timezone.now, editable=False)
+
+	class Meta:
+		constraints = [
+			UniqueConstraint(fields=['profile_slug'], name='unique_profile_slug')
+		]
+
+	def __str__(self):
+		return f"{self.profile_slug}"
+
