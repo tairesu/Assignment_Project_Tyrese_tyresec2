@@ -85,3 +85,18 @@ In models.py:
 
 
 	Whoops. It looks like i shouldve made profile slug's blank = False
+
+### Views
+	The most important view will be the card detail view. it's path looks like this: 
+	'card/<str:card_token>'.
+
+	This should grab the record in the Card associated with `card_token`
+	From there, 4 things may occur:
+		1) Redirect the browser to their cards url
+		2) Ask to activate the card
+		3) Redirect the browser to the owners profile
+		4) Show an error if tag not found not found
+
+		For 2, i can manually render the activate card page with the associated  card in the context
+
+		

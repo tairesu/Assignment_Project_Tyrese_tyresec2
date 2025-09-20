@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+<body>
+	<h2>Welcome to the Base Page of the site</h2>
+	{% for card in cards %}
+		<div>
+			<h1>{{ card }}</h1>
+			<p>{{ card.user }}</p>
+			<p>{{ card.show_profile }}</p>
+			<p>{{ card }}</p>
+		</div>
+	{% endfor %}
+</body>
+</html>

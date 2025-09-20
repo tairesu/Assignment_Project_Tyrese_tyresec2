@@ -16,7 +16,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from cardManager import views
 
 urlpatterns = [
+    path('card/<str:card_token>/', views.card_detail, name='all_cards'),
     path('admin/', admin.site.urls),
 ]
