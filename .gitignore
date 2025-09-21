@@ -1,3 +1,4 @@
 *.pyc
 settings.py
+tcDigitalCards/settings.py
 */settings.py
