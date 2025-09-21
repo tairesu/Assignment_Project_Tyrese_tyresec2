@@ -1,16 +1,11 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
-</head>
-<body>
+{% extends 'cardManager/base.html'%}
+{% block opener %}
+	Profile View: {{ profile.name }}
+{% endblock %}
+{% block content %}
 	{% if profile.banner_photo %}
 		<img src="/media/{{ profile.banner_photo }}" alt="">
 	{% endif %}
-	<h2>Profile View: {{ profile.name }}</h2>
 	{% if profile.profile_photo %}
 		<img src="/media/{{ profile.profile_photo }}" alt="">
 	{% endif %}
@@ -32,5 +27,4 @@
 	{% if profile.instagram %}
 		<p>{{ profile.instagram }}</p>
 	{% endif %}
-</body>
-</html>
+{% endblock %}

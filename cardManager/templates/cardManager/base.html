@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,15 +7,15 @@
 	<title>Document</title>
 </head>
 <body>
-	<h2>Welcome to TCDigital site</h2>
-	<p>{{ decision }}</p>
-	{% for card in cards %}
-		<div>
-			<h1>{{ card }}</h1>
-			<p>{{ card.user }}</p>
-			<p>{{ card.show_profile }}</p>
-			<p>{{ card }}</p>
-		</div>
-	{% endfor %}
+	<h2>
+		{% block opener %}
+			Welcome to TC Digital
+		{% endblock %}
+	</h2>
+	{% block content %}
+
+	{% endblock %}
+
+	
 </body>
 </html>
