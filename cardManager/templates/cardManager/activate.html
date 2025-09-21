@@ -1,11 +1,14 @@
 {% extends 'cardManager/base.html'%}
+{% block title %}
+	Activating your Card | TC Digital
+{% endblock %}
 {% block opener %}
-	Activating card {{ card.token }}
+Activating card {{ card.token }}
 {% endblock opener %}
 {% block content %}
-	<b>Front:</b>
-	<img src="/media/{{card.front_design}}" alt="">
-	<b>Rear:</b>
-	<img src="/media/{{card.rear_design}}" alt="">
-	<a href=""><button>Claim this card</button></a>
+<b>Front:</b>
+<img src="/media/{{card.front_design}}" alt="">
+<b>Rear:</b>
+<img src="/media/{{card.rear_design}}" alt="">
+<a href=""><button>Claim this card</button></a>
 {% endblock %}
