@@ -8,12 +8,12 @@
 	<title>Document</title>
 </head>
 <body>
-	<h2>Profile View: {{ profile.name }}</h2>
 	{% if profile.banner_photo %}
 		<img src="/media/{{ profile.banner_photo }}" alt="">
 	{% endif %}
+	<h2>Profile View: {{ profile.name }}</h2>
 	{% if profile.profile_photo %}
-		<p>{{ profile.profile_photo }}</p>
+		<img src="/media/{{ profile.profile_photo }}" alt="">
 	{% endif %}
 	{% if profile.email %}
 		<p>{{ profile.email }}</p>
