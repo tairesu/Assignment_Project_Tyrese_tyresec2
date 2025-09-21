@@ -133,7 +133,14 @@ In models.py:
 				2,"Basic White", "https://strip.com/paymentLinkforwhitecard",
 				2,"Custom", "https://strip.com/paymentLinkforwhitecard",
 
-		Hmmm, I would be able to access the correct payment link from a Card model... but what if this is overkill? To determine that, I'd have to experiment with stripe's post checkout ui. I know that I can send metadata like a card_token... enough talk. To the feature branch we go (right after the git stash)
+		Hmmm, I would be able to access the correct payment link from a Card model... but what if this is overkill? To determine that, I'd have to experiment with stripe's post checkout ui. I know that I can send metadata like a card_token... enough talk. To the feature_stripe branch we go (right after this git stash)
+
+			Alright. This (https://testdriven.io/blog/django-stripe-tutorial/) says that embedding Stripe into Django requires 4 steps.  
+				1) Get Publishable Key
+					- bye bye settings.py 
+				2) Create a checkout session 
+				3) Redirect user to success/cancelled 
+				4) Check webhook for successful payment				
 
 
 

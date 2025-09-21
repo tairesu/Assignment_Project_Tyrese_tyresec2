@@ -1,4 +1,5 @@
-{% extends 'cardManager/base.html'%}
+{% extends 'cardManager/base.html' %}
+{% load static  %}
 {% block title %}
 	Activating your Card | TC Digital
 {% endblock %}
@@ -12,3 +13,6 @@ Activating card {{ card.token }}
 <img src="/media/{{card.rear_design}}" alt="">
 <a href=""><button>Claim this card</button></a>
 {% endblock %}
+{% block extra_scripts %}
+		<script src="{% static 'cardManager/js/payment_integration.js' %}"></script>
+	{% endblock %}

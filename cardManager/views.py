@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect
+from django.conf import settings
 from django.http import HttpResponse
+from django.http.response import JsonResponse
 from django.template import loader
+from django.views.decorators.csrf import csrf_exempt
 from cardManager.models import (
 	Card,
 	Profile
@@ -46,3 +49,13 @@ def card_activate(request, card_token):
 	template = loader.get_template("cardManager/activate.html")
 	output = template.render(context, request)
 	return HttpResponse(output)
+
+	
+#View that gets publishable key from stripe
+@csrf_exempt
+def stripe_config(request):
+	if request.method == 'GET':
+		stripe_config = {
+			'publishable_key' : settings.STRIPE_PUBLISHABLE_KEY
+		}
+		return JsonResponse(stripe_config, safe=False)

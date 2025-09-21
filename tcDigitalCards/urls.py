@@ -24,6 +24,7 @@ urlpatterns = [
     path('card/<str:card_token>/', views.card_detail, name='card_view'),
     path('card/<str:card_token>/activate', views.card_activate, name='card_activate_view'),
     path('profile/<str:profile_slug>/', views.profile_detail, name='profile_view'),
+    path('config/', views.stripe_config),
     path('admin/', admin.site.urls),
 ]
 
