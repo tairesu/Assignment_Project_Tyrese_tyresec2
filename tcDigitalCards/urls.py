@@ -17,8 +17,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from cardManager import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
-    path('card/<str:card_token>/', views.card_detail, name='all_cards'),
+    path('card/<str:card_token>/', views.card_detail, name='card_view'),
+    path('card/<str:card_token>/activate', views.card_activate, name='card_activate_view'),
+    path('profile/<str:profile_slug>/', views.profile_detail, name='profile_view'),
     path('admin/', admin.site.urls),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

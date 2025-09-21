@@ -99,4 +99,46 @@ In models.py:
 
 		For 2, i can manually render the activate card page with the associated  card in the context
 
+	I'm working on the profile_detail view and Im wondering how i should go about redirecting the browser to the profile_view alias in (urs.py). The general redirect may do the trick if i can access the name of my profile detail view from views.profile_details
+
+	[Sun Sep 21] 
+	Profile view:
+		-I've added the Profile model attrs to profile_html template if those attrs have values 
+		- Now I need to configure static and media to display imgs from the Profile model.  As of now, my media's root is the base directory
+		https://stackoverflow.com/questions/5517950/django-media-url-and-media-root
+		- Let's get back to card detail view and see if we can properly redirect that specific case to the profile detail view. 
+			-- I'll grab the Card's user, and the Profile slug of the user, and send that slug to the profile detail view
+
+	Activate Card View /card/<str:card_token>:
+		This is a view that is visible if any only if the card with card_token is not owned.
+		If a card is owned, just pass the token to the card_detail view
+		The activation template will show the design of the card, the token, and a button asking to claim this card.
+
+		When that button is clicked, the browser is taken to stripe for purchasing. Once a payment intent is received at some url/view combo, update card by setting card.user. I'll head to the feature branch  and play with sending data to and from stripe. The cards are one of a types: a preset, or a custom design (There are several types of presets). I'm wondering if I should alter my Card model and add a card_type foreign key. Theoretically speaking I'll be to link the following attribute(s): stripe payment link. 
+
+		As a company, it'd be cool to show the customers the preset design they chose, at the beginning of the activation, in the Stripe checkout.
+
+		New Model proposition:
+
+			Card Type:
+				pk type_id
+				char name
+				url stripe_payment 
+
+			Card:
+				... ...
+				fk type
+			ex: 
+				1,"Colorful Chicago", "https://strip.com/paymentLink",
+				2,"Basic White", "https://strip.com/paymentLinkforwhitecard",
+				2,"Custom", "https://strip.com/paymentLinkforwhitecard",
+
+		Hmmm, I would be able to access the correct payment link from a Card model... but what if this is overkill? To determine that, I'd have to experiment with stripe's post checkout ui. I know that I can send metadata like a card_token... enough talk. To the feature branch we go (right after the git stash)
+
+
+
+
+
+
+
 		

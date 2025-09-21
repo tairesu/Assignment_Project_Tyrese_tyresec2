@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.template import loader
 from cardManager.models import (
 	Card,
+	Profile
 )
 # Create your views here.
 def card_detail(request,card_token):
@@ -16,13 +17,32 @@ def card_detail(request,card_token):
 		return redirect(card.reroute_url)
 
 	elif is_owned and card.show_profile: 
-		context["decision"] = f"Redirecting to {card.user}'s Profile"
+		user_profile = card.user.profile
+		user_profile_slug = user_profile.profile_slug
+		return redirect('profile_view', profile_slug=user_profile_slug)
 
 	elif not is_owned:
-		context["decision"] = f"Redirecting to {card_token}/activate"
-	else:
-		context["decision"] = f"Card token not found"
+		return redirect('card_activate_view', card_token=card_token)
+		
 
 	template = loader.get_template("cardManager/base.html")
+	output = template.render(context, request)
+	return HttpResponse(output)
+
+def profile_detail(request, profile_slug):
+	profile = Profile.objects.filter(profile_slug=profile_slug)[0]
+	context = {"profile":profile}
+	return render(request, "cardManager/profile.html", context)
+
+def card_activate(request, card_token):
+	card = Card.objects.filter(token=card_token)[0]
+	is_activated = not (card.user == None)
+	if is_activated:
+		#Go to card view url
+		return redirect('card_view', card_token=card_token)
+	context = {
+		'card': card,
+	}
+	template = loader.get_template("cardManager/activate.html")
 	output = template.render(context, request)
 	return HttpResponse(output)
