@@ -1,4 +1,5 @@
 
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +10,7 @@
 <body>
 	<h2>Profile View: {{ profile.name }}</h2>
 	{% if profile.banner_photo %}
-		<p>{{ profile.banner_photo }}</p>
+		<img src="/media/{{ profile.banner_photo }}" alt="">
 	{% endif %}
 	{% if profile.profile_photo %}
 		<p>{{ profile.profile_photo }}</p>
