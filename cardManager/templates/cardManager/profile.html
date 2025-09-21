@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,9 +7,30 @@
 	<title>Document</title>
 </head>
 <body>
-	<h2>Profile View: {{ profile }}</h2>
-	<p>{{ profile.email}}</p>
-	<p>{{ profile.linked_in}}</p>
-	<p>{{ profile.name }}</p>
+	<h2>Profile View: {{ profile.name }}</h2>
+	{% if profile.banner_photo %}
+		<p>{{ profile.banner_photo }}</p>
+	{% endif %}
+	{% if profile.profile_photo %}
+		<p>{{ profile.profile_photo }}</p>
+	{% endif %}
+	{% if profile.email %}
+		<p>{{ profile.email }}</p>
+	{% endif %}
+	{% if profile.linked_in %}
+		<p>{{ profile.linked_in }}</p>
+	{% endif %}
+	{% if profile.cell %}
+		<p>{{ profile.cell }}</p>
+	{% endif %}
+	{% if profile.whatsapp %}
+		<p>{{ profile.whatsapp }}</p>
+	{% endif %}
+	{% if profile.snapchat %}
+		<p>{{ profile.snapchat }}</p>
+	{% endif %}
+	{% if profile.instagram %}
+		<p>{{ profile.instagram }}</p>
+	{% endif %}
 </body>
 </html>
