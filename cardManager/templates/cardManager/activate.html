@@ -11,7 +11,7 @@ Activating card {{ card.token }}
 <img src="/media/{{card.front_design}}" alt="">
 <b>Rear:</b>
 <img src="/media/{{card.rear_design}}" alt="">
-<a href=""><button>Claim this card</button></a>
+<button id="activateCardBtn">Claim this card</button>
 {% endblock %}
 {% block extra_scripts %}
     <script src="https://js.stripe.com/v3/"></script>

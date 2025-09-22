@@ -25,6 +25,7 @@ urlpatterns = [
     path('card/<str:card_token>/activate', views.card_activate, name='card_activate_view'),
     path('profile/<str:profile_slug>/', views.profile_detail, name='profile_view'),
     path('config/', views.stripe_config),
+    path('create-checkout-session/', views.create_checkout_session),
     path('admin/', admin.site.urls),
 ]
 

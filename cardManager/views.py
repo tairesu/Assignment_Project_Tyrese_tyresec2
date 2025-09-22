@@ -3,6 +3,7 @@ from django.conf import settings
 from django.http import HttpResponse
 from django.http.response import JsonResponse
 from django.template import loader
+import stripe
 from django.views.decorators.csrf import csrf_exempt
 from cardManager.models import (
 	Card,
@@ -59,3 +60,25 @@ def stripe_config(request):
 			'publishable_key' : settings.STRIPE_PUBLISHABLE_KEY
 		}
 		return JsonResponse(stripe_config, safe=False)
+			
+
+@csrf_exempt
+#Create a new Checkout session ID
+def create_checkout_session(request):
+	if request.method == 'GET':
+		base_url = 'http://localhost:8000'
+		stripe.api_key = settings.STRIPE_SECRET_KEY
+		try:
+			checkout_session = stripe.checkout.Session.create(
+				success_url=base_url + '/success?session_id={CHECKOUT_SESSION_ID}',
+				cancel_url=base_url + '/cancelled/',
+				mode='payment',
+				line_items=[{
+                        'quantity': 1,
+                        'price': 'price_1PUzvPAAVj3eEQONrfXv9xPy' 
+                    }]
+			)
+			#checkout_session id is needed for stripe to redirect to stripe checkout 
+			return JsonResponse({'sessionId': checkout_session['id']})
+		except Exception as e:
+			return JsonResponse({'error': str(e)})
