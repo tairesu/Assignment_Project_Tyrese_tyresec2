@@ -47,6 +47,7 @@ def card_activate(request, card_token):
 	context = {
 		'card': card,
 	}
+	request.session['activating_card_token'] = card_token
 	template = loader.get_template("cardManager/activate.html")
 	output = template.render(context, request)
 	return HttpResponse(output)
@@ -108,7 +109,7 @@ def stripe_webhook(request):
         # Invalid signature
         return HttpResponse(status=400)
     print("stripe_webhook:",event['type'])
-    print("user:",request.user)
+    print("activating card_token:",request.session['activating_card_token'])
     # Handle the checkout.session.completed event
     if event['type'] == 'checkout.session.completed':
         print("Payment was successful.")
