@@ -139,8 +139,10 @@ In models.py:
 				1) Get Publishable Key
 					- bye bye settings.py 
 				2) Create a checkout session 
+					- Checkout session was a bit messy until I switched to test account (keys) and test price from the custom card product. 
 				3) Redirect user to success/cancelled 
 				4) Check webhook for successful payment				
+
 
 
 

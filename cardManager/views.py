@@ -82,3 +82,11 @@ def create_checkout_session(request):
 			return JsonResponse({'sessionId': checkout_session['id']})
 		except Exception as e:
 			return JsonResponse({'error': str(e)})
+
+def success(request):
+	print("Stripe post checkout success")
+	print("stripe session_id", request.GET['session_id'])
+	return render(request, 'cardManager/success.html')
+
+def cancelled(request):
+	return render(request, 'cardManager/cancelled.html')

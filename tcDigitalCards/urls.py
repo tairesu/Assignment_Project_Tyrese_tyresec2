@@ -26,6 +26,8 @@ urlpatterns = [
     path('profile/<str:profile_slug>/', views.profile_detail, name='profile_view'),
     path('config/', views.stripe_config),
     path('create-checkout-session/', views.create_checkout_session),
+    path('success/', views.success),
+    path('cancelled/', views.cancelled),
     path('admin/', admin.site.urls),
 ]
 
