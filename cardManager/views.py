@@ -66,7 +66,7 @@ def stripe_config(request):
 #Create a new Checkout session ID
 def create_checkout_session(request):
 	if request.method == 'GET':
-		base_url = 'http://localhost:8000'
+		base_url = 'http://127.0.0.1:8000'
 		stripe.api_key = settings.STRIPE_SECRET_KEY
 		try:
 			checkout_session = stripe.checkout.Session.create(
@@ -84,9 +84,34 @@ def create_checkout_session(request):
 			return JsonResponse({'error': str(e)})
 
 def success(request):
-	print("Stripe post checkout success")
-	print("stripe session_id", request.GET['session_id'])
 	return render(request, 'cardManager/success.html')
 
 def cancelled(request):
 	return render(request, 'cardManager/cancelled.html')
+
+@csrf_exempt
+def stripe_webhook(request):
+    stripe.api_key = settings.STRIPE_SECRET_KEY
+    endpoint_secret = settings.STRIPE_ENDPOINT_SECRET
+    payload = request.body
+    sig_header = request.META['HTTP_STRIPE_SIGNATURE']
+    event = None
+
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, endpoint_secret
+        )
+    except ValueError as e:
+        # Invalid payload
+        return HttpResponse(status=400)
+    except stripe.error.SignatureVerificationError as e:
+        # Invalid signature
+        return HttpResponse(status=400)
+    print("stripe_webhook:",event['type'])
+    print("user:",request.user)
+    # Handle the checkout.session.completed event
+    if event['type'] == 'checkout.session.completed':
+        print("Payment was successful.")
+        # TODO: run some custom code here
+
+    return HttpResponse(status=200)
