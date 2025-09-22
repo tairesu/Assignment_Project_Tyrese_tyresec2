@@ -11,7 +11,12 @@ Activating card {{ card.token }}
 <img src="/media/{{card.front_design}}" alt="">
 <b>Rear:</b>
 <img src="/media/{{card.rear_design}}" alt="">
-<button id="activateCardBtn">Claim this card</button>
+{% if request.user.is_authenticated %}
+	<button id="activateCardBtn">Claim this card</button>
+{% else %}
+	<button id="registerBtn">Sign in to Claim this card</button>
+
+{% endif %}
 {% endblock %}
 {% block extra_scripts %}
     <script src="https://js.stripe.com/v3/"></script>
