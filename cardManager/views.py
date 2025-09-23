@@ -4,7 +4,8 @@ from django.conf import settings
 from django.contrib.auth import login
 from django.http import HttpResponse
 from django.http.response import JsonResponse
-from django.views.generic import CreateView
+from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
+from django.views.generic import CreateView, ListView
 from django.template import loader
 from django.views.decorators.csrf import csrf_exempt
 from cardManager.forms import (
@@ -54,6 +55,7 @@ def card_activate(request, card_token):
 		'card': card,
 	}
 	request.session['activating_card_token'] = card_token
+	request.session.save()
 	template = loader.get_template("cardManager/activate.html")
 	output = template.render(context, request)
 	return HttpResponse(output)
@@ -73,7 +75,7 @@ def stripe_config(request):
 #Create a new Checkout session ID
 def create_checkout_session(request):
 	if request.method == 'GET':
-		base_url = 'http://127.0.0.1:8000'
+		base_url = 'http://localhost:8000'
 		stripe.api_key = settings.STRIPE_SECRET_KEY
 		try:
 			checkout_session = stripe.checkout.Session.create(
@@ -92,7 +94,12 @@ def create_checkout_session(request):
 			return JsonResponse({'error': str(e)})
 
 def success(request):
-	return render(request, 'cardManager/success.html')
+	print(request.session.keys())
+	context = {
+
+		'card_token': request.session['activating_card_token']
+	}
+	return render(request, 'cardManager/success.html', context)
 
 def cancelled(request):
 	return render(request, 'cardManager/cancelled.html')
@@ -142,8 +149,5 @@ class UserRegistration(CreateView):
 		user.save();
 		#Log the user in 
 		login(self.request, user)
-
 		return super().form_valid(form)
-
-
 

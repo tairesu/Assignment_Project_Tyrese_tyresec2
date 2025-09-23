@@ -4,10 +4,13 @@
 	Payment Successful
 {% endblock %}
 {% block opener %}
-Your payment was successful {{ session_id }}
+Your payment was successful 
 {% endblock opener %}
 {% block content %}
-
+	<p>
+		
+	{{ request.user }}
+	</p>
 {% endblock %}
 {% block extra_scripts %}
 {% endblock %}
