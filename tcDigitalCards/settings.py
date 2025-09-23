@@ -131,6 +131,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Stripe Integration from Tutorial
 # https://testdriven.io/blog/django-stripe-tutorial/
 
-STRIPE_PUBLISHABLE_KEY = 'pk_test_51PUysuAAVj3eEQONoVrlC5UTZDqeIIcpOi3A393el8496x9okEitWdqFXX16ZOWH6bKlsFSbxz80BqSgvuGTTutn00oIeNSiA7'
-STRIPE_SECRET_KEY = 'sk_test_51PUysuAAVj3eEQONwKrWH36p9DMrb4NQIGhea6kmSUkaRigEEy8aHDmm6LuLIcGZykg2UnIgawxM31svJBN3HFcR00XX1ACQ8n'
-STRIPE_ENDPOINT_SECRET = 'whsec_f555e3cb7fd094c914ddd6c9cfdbdec9db8f3b61c8a83e2d5fa967bb88b5021e'
+ 
