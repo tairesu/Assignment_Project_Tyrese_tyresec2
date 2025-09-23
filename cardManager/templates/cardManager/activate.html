@@ -15,7 +15,7 @@ Activating card {{ card.token }}
 <p>{{  request.user.is_authenticated }}</p>
 	<button id="activateCardBtn">Claim this card</button>
 {% else %}
-	<a href="/register/"><button id="registerBtn">Sign in to Claim this card</button></a>
+	<a href="{% url 'register_view' %}?next=/card/{{card.token}}"><button id="registerBtn">Sign in to Claim this card</button></a>
 
 {% endif %}
 {% endblock %}

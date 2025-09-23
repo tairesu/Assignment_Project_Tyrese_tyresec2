@@ -1,6 +1,7 @@
 import stripe
 from django.shortcuts import render, redirect
 from django.conf import settings
+from django.contrib.auth import login
 from django.http import HttpResponse
 from django.http.response import JsonResponse
 from django.views.generic import CreateView
@@ -125,5 +126,21 @@ def stripe_webhook(request):
 
 class UserRegistration(CreateView):
 	model = User
-	form = UserForm
+	form_class = UserForm
 	template_name = "cardManager/register.html"
+	success_url = "dashboard/"
+
+	def get_success_url(self):
+		#Route to dashboard if next parameter is not defined
+		return self.request.GET.get('next') or self.success_url
+
+	def form_valid(self, form):
+		user = form.save(commit=False)
+		user.save();
+		#Log the user in 
+		login(self.request, user)
+
+		return super().form_valid(form)
+
+
+

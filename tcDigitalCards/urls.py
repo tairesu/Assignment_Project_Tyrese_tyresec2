@@ -30,7 +30,7 @@ urlpatterns = [
     path('success/', views.success),
     path('cancelled/', views.cancelled),
     path('webhook/', views.stripe_webhook),
-    path('register/', views.UserRegistration.as_view()),
+    path('register/', views.UserRegistration.as_view(), name='register_view'),
     path('admin/', admin.site.urls),
 ]
 
