@@ -1,4 +1,5 @@
 import stripe
+from django.urls import reverse_lazy
 from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from django.contrib.auth import login
@@ -163,7 +164,7 @@ class UserRegistration(CreateView):
 class CardUpdate(UpdateView):
 	model = Card
 	form_class = CardForm
-	success_url = 'dashboard/'
+	success_url = reverse_lazy('dashboard_view')
 	template_name = "cardManager/card_update.html"
 
 
@@ -171,3 +172,13 @@ class CardUpdate(UpdateView):
 		card = form.save(commit=False)
 		card.save();
 		return super().form_valid(form)
+
+
+def dashboard(request):
+	cards = Card.objects.filter(user=request.user)
+	context = {
+		'cards': [card for card in cards]
+	}
+	return render(request, 'cardManager/dashboard.html', context)
+
+
