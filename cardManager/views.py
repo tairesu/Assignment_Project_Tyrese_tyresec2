@@ -80,6 +80,7 @@ def create_checkout_session(request):
 				success_url=base_url + '/success?session_id={CHECKOUT_SESSION_ID}',
 				cancel_url=base_url + '/cancelled/',
 				mode='payment',
+				customer_email=request.user.email,
 				line_items=[{
                         'quantity': 1,
                         'price': 'price_1PUzvPAAVj3eEQONrfXv9xPy' 
@@ -119,6 +120,8 @@ def stripe_webhook(request):
     # Handle the checkout.session.completed event
     if event['type'] == 'checkout.session.completed':
         print("Payment was successful.")
+        if request.user.is_authenticated and request.session['activating_card_token']:
+        	return redirect('dashboard_view')
         # TODO: run some custom code here
 
     return HttpResponse(status=200)
