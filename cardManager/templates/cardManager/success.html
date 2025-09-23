@@ -9,7 +9,7 @@ Your payment was successful
 {% block content %}
 	<p>
 		
-	{{ request.user }}
+	{{ request.session.activating_card_token }}
 	</p>
 {% endblock %}
 {% block extra_scripts %}

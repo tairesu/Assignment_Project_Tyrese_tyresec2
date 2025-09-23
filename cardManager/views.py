@@ -18,13 +18,15 @@ from cardManager.models import (
 )
 # Create your views here.
 def card_detail(request,card_token):
-	print('card_detail request: ', request)
 	card = Card.objects.filter(token=card_token)[0]
 	is_owned = not (card.user == None)
-	is_redirecting = not (card.reroute_url == None)
+	is_redirecting = not (card.reroute_url == "" or null)
 	context = {"card":card}
 
-	if is_owned and not card.show_profile:
+	print('card_detail is_owned: ', is_owned)
+	print('card_detail is_redirecting: ', is_redirecting)
+	print('card_detail card.show_profile: ', card.show_profile)
+	if is_owned and not card.show_profile and is_redirecting:
 		return redirect(card.reroute_url)
 
 	elif is_owned and card.show_profile: 
@@ -35,6 +37,8 @@ def card_detail(request,card_token):
 	elif not is_owned:
 		return redirect('card_activate_view', card_token=card_token)
 		
+	elif is_owned and not is_redirecting:
+		return redirect('card_update_view', card_token=card_token)
 
 	template = loader.get_template("cardManager/base.html")
 	output = template.render(context, request)
@@ -98,11 +102,7 @@ def create_checkout_session(request):
 			return JsonResponse({'error': str(e)})
 
 def success(request):
-	context = {
-
-		'card_token': request.session['activating_card_token']
-	}
-	return render(request, 'cardManager/success.html', context)
+	return render(request, 'cardManager/success.html')
 
 def cancelled(request):
 	return render(request, 'cardManager/cancelled.html')
