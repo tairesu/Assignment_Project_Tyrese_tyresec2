@@ -83,6 +83,10 @@ def create_checkout_session(request):
 				cancel_url=base_url + '/cancelled/',
 				mode='payment',
 				customer_email=request.user.email,
+				metadata={
+					'card_token':request.session['activating_card_token'],
+					'user_id':request.user.id
+				},
 				line_items=[{
                         'quantity': 1,
                         'price': 'price_1PUzvPAAVj3eEQONrfXv9xPy' 
@@ -94,7 +98,6 @@ def create_checkout_session(request):
 			return JsonResponse({'error': str(e)})
 
 def success(request):
-	print(request.session.keys())
 	context = {
 
 		'card_token': request.session['activating_card_token']
@@ -122,14 +125,15 @@ def stripe_webhook(request):
     except stripe.error.SignatureVerificationError as e:
         # Invalid signature
         return HttpResponse(status=400)
-    print("stripe_webhook:",event['type'])
-    print("activating card_token:",request.session['activating_card_token'])
     # Handle the checkout.session.completed event
     if event['type'] == 'checkout.session.completed':
-        print("Payment was successful.")
-        if request.user.is_authenticated and request.session['activating_card_token']:
-        	return redirect('dashboard_view')
-        # TODO: run some custom code here
+    	session = event['data']['object']
+    	card_token = session['metadata'].get('card_token')
+    	user_id = session['metadata'].get('user_id')
+    	card = Card.objects.get(token=card_token)
+    	user = User.objects.get(id=user_id)
+    	card.user = user
+    	card.save()
 
     return HttpResponse(status=200)
 

@@ -181,6 +181,9 @@ In models.py:
 					- Go to signin (if signed out)
 
 
+			Now the request session data sticks after a stripe checkout. My webhook now updates the card model on payment confirmation
+
+
 
 
 				
