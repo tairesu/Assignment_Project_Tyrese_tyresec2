@@ -176,7 +176,12 @@ In models.py:
 						-- Needs to get user_id 
 						-- Will go to payment_confirmed
 
-				Based on these options I'm going set card_token in card_activate.  
+				Based on these options I'm going set card_token in card_activate. The button will do one of the two:
+					- Go to checkout (if signed in)
+					- Go to signin (if signed out)
+
+
+
 
 				
 

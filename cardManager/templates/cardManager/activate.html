@@ -12,9 +12,10 @@ Activating card {{ card.token }}
 <b>Rear:</b>
 <img src="/media/{{card.rear_design}}" alt="">
 {% if request.user.is_authenticated %}
+<p>{{  request.user.is_authenticated }}</p>
 	<button id="activateCardBtn">Claim this card</button>
 {% else %}
-	<button id="registerBtn">Sign in to Claim this card</button>
+	<a href="/register/"><button id="registerBtn">Sign in to Claim this card</button></a>
 
 {% endif %}
 {% endblock %}

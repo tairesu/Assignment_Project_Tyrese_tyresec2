@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from cardManager import views
+from cardManager.views import UserRegistration
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -29,6 +30,7 @@ urlpatterns = [
     path('success/', views.success),
     path('cancelled/', views.cancelled),
     path('webhook/', views.stripe_webhook),
+    path('register/', views.UserRegistration.as_view()),
     path('admin/', admin.site.urls),
 ]
 

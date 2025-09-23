@@ -1,13 +1,18 @@
+import stripe
 from django.shortcuts import render, redirect
 from django.conf import settings
 from django.http import HttpResponse
 from django.http.response import JsonResponse
+from django.views.generic import CreateView
 from django.template import loader
-import stripe
 from django.views.decorators.csrf import csrf_exempt
+from cardManager.forms import (
+	UserForm
+)
 from cardManager.models import (
 	Card,
-	Profile
+	Profile,
+	User
 )
 # Create your views here.
 def card_detail(request,card_token):
@@ -116,3 +121,9 @@ def stripe_webhook(request):
         # TODO: run some custom code here
 
     return HttpResponse(status=200)
+
+
+class UserRegistration(CreateView):
+	model = User
+	form = UserForm
+	template_name = "cardManager/register.html"
