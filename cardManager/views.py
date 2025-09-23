@@ -1,15 +1,16 @@
 import stripe
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from django.contrib.auth import login
 from django.http import HttpResponse
 from django.http.response import JsonResponse
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
-from django.views.generic import CreateView, ListView
+from django.views.generic import UpdateView, CreateView, ListView
 from django.template import loader
 from django.views.decorators.csrf import csrf_exempt
 from cardManager.forms import (
-	UserForm
+	UserForm,
+	CardForm
 )
 from cardManager.models import (
 	Card,
@@ -38,7 +39,7 @@ def card_detail(request,card_token):
 		return redirect('card_activate_view', card_token=card_token)
 		
 	elif is_owned and not is_redirecting:
-		return redirect('card_update_view', card_token=card_token)
+		return redirect('card_update_view',pk=card.pk)
 
 	template = loader.get_template("cardManager/base.html")
 	output = template.render(context, request)
@@ -59,6 +60,7 @@ def card_activate(request, card_token):
 		'card': card,
 	}
 	request.session['activating_card_token'] = card_token
+	request.session['activating_card_id'] = card.card_id
 	request.session.save()
 	template = loader.get_template("cardManager/activate.html")
 	output = template.render(context, request)
@@ -83,11 +85,12 @@ def create_checkout_session(request):
 		stripe.api_key = settings.STRIPE_SECRET_KEY
 		try:
 			checkout_session = stripe.checkout.Session.create(
-				success_url=base_url + '/success?session_id={CHECKOUT_SESSION_ID}',
+				success_url=base_url + '/card/' + str(request.session['activating_card_id']) + '/update/?session_id={CHECKOUT_SESSION_ID}',
 				cancel_url=base_url + '/cancelled/',
 				mode='payment',
 				customer_email=request.user.email,
 				metadata={
+					'card_id':request.session['activating_card_id'],
 					'card_token':request.session['activating_card_token'],
 					'user_id':request.user.id
 				},
@@ -99,6 +102,7 @@ def create_checkout_session(request):
 			#checkout_session id is needed for stripe to redirect to stripe checkout 
 			return JsonResponse({'sessionId': checkout_session['id']})
 		except Exception as e:
+			print('create_checkout_session error:', e)
 			return JsonResponse({'error': str(e)})
 
 def success(request):
@@ -128,9 +132,9 @@ def stripe_webhook(request):
     # Handle the checkout.session.completed event
     if event['type'] == 'checkout.session.completed':
     	session = event['data']['object']
-    	card_token = session['metadata'].get('card_token')
+    	card_id = session['metadata'].get('card_id')
     	user_id = session['metadata'].get('user_id')
-    	card = Card.objects.get(token=card_token)
+    	card = Card.objects.get(card_id=card_id)
     	user = User.objects.get(id=user_id)
     	card.user = user
     	card.save()
@@ -155,3 +159,15 @@ class UserRegistration(CreateView):
 		login(self.request, user)
 		return super().form_valid(form)
 
+
+class CardUpdate(UpdateView):
+	model = Card
+	form_class = CardForm
+	success_url = 'dashboard/'
+	template_name = "cardManager/card_update.html"
+
+
+	def form_valid(self, form):
+		card = form.save(commit=False)
+		card.save();
+		return super().form_valid(form)

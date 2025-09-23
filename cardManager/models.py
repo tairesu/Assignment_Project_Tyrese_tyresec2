@@ -44,3 +44,6 @@ class Card(models.Model):
 
 	def __str__(self):
 		return f"Card {self.token}" if self.user else f"[Unclaimed] Card {self.token}"
+
+	def get_update_url(self):
+		return reverse('card_update_view', kwargs={'pk': self.pk})
