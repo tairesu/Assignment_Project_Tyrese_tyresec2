@@ -205,7 +205,18 @@ In models.py:
 
 			Stripe was not having it with those Stripe test keys. For now I've enabled them to be pushed since I'm dealing with a test account. 
 
-### 
+####################
+
+Templates
+
+	- activate.html : I'm adding the next parameter to the activate card button's url. It will normally point to the login/ view (unless a user is already signed in... Then it'd point to ). This lets me control the success url over at the login view. If the next parameter is found, the success url of the login form will be the url pathway 
+
+
+
+###################
+		- 
+
+
 
 
 
