@@ -199,11 +199,13 @@ In models.py:
 			# Listens for payment confimation
 			- (webhook/)-> stripe_webhook(request)
 
+			# Renders success template
+			# !!! Stripe routes to success even when payment isn't confirmed
+			- (success/)-> success
 
-		
+			Stripe was not having it with those Stripe test keys. For now I've enabled them to be pushed since I'm dealing with a test account. 
 
-#### Forms  
-
+### 
 
 
 
