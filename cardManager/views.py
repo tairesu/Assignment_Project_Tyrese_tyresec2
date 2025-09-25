@@ -18,48 +18,42 @@ from cardManager.models import (
 	Profile,
 	User
 )
-# Create your views here.
-def card_detail(request,card_token):
-	card = Card.objects.filter(token=card_token)[0]
-	is_owned = not (card.user == None)
-	is_redirecting = not (card.reroute_url == "" or null)
-	context = {"card":card}
 
-	print('card_detail is_owned: ', is_owned)
-	print('card_detail is_redirecting: ', is_redirecting)
-	print('card_detail card.show_profile: ', card.show_profile)
+# Handles redirects for a scanned card matching card_token 
+def card_detail(request,card_token):
+	card = Card.objects.get(token=card_token)
+	is_owned = not (card.user == None)
+	is_redirecting = not (card.reroute_url == "")
 	if is_owned and not card.show_profile and is_redirecting:
 		return redirect(card.reroute_url)
-
 	elif is_owned and card.show_profile: 
-		user_profile = card.user.profile
-		user_profile_slug = user_profile.profile_slug
-		return redirect('profile_view', profile_slug=user_profile_slug)
-
+		return redirect('profile_view', profile_slug=card.user.profile.profile_slug)
 	elif not is_owned:
-		return redirect('card_activate_view', card_token=card_token)
-		
+		return redirect('card_activate_view', card_token=card_token)	
 	elif is_owned and not is_redirecting:
 		return redirect('card_update_view',pk=card.pk)
+	else:
+		return render(request, 'cardManager/invalid_token.html')
 
-	template = loader.get_template("cardManager/base.html")
-	output = template.render(context, request)
-	return HttpResponse(output)
 
+# Renders Profile template w/ matching Profile data
 def profile_detail(request, profile_slug):
 	profile = Profile.objects.filter(profile_slug=profile_slug)[0]
 	context = {"profile":profile}
 	return render(request, "cardManager/profile.html", context)
 
+
+# Renders card activate template with card
 def card_activate(request, card_token):
 	card = Card.objects.filter(token=card_token)[0]
 	is_activated = not (card.user == None)
 	if is_activated:
-		#Go to card view url
+		#Redirect to card view url
 		return redirect('card_view', card_token=card_token)
 	context = {
 		'card': card,
 	}
+	# Save card_token and id into a request session 
 	request.session['activating_card_token'] = card_token
 	request.session['activating_card_id'] = card.card_id
 	request.session.save()
@@ -67,8 +61,27 @@ def card_activate(request, card_token):
 	output = template.render(context, request)
 	return HttpResponse(output)
 
-	
-#View that gets publishable key from stripe
+
+# Renders dashboard template with context cards
+def dashboard(request):
+	cards = Card.objects.filter(user=request.user)
+	context = {
+		'cards': [card for card in cards]
+	}
+	return render(request, 'cardManager/dashboard.html', context)
+
+
+# Renders post stripe success template 
+def success(request):
+	return render(request, 'cardManager/success.html')
+
+
+# Renders cancalled payment template
+def cancelled(request):
+	return render(request, 'cardManager/cancelled.html')
+
+
+# View that gets publishable key for stripe
 @csrf_exempt
 def stripe_config(request):
 	if request.method == 'GET':
@@ -78,8 +91,8 @@ def stripe_config(request):
 		return JsonResponse(stripe_config, safe=False)
 			
 
+# Create a new Checkout session ID
 @csrf_exempt
-#Create a new Checkout session ID
 def create_checkout_session(request):
 	if request.method == 'GET':
 		base_url = 'http://localhost:8000'
@@ -100,18 +113,14 @@ def create_checkout_session(request):
                         'price': 'price_1PUzvPAAVj3eEQONrfXv9xPy' 
                     }]
 			)
-			#checkout_session id is needed for stripe to redirect to stripe checkout 
+			#checkout_session id is needed for stripe to generate a checkout session 
 			return JsonResponse({'sessionId': checkout_session['id']})
 		except Exception as e:
 			print('create_checkout_session error:', e)
 			return JsonResponse({'error': str(e)})
 
-def success(request):
-	return render(request, 'cardManager/success.html')
 
-def cancelled(request):
-	return render(request, 'cardManager/cancelled.html')
-
+# Handles payment confirmation 
 @csrf_exempt
 def stripe_webhook(request):
     stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -132,27 +141,32 @@ def stripe_webhook(request):
         return HttpResponse(status=400)
     # Handle the checkout.session.completed event
     if event['type'] == 'checkout.session.completed':
+    	#Grab user_id and card_id from Stripes Metadata
     	session = event['data']['object']
     	card_id = session['metadata'].get('card_id')
     	user_id = session['metadata'].get('user_id')
-    	card = Card.objects.get(card_id=card_id)
+    	# Retrieve the matching User and Card
     	user = User.objects.get(id=user_id)
+    	card = Card.objects.get(card_id=card_id)
+    	# Save the user attribute of the matching Card model
     	card.user = user
     	card.save()
 
     return HttpResponse(status=200)
 
-
+# Class view for new user registration form
 class UserRegistration(CreateView):
 	model = User
 	form_class = UserForm
 	template_name = "cardManager/register.html"
-	success_url = "dashboard/"
+	success_url = reverse_lazy('dashboard_view')
 
+	#Changes default success_url
 	def get_success_url(self):
 		#Route to dashboard if next parameter is not defined
 		return self.request.GET.get('next') or self.success_url
 
+	# Login the user in when form is valid
 	def form_valid(self, form):
 		user = form.save(commit=False)
 		user.save();
@@ -160,25 +174,10 @@ class UserRegistration(CreateView):
 		login(self.request, user)
 		return super().form_valid(form)
 
-
+# Class view for editing Cards
 class CardUpdate(UpdateView):
 	model = Card
 	form_class = CardForm
 	success_url = reverse_lazy('dashboard_view')
 	template_name = "cardManager/card_update.html"
-
-
-	def form_valid(self, form):
-		card = form.save(commit=False)
-		card.save();
-		return super().form_valid(form)
-
-
-def dashboard(request):
-	cards = Card.objects.filter(user=request.user)
-	context = {
-		'cards': [card for card in cards]
-	}
-	return render(request, 'cardManager/dashboard.html', context)
-
 
