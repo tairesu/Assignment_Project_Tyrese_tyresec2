@@ -114,7 +114,7 @@ In models.py:
 		If a card is owned, just pass the token to the card_detail view
 		The activation template will show the design of the card, the token, and a button asking to claim this card.
 
-		When that button is clicked, the browser is taken to stripe for purchasing. Once a payment intent is received at some url/view combo, update card by setting card.user. I'll head to the feature branch  and play with sending data to and from stripe. The cards are one of a types: a preset, or a custom design (There are several types of presets). I'm wondering if I should alter my Card model and add a card_type foreign key. Theoretically speaking I'll be to link the following attribute(s): stripe payment link. 
+		When that button is clicked, the browser is taken to stripe for purchasing. Once a payment intent is received at some url/view combo, update card by setting card.user. I'll head to the feature branch  and play with sending data to and from stripe. The cards are one of a types: a preset, or a custom design (There are several types of presets). I'm wondering if I should alter my Card model and add a card_type foreign key. Theoretically speaking I'll be able to link the following attribute(s): stripe payment link, default designs, etc
 
 		As a company, it'd be cool to show the customers the preset design they chose, at the beginning of the activation, in the Stripe checkout.
 
@@ -154,7 +154,7 @@ In models.py:
 				While this all works, I need to have access to the card_token and user_id variables at the /webhook/ view to let the system know a card is being claimed.
 				Stripe can hold these two! Which means I'll need to have the two ready before creating a stripe checkout session. I'll use request session to hold the info, but the question is when. 
 
-				Lets visualize a customer flow:
+				Lets visualize the customer flow:
 					1. Tap unclaimed card
 					2. Sign in / Create Account (if not signed in)
 					3. Pay for that card
@@ -181,7 +181,29 @@ In models.py:
 					- Go to signin (if signed out)
 
 
-			Now the request session data sticks after a stripe checkout. My webhook now updates the card model on payment confirmation
+			Now the request session data sticks after a stripe checkout. My webhook now updates the card model on payment confirmation.
+
+
+		To handle Stripe, I've implemented 3 new csrf_exempt Views:
+		(urlpattern)-> viewfunction(params):
+
+			# Grabs Publishable Key 
+			# Returns JSONResponse 
+			- (config/)-> stripe_config(request)
+			
+			# Generates a Stripe checkout session id
+			# Customize the checkout exp here
+			# Relies on request.session keys
+			- (create-checkout-session/)-> create_checkout_session(request)
+
+			# Listens for payment confimation
+			- (webhook/)-> stripe_webhook(request)
+
+
+		
+
+#### Forms  
+
 
 
 
