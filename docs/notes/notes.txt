@@ -203,7 +203,13 @@ In models.py:
 			# !!! Stripe routes to success even when payment isn't confirmed
 			- (success/)-> success
 
-			Stripe was not having it with those Stripe test keys. For now I've enabled them to be pushed since I'm dealing with a test account. 
+			Stripe was not having it with those Stripe test keys. For now I've enabled them to be pushed since I'm dealing with a test account.
+
+		[Thu Sep 25 2025]
+		- Login View:
+			- modifies the django auth LoginView
+			- uses get_success_url() to handle the case where a card is being activated
+			- 
 
 ####################
 

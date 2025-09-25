@@ -186,3 +186,7 @@ class CardUpdate(UpdateView):
 
 class LoginView(auth_views.LoginView):
 	template_name = 'cardManager/login.html'
+	success_url = reverse_lazy('dashboard_view')
+
+	def get_success_url(self):
+		return self.request.GET.get('next') or self.success_url
