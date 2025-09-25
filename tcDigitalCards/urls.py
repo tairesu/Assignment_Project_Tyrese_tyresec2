@@ -29,6 +29,7 @@ urlpatterns = [
     path('profile/<str:profile_slug>/', views.profile_detail, name='profile_view'),
     path('dashboard/', views.dashboard, name='dashboard_view'),
     path('register/', views.UserRegistration.as_view(), name='register_view'),
+    path('login/', views.LoginView.as_view(), name='login_view'),
     path('admin/', admin.site.urls),
 ]
 

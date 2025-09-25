@@ -2,7 +2,7 @@ import stripe
 from django.urls import reverse_lazy
 from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
-from django.contrib.auth import login
+from django.contrib.auth import login, views as auth_views
 from django.http import HttpResponse
 from django.http.response import JsonResponse
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
@@ -154,6 +154,7 @@ def stripe_webhook(request):
 
     return HttpResponse(status=200)
 
+
 # Class view for new user registration form
 class UserRegistration(CreateView):
 	model = User
@@ -174,6 +175,7 @@ class UserRegistration(CreateView):
 		login(self.request, user)
 		return super().form_valid(form)
 
+
 # Class view for editing Cards
 class CardUpdate(UpdateView):
 	model = Card
@@ -181,3 +183,6 @@ class CardUpdate(UpdateView):
 	success_url = reverse_lazy('dashboard_view')
 	template_name = "cardManager/card_update.html"
 
+
+class LoginView(auth_views.LoginView):
+	template_name = 'cardManager/login.html'
