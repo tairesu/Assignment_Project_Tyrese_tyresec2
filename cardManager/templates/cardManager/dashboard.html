@@ -9,5 +9,7 @@
 	{% for card in cards %}
 		<p>{{card}}</p>
 		<a href="{{ card.get_update_url }}">Edit Card</a>
+		{% empty %}
+		<p>Looks like there aren't any cards here.</p>
 	{% endfor %}
 {% endblock %}
