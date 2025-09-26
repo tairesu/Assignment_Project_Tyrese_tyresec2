@@ -27,6 +27,7 @@ urlpatterns = [
     path('card/<str:card_token>/activate/', views.card_activate, name='card_activate_view'),
     path('card/<int:pk>/update/', views.CardUpdate.as_view(), name='card_update_view'),
     path('profile/<str:profile_slug>/', views.profile_detail, name='profile_view'),
+    path('profile/create/', views.ProfileCreate.as_view(), name='profile_create_view'),
     path('profile/<int:pk>/update/', views.ProfileUpdate.as_view(), name='profile_update_view'),
     path('dashboard/', views.dashboard, name='dashboard_view'),
     path('register/', views.UserRegistration.as_view(), name='register_view'),

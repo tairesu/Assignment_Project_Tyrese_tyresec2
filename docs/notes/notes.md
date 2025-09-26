@@ -285,6 +285,19 @@ Renders ProfileForm to `profile_update.html` template. Success url will dynamica
 - Reroutes to profile_view wasn't working. So I opted to use get_success_url() to have access to self
 
 - Adding get_success_url(self) to redirect to user profile. I opted to use reverse_lazy after trying to include some HttpResponseRedirect method because I knew the name of the URL view ('profile_view'), and what variable it needs in the URL parameter (<str:profile_slug). 
+
+## ProfileCreate(CreateView, LoginRequiredMixin): 
+
+Renders Profile form to `profile_create.html`
+
+#### Developer Updates
+
+**[Fri Sep 26 2025]**
+
+- Adding LoginRequiredMixin class view because people shouldn't have access to creating a profile if they aren't signed in . 
+
+
+
 ___
 
 # Forms
