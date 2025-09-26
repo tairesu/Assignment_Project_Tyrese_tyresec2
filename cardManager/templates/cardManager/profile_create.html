@@ -1,0 +1,14 @@
+{% extends 'cardManager/base.html' %}
+{% block title %}
+Create a Profile
+{% endblock %}
+{% block opener %}
+
+{% endblock %}
+{% block content %}
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Create Profile">
+</form>
+{% endblock %}

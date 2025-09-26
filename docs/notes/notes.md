@@ -329,6 +329,9 @@ ___
 
 - Initialized template w/ form from `ProfileUpdate` view
 
+## profile_create.html
+
+The template for the ProfileCreate view. 
 ___
 
 # Helpful resources
