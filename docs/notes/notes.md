@@ -271,17 +271,49 @@ Renders UserForm to the `register.html` template.
 **[?]**
 
 - Like the `LoginView`, I will make the success url dynamic by defining the `get_success_url` method
+
+## ProfileUpdate(UpdateView)
+
+Renders ProfileForm to `profile_update.html` template. Reroutes to profile_view 
+
+#### Developer Updates
+
+**[Fri Sep 26 2025]**
+
+- Adding LoginRequiredMixin class view because people shouldn't have access to editing that person profile. 
+
+___
+
+# Forms
+
+## ProfileForm
+
+#### Developer Updates
+
+**[Fri Sep 26 2025]**
+
+- I do not need the user_id and date_created to show up, so I'll exclude them from this ModelForm subclass
+
+
 ___
 
 # Templates
 
 ## activate.html 
 
-
-
 #### Developer Updates
 
 - I'm adding the next parameter to the activate card button's url. It will normally point to the login/ view (unless a user is already signed in... Then it'd point to ). This lets me control the success url over at the login view. If the next parameter is found, the success url of the login form will be the url pathway 
+
+## profile_update.html 
+
+#### Developer Updates
+
+**[Fri Sep 26 2025]**
+
+- Initialized template w/ form from `ProfileUpdate` view
+
+___
 
 # Helpful resources
 
