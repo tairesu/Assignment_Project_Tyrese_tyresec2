@@ -9,6 +9,7 @@ class Profile(models.Model):
 	profile_id = models.AutoField(primary_key=True)
 	user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile', blank=True)
 	name = models.CharField(max_length=60)
+	bio = models.TextField(blank=True)
 	profile_slug = models.CharField(max_length=25)
 	cell = models.CharField(max_length=12, blank=True)
 	linked_in = models.URLField(max_length=200, blank=True)
