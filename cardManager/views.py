@@ -48,7 +48,12 @@ class ProfileUpdate(UpdateView, LoginRequiredMixin):
 	model = Profile
 	form_class = ProfileForm
 	template_name = 'cardManager/profile_update.html'
-	success_url = reverse_lazy('profile_view')
+	
+	def get_success_url(self):
+		# Grab the profile_slug from this obj
+		profile_slug = self.object.profile_slug
+		# Send slug over to profile detail view
+		return reverse_lazy('profile_view', kwargs={'profile_slug': profile_slug })
 
 
 # Renders card activate template with card
