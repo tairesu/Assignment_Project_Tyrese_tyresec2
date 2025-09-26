@@ -20,6 +20,12 @@
 	<nav>
 		{% if request.user.is_authenticated %}
 			<span>{{ request.user }}</span>
+            <form action="{% url 'logout_view' %}" method="post">
+                {% csrf_token %}
+                <button type="submit">
+                    Log Out
+                </button>
+            </form>
 		{% else %}
 			<span>TC Digital</span>
 		{% endif %}
