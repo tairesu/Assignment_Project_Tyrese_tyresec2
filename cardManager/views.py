@@ -44,7 +44,7 @@ def profile_detail(request, profile_slug):
 	context = {"profile":profile}
 	return render(request, "cardManager/profile.html", context)
 
-class ProfileUpdate(UpdateView, LoginRequiredMixin):
+class ProfileUpdate(LoginRequiredMixin, UpdateView):
 	model = Profile
 	form_class = ProfileForm
 	template_name = 'cardManager/profile_update.html'
@@ -55,7 +55,7 @@ class ProfileUpdate(UpdateView, LoginRequiredMixin):
 		# Send slug over to profile detail view
 		return reverse_lazy('profile_view', kwargs={'profile_slug': profile_slug })
 
-class ProfileCreate(CreateView, LoginRequiredMixin):
+class ProfileCreate(LoginRequiredMixin, CreateView):
 	model = Profile
 	form_class = ProfileForm
 	template_name = 'cardManager/profile_create.html'
@@ -85,7 +85,7 @@ def card_activate(request, card_token):
 
 
 # Class view for editing Cards
-class CardUpdate(UpdateView):
+class CardUpdate(LoginRequiredMixin, UpdateView):
 	model = Card
 	form_class = CardForm
 	success_url = reverse_lazy('dashboard_view')
