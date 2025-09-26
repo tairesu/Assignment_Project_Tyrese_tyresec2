@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<!-- I'll Eventually find the Tailwind Link
+	<link rel="stylesheet" href="">
+	-->
+	{% block extra_links %}
+	{% endblock %}
+	<title>
+		{% block title %} 
+			TC Digital
+		{% endblock %}
+	</title>
+</head>
+<body>
+	<nav>
+		{% if request.user.is_authenticated %}
+			<span>{{ request.user }}</span>
+		{% else %}
+			<span>TC Digital</span>
+		{% endif %}
+	</nav>
+	<h2>
+		{% block opener %}
+			Welcome to TC Digital
+		{% endblock %}
+	</h2>
+	{% block content %}
+
+	{% endblock %}
+	{% block extra_scripts %}
+	{% endblock %}
+	
+</body>
+</html>
