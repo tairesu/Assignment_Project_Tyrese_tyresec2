@@ -11,7 +11,8 @@ from django.template import loader
 from django.views.decorators.csrf import csrf_exempt
 from cardManager.forms import (
 	UserForm,
-	CardForm
+	CardForm,
+	ProfileForm
 )
 from cardManager.models import (
 	Card,
@@ -42,6 +43,12 @@ def profile_detail(request, profile_slug):
 	profile = Profile.objects.get(profile_slug=profile_slug)
 	context = {"profile":profile}
 	return render(request, "cardManager/profile.html", context)
+
+class ProfileUpdate(UpdateView, LoginRequiredMixin):
+	model = Profile
+	form_class = ProfileForm
+	template_name = 'cardManager/profile_update.html'
+	success_url = reverse_lazy('profile_view')
 
 
 # Renders card activate template with card
