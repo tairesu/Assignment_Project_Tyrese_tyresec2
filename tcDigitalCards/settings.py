@@ -121,6 +121,7 @@ STATIC_ROOT = BASE_DIR / 'cardManager'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR 
 
+LOGOUT_REDIRECT_URL = 'login_view'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
