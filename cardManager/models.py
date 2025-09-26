@@ -28,6 +28,9 @@ class Profile(models.Model):
 	def __str__(self):
 		return f"{self.profile_slug}"
 
+	def get_update_url(self):
+		return reverse('profile_update_view', kwargs={'pk': self.pk})
+
 
 class Card(models.Model):
 	card_id = models.AutoField(primary_key=True)
