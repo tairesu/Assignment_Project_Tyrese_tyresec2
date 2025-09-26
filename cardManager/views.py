@@ -38,7 +38,7 @@ def card_detail(request,card_token):
 
 # Renders Profile template w/ matching Profile data
 def profile_detail(request, profile_slug):
-	profile = Profile.objects.filter(profile_slug=profile_slug)[0]
+	profile = Profile.objects.get(profile_slug=profile_slug)
 	context = {"profile":profile}
 	return render(request, "cardManager/profile.html", context)
 
