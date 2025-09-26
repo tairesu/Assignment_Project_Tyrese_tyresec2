@@ -247,8 +247,13 @@ Renders success template
 
 Renders cancelled template
 
+## CardUpdate(UpdateView)
 
-## login(request)
+Renders the CardForm to the card_update template. (It reroutes to the dashboard) 
+
+## LoginView(auth_views.LoginView)
+
+Renders login template
 
 #### Developer Updates
 
@@ -256,6 +261,16 @@ Renders cancelled template
 
 - I modified the django auth LoginView to use get_success_url() to make the success url dynamic. If `next` parameter gets passed into this view, set the `success url` to the value of `next`
 
+## UserRegistration(CreateView)
+
+Renders UserForm to the `register.html` template.
+(logs the user in within `form_valid` method)
+
+#### Developer Updates
+
+**[?]**
+
+- Like the `LoginView`, I will make the success url dynamic by defining the `get_success_url` method
 ___
 
 # Templates

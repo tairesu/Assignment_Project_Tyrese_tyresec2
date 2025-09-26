@@ -19,6 +19,7 @@ from cardManager.models import (
 	User
 )
 
+
 # Handles redirects for a scanned card matching card_token 
 def card_detail(request,card_token):
 	card = Card.objects.get(token=card_token)
@@ -57,9 +58,15 @@ def card_activate(request, card_token):
 	request.session['activating_card_token'] = card_token
 	request.session['activating_card_id'] = card.card_id
 	request.session.save()
-	template = loader.get_template("cardManager/activate.html")
-	output = template.render(context, request)
-	return HttpResponse(output)
+	return render(request, 'cardManager/activate.html', context)
+
+
+# Class view for editing Cards
+class CardUpdate(UpdateView):
+	model = Card
+	form_class = CardForm
+	success_url = reverse_lazy('dashboard_view')
+	template_name = "cardManager/card_update.html"
 
 
 # Renders dashboard template with context cards
@@ -174,14 +181,6 @@ class UserRegistration(CreateView):
 		#Log the user in 
 		login(self.request, user)
 		return super().form_valid(form)
-
-
-# Class view for editing Cards
-class CardUpdate(UpdateView):
-	model = Card
-	form_class = CardForm
-	success_url = reverse_lazy('dashboard_view')
-	template_name = "cardManager/card_update.html"
 
 
 class LoginView(auth_views.LoginView):
