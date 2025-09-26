@@ -297,7 +297,9 @@ Renders Profile form to `profile_create.html`
 - Adding LoginRequiredMixin class view because people shouldn't have access to creating a profile if they aren't signed in . 
 
 
+## LogoutView(auth_views.LogoutView)
 
+Logs the user out. Requires post request
 ___
 
 # Forms
