@@ -19,13 +19,20 @@
 <body>
 	<nav>
 		{% if request.user.is_authenticated %}
-			<span>{{ request.user }}</span>
+			<a href="{% url 'dashboard_view' %}"><span>{{ request.user }}</span></a>
             <form action="{% url 'logout_view' %}" method="post">
                 {% csrf_token %}
                 <button type="submit">
                     Log Out
                 </button>
             </form>
+
+            {% if request.user.profile %}
+            	<a href="{{ request.user.profile.get_update_url }}"><button>Edit Profile</button></a>
+            	{% else %}
+            	<a href="{% url 'profile_create_view' %}"><button>Create Profile</button></a>
+            {% endif %}
+            
 		{% else %}
 			<span>TC Digital</span>
 		{% endif %}
