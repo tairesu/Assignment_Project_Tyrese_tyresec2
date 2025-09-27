@@ -121,6 +121,8 @@ STATIC_ROOT = BASE_DIR / 'cardManager'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR 
 
+LOGIN_URL = '/login/'
+LOGOUT_URL = '/logout/'
 LOGOUT_REDIRECT_URL = 'login_view'
 
 # Default primary key field type

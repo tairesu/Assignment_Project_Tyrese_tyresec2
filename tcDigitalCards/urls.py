@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.contrib.auth import views as auth_views
 from cardManager import views
 from cardManager.views import UserRegistration
 from django.conf import settings
@@ -32,7 +33,7 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard_view'),
     path('register/', views.UserRegistration.as_view(), name='register_view'),
     path('login/', views.LoginView.as_view(), name='login_view'),
-    path('logout/', views.LogoutView.as_view(), name='logout_view'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout_view'),
     path('admin/', admin.site.urls),
 ]
 

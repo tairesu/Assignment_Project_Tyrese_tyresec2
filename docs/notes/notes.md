@@ -300,6 +300,42 @@ Renders Profile form to `profile_create.html`
 ## LogoutView(auth_views.LogoutView)
 
 Logs the user out. Requires post request
+
+#### Developer Updates
+
+**[Fri Sep 26 2025]**
+
+- This is beginning to be a pain :sweating:  . My issue is that LogoutView keeps defaulting to /account/login. The solution is to change `settings.LOGOUT_REDIRECT_URL`, but I did that. 
+	- I tried:
+		- setting it to '/login'
+		- setting it to '/login/'
+		- setting LogoutView.next_page to '/login/'
+		- putting a redirect in LogoutView.get_success_url
+			- nothing seemed to be printing from here
+		- LoginView
+			- Nothing seemed to be printing from her
+	- It seems like LogoutView never gets called....Lets check the logs:
+
+		- ```[26/Sep/2025 23:11:11] "GET /profile/1/update/ HTTP/1.1" 302 0
+		Not Found: /accounts/login/
+		[26/Sep/2025 23:11:11] "GET /accounts/login/?next=/profile/1/update/ HTTP/1.1" 404 5506```
+		- /logout isn't being called here. The system goes from `GET /profile/1/update` to `GET /accounts/login`. ()
+	- Let's check what the default is using django shell
+		- ```settings.LOGOUT_REDIRECT_URL
+		>>> '/login'
+		# Out of curiosity I checked to see the logout url was
+		settings.LOGOUT_URL
+
+		>>> '/accounts/logout/'
+
+		```
+	- None of these show how account/login was requested. it seems like settings.LOGIN_URL could be responsible [^4]
+
+	- **AHA! I needed to update settings.LOGIN_URL** 
+
+
+
+
 ___
 
 # Forms
@@ -341,6 +377,7 @@ ___
 [^1]: https://stackoverflow.com/questions/5517950/django-media-url-and-media-root
 [^2]: Using Stripe with Django (https://testdriven.io/blog/django-stripe-tutorial/)
 [^3]: Creating a checkout session in Stripe (https://docs.stripe.com/api/checkout/sessions/create)
+[^4]: https://docs.djangoproject.com/en/5.2/ref/settings/#:~:text=LOGOUT_REDIRECT_URL
 
 
 

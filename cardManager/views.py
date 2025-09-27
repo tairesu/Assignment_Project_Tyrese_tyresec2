@@ -213,6 +213,4 @@ class LoginView(auth_views.LoginView):
 	def get_success_url(self):
 		return self.request.GET.get('next') or self.success_url
 
-class LogoutView(auth_views.LogoutView):
-	template_name = 'cardManager/logout.html'
 
