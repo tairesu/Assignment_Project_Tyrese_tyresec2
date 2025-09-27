@@ -282,15 +282,14 @@ A view that renders the cards, that belong to a user, into the `dashboard.html`t
 - Editing context is a bit different here. [^6]
 
 - ```
-def get_context_data(self, **kwargs):
+   def get_context_data(self, **kwargs):
 		user = self.object
 		user_cards_list = user.cards
 		# Let's get the context that exists already
 		context = super().get_context_data(**kwargs)
 		context['cards'] = user_cards_list
 		return context
-
-```
+	```
 	- My error says that theres no self.object. Well I wonder what self gives me when i print it. 
 
 	- `<cardManager.views.UserDashboard object at 0x7fb0541abce0>` 
@@ -301,15 +300,15 @@ def get_context_data(self, **kwargs):
 
 	- :cool:. I know I can access `self.request.user` from this view safely. W/ this information this is what I've come up with
 
-	- ```
-	def get_context_data(self, **kwargs):
-		user_id = self.request.user.pk
-		cards = Card.objects.filter(user=user_id)
-		# Let's get the context that exists already
-		context = super().get_context_data(**kwargs)
-		context['cards'] = [card for card in cards]
-		return context
-	```
+	- 	```
+		def get_context_data(self, **kwargs):
+			user_id = self.request.user.pk
+			cards = Card.objects.filter(user=user_id)
+			# Let's get the context that exists already
+			context = super().get_context_data(**kwargs)
+			context['cards'] = [card for card in cards]
+			return context
+		```
 		- Works perfectly.  I expect their to be more info/metrics on the dashboard later, so I'll keep this code
 
 ## ProfileUpdate(UpdateView)
@@ -353,23 +352,22 @@ Logs the user out. Requires post request
 		- putting a redirect in LogoutView.get_success_url
 			- nothing seemed to be printing from here
 		- LoginView
-			- Nothing seemed to be printing from her
+			- Nothing seemed to be printing from here
 	- It seems like LogoutView never gets called....Lets check the logs:
-
-		- ```[26/Sep/2025 23:11:11] "GET /profile/1/update/ HTTP/1.1" 302 0
-		Not Found: /accounts/login/
-		[26/Sep/2025 23:11:11] "GET /accounts/login/?next=/profile/1/update/ HTTP/1.1" 404 5506```
-		- /logout isn't being called here. The system goes from `GET /profile/1/update` to `GET /accounts/login`. ()
-	- Let's check what the default is using django shell
-		- ```settings.LOGOUT_REDIRECT_URL
-		>>> '/login'
-		# Out of curiosity I checked to see what the logout url was
-		settings.LOGOUT_URL
-
-		>>> '/accounts/logout/'
-
+		- ```
+	    	[26/Sep/2025 23:11:11] "GET /profile/1/update/ HTTP/1.1" 302 0
+			Not Found: /accounts/login/
+			[26/Sep/2025 23:11:11] "GET /accounts/login/?next=/profile/1/update/ HTTP/1.1" 404 5506```
+	   		~~~
+	- /logout isn't being called here. The system goes from `GET /profile/1/update` to `GET /accounts/login`. Let's check what the default is using `python manage.py shell`
+		- ```
+    		settings.LOGOUT_REDIRECT_URL
+			>>> '/login'
+			# Out of curiosity I checked to see what the logout url was
+			settings.LOGOUT_URL
+			>>> '/accounts/logout/'
 		```
-	- None of these show how account/login was requested. it seems like settings.LOGIN_URL could be responsible [^4]
+	- None of these show how accounts/login was requested. It seems like settings.LOGIN_URL could be responsible [^4]
 
 	- **AHA! I needed to update settings.LOGIN_URL** 
 
