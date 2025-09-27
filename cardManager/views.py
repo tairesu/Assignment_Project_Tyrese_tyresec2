@@ -93,12 +93,19 @@ class CardUpdate(LoginRequiredMixin, UpdateView):
 
 
 # Renders dashboard template with context cards
-def dashboard(request):
-	cards = Card.objects.filter(user=request.user)
-	context = {
-		'cards': [card for card in cards]
-	}
-	return render(request, 'cardManager/dashboard.html', context)
+class UserDashboard(LoginRequiredMixin, ListView):
+	template_name = 'cardManager/dashboard.html'
+	model = User
+	# I need to alter the context that goes to the dashboard template
+	def get_context_data(self, **kwargs):
+		user_id = self.request.user.pk
+		cards = Card.objects.filter(user=user_id)
+		# Let's get the context that exists already
+		context = super().get_context_data(**kwargs)
+		context['cards'] = [card for card in cards]
+		return context
+
+
 
 
 # Renders post stripe success template 

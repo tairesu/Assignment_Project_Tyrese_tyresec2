@@ -137,7 +137,6 @@ It also redirects the browser according. There are 4 possible redirects that may
   
 ## profile_detail(request, profile_slug)
 	
-
 #### Developer Updates
 
 *[?]*
@@ -150,12 +149,10 @@ It also redirects the browser according. There are 4 possible redirects that may
 
 - Now I need to configure static and media, so that I can display the images from the Profile model.  As of now, my media's root is the base directory [^1]. Let's get back to the `card_detail` view and see if we can properly redirect that specific case to the profile url of the car
 	
-
 ## card_activate(request, card_token)
 
 This is a view that is visible if any only if the card with card_token is not owned.
 If a card is owned,  pass `card_token` to the card detail view (/card/<str:card_token>)
-
 
 #### Developer Updates
 
@@ -272,9 +269,52 @@ Renders UserForm to the `register.html` template.
 
 - Like the `LoginView`, I will make the success url dynamic by defining the `get_success_url` method
 
+## UserDashboard(LoginRequiredMixin, ListView)
+
+A view that renders the cards, that belong to a user, into the `dashboard.html`template.
+
+#### Developer Updates
+
+**[Sat Sep 27 2025]**
+
+- I'm switching from a function view to a class view to have access to these [mixins](https://github.com/django/django/blob/stable/5.2.x/django/contrib/auth/mixins.py#L46). I stumbled upon them last night and had a feeling that I'll use more than 1 of them for this application.
+
+- Editing context is a bit different here. [^6]
+
+- ```
+def get_context_data(self, **kwargs):
+		user = self.object
+		user_cards_list = user.cards
+		# Let's get the context that exists already
+		context = super().get_context_data(**kwargs)
+		context['cards'] = user_cards_list
+		return context
+
+```
+	- My error says that theres no self.object. Well I wonder what self gives me when i print it. 
+
+	- `<cardManager.views.UserDashboard object at 0x7fb0541abce0>` 
+
+	- Hmmm, What does self.request say?
+
+	- `<WSGIRequest: GET '/dashboard/'>`
+
+	- :cool:. I know I can access `self.request.user` from this view safely. W/ this information this is what I've come up with
+
+	- ```
+	def get_context_data(self, **kwargs):
+		user_id = self.request.user.pk
+		cards = Card.objects.filter(user=user_id)
+		# Let's get the context that exists already
+		context = super().get_context_data(**kwargs)
+		context['cards'] = [card for card in cards]
+		return context
+	```
+		- Works perfectly.  I expect their to be more info/metrics on the dashboard later, so I'll keep this code
+
 ## ProfileUpdate(UpdateView)
 
-Renders ProfileForm to `profile_update.html` template. Success url will dynamical route to the 'profile_view' URL with the proper profile_slug 
+Renders ProfileForm to `profile_update.html` template. **Success url will dynamically route to the 'profile_view' URL with the proper profile_slug** 
 
 #### Developer Updates
 
@@ -323,7 +363,7 @@ Logs the user out. Requires post request
 	- Let's check what the default is using django shell
 		- ```settings.LOGOUT_REDIRECT_URL
 		>>> '/login'
-		# Out of curiosity I checked to see the logout url was
+		# Out of curiosity I checked to see what the logout url was
 		settings.LOGOUT_URL
 
 		>>> '/accounts/logout/'
@@ -378,6 +418,7 @@ ___
 [^2]: Using Stripe with Django (https://testdriven.io/blog/django-stripe-tutorial/)
 [^3]: Creating a checkout session in Stripe (https://docs.stripe.com/api/checkout/sessions/create)
 [^4]: https://docs.djangoproject.com/en/5.2/ref/settings/#:~:text=LOGOUT_REDIRECT_URL
-
+[^5]: Django's auth mixins (https://github.com/django/django/blob/stable/5.2.x/django/contrib/auth/mixins.py#L46)
+[^6]: Using get_context_data() (https://docs.djangoproject.com/en/5.2/topics/class-based-views/generic-display/#adding-extra-context)
 
 
