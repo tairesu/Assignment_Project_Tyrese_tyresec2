@@ -23,7 +23,6 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('', include('cardManager.urls')),
     path('card/<str:card_token>/', views.card_detail, name='card_view'),
     path('card/<str:card_token>/activate/', views.card_activate, name='card_activate_view'),
     path('card/<int:pk>/update/', views.CardUpdate.as_view(), name='card_update_view'),
