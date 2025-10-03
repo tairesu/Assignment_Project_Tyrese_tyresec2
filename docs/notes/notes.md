@@ -75,7 +75,6 @@ requests                  2.32.5                   pypi_0    pypi
 setuptools                75.8.0          py312h06a4308_0  
 sqlite                    3.45.3               h5eee18b_0  
 sqlparse                  0.5.2           py312h06a4308_0  
-stripe                    5.5.0                    pypi_0    pypi
 tk                        8.6.14               h39e8969_0  
 tzdata                    2025a                h04d1e81_0  
 urllib3                   2.5.0                    pypi_0    pypi
@@ -228,27 +227,6 @@ If a card is owned,  pass `card_token` to the card detail view (/card/<str:card_
 
 - To handle Stripe, I've implemented 3 new csrf_exempt function views: **stripe_config**, **create-checkout-session**, **stripe_webhook**. And 2 new function views: **success**, **cancelled**
 
-## stripe_config(request)
-Returns Stripe Publishable Key (for test environment) as JSON 
-
-## create_checkout_session(request)
-Returns a unique Stripe checkout session id with customized parameters in JSON. The checkout session's UI will be determined by these parameters [^2] 
-
-**Relies on request.session**
-
-## stripe_webhook(request)
-
-Listens for payment confimation @ webhook/
-
-## success(request))
- 
-Renders success template
-
-**!!Stripe routes to success even when payment isn't confirmed!!**
-
-## cancelled(request))
-
-Renders cancelled template
 
 ## CardUpdate(UpdateView)
 
