@@ -1,0 +1,15 @@
+{% extends 'cardManager/base.html'%}
+{% block title %}
+	Dashboard
+{% endblock %}
+{% block opener %}
+	User: {{ request.user }}
+{% endblock %}
+{% block content %}
+	{% for card in user_cards %}
+		<p>{{card}}</p>
+		<a href="{{ card.get_update_url }}">Edit Card</a>
+		{% empty %}
+		<p>Looks like there aren't any cards here.</p>
+	{% endfor %}
+{% endblock %}

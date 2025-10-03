@@ -1,0 +1,44 @@
+{% extends 'cardManager/base.html' %}
+{% block hero_header %}
+	Sign Up
+{% endblock %}
+{% block content %}
+<form action="" method="post" class="flex flex-col gap-6">
+	{% csrf_token %}
+	<div class="flex flex-col gap-2">
+    	<label for="id_firstnmae" class="text-bold text-lg">Firstname</label>
+    	<p class="error text-[var(--color-danger)] text-sm"></p>
+    	<input type="text" class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4" placeholder="Enter Firstname" id="id_firstname" name="firstname" required>
+    </div>
+    <div class="flex flex-col gap-2">
+    	<label for="id_lastname" class="text-bold text-lg">Lastname</label>
+    	<p class="error text-[var(--color-danger)] text-sm"></p>
+    	<input type="text" class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4" placeholder="Enter Lastname" id="id_lastname" name="lastname" required>
+    </div>
+	<div class="flex flex-col gap-2">
+    	<label for="id_username" class="text-bold text-lg">Username</label>
+    	<p class="error text-[var(--color-danger)] text-sm"></p>
+    	<input type="text" class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4" placeholder="Enter Username" id="id_username" name="username" required>
+    </div>
+    <div class="flex flex-col gap-2">
+    	<label for="id_email" class="text-bold text-lg">Email</label>
+    	<p class="error text-[var(--color-danger)] text-sm"></p>
+    	<input type="email" class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4" placeholder="Enter Email" id="id_email" name="email" required>
+    </div>
+    <div class="flex flex-col gap-2">
+    	<label for="id_password" class="text-bold text-lg">Password</label>
+    	<p class="error text-[var(--color-danger)] text-sm"></p>
+    	<input type="password" class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4" placeholder="Enter Password" id="id_password" name="password" required>
+    </div>
+	{% if nextUrlParam %}
+    <a href="{% url 'login_view' %}?next={{nextUrlParam}}" class="text-center text-md text-[var(--color-main)] mt-8">I already have an account</a>
+    {% else %}
+    <a href="{% url 'login_view' %}" class="text-center text-md text-[var(--color-main)] mt-8">I already have an account</a>
+    {% endif %}
+	<button class="bg-[var(--color-main)] w-full text-center py-4 rounded-md" type="submit">
+    	Sign up
+    </button>
+</form>
+	
+
+{% endblock %}
