@@ -1,0 +1,25 @@
+{% extends 'cardManager/base.html' %}
+{% load static  %}
+{% block title %}
+	Activating your Card | TC Digital
+{% endblock %}
+{% block opener %}
+Activating card {{ card.token }}
+{% endblock opener %}
+{% block content %}
+<b>Front:</b>
+<img src="/media/{{card.front_design}}" alt="">
+<b>Rear:</b>
+<img src="/media/{{card.rear_design}}" alt="">
+{% if request.user.is_authenticated %}
+<p>{{  request.user.is_authenticated }}</p>
+	<button id="activateCardBtn">Claim this card</button>
+{% else %}
+	<a href="{% url 'login_view' %}?next=/card/{{card.token}}"><button id="registerBtn">Sign in to Claim this card</button></a>
+
+{% endif %}
+{% endblock %}
+{% block extra_scripts %}
+    <script src="https://js.stripe.com/v3/"></script>
+	<script src="{% static 'cardManager/js/payment_integration.js' %}"></script>
+{% endblock %}

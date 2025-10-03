@@ -1,0 +1,33 @@
+{% extends 'cardManager/base.html'%}
+{% block title %}
+	{{ profile.user }}'s Profile | TC Digital
+{% endblock %}
+{% block opener %}
+	Profile View: {{ profile.name }}
+{% endblock %}
+{% block content %}
+	{% if profile.banner_photo %}
+		<img src="{{ profile.banner_photo.url }}" alt="">
+	{% endif %}
+	{% if profile.profile_photo %}
+		<img src="{{ profile.profile_photo.url }}" alt="">
+	{% endif %}
+	{% if profile.email %}
+		<p>{{ profile.email }}</p>
+	{% endif %}
+	{% if profile.linked_in %}
+		<p>{{ profile.linked_in }}</p>
+	{% endif %}
+	{% if profile.cell %}
+		<p>{{ profile.cell }}</p>
+	{% endif %}
+	{% if profile.whatsapp %}
+		<p>{{ profile.whatsapp }}</p>
+	{% endif %}
+	{% if profile.snapchat %}
+		<p>{{ profile.snapchat }}</p>
+	{% endif %}
+	{% if profile.instagram %}
+		<p>{{ profile.instagram }}</p>
+	{% endif %}
+{% endblock %}
