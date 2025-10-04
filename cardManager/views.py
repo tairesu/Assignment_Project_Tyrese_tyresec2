@@ -12,7 +12,7 @@ from django.views.generic.base import ContextMixin, View
 from django.template import loader
 from django.views.decorators.csrf import csrf_exempt
 from cardManager.forms import (
-	UserForm,
+	OwnerForm,
 	CardForm,
 	ProfileForm
 )
@@ -25,12 +25,12 @@ from cardManager.models import (
 # Handles redirects for a scanned card matching card_token 
 def card_detail(request,card_token):
 	card = Card.objects.get(token=card_token)
-	is_owned = not (card.user == None)
+	is_owned = not (card.owner == None)
 	is_redirecting = not (card.reroute_url == "")
 	if is_owned and not card.show_profile and is_redirecting:
 		return redirect(card.reroute_url)
 	elif is_owned and card.show_profile: 
-		return redirect('profile_view', profile_slug=card.user.profile.profile_slug)
+		return redirect('profile_view', profile_slug=card.owner.profile.profile_slug)
 	elif not is_owned:
 		return redirect('card_activate_view', card_token=card_token)	
 	elif is_owned and not is_redirecting:
@@ -75,7 +75,7 @@ class ProfileCreate(LoginRequiredMixin, CreateView):
 
 	def form_valid(self,form):
 		profile = form.save(commit=False)
-		profile.user = self.request.user
+		profile.owner = self.request.owner
 		profile.save()
 		return super().form_valid(form)
 
@@ -83,7 +83,7 @@ class ProfileCreate(LoginRequiredMixin, CreateView):
 # Renders card activate template with card
 def card_activate(request, card_token):
 	card = Card.objects.filter(token=card_token)[0]
-	is_activated = not (card.user == None)
+	is_activated = not (card.owner == None)
 	if is_activated:
 		#Redirect to card view url
 		return redirect('card_view', card_token=card_token)
@@ -105,7 +105,7 @@ class CardUpdate(LoginRequiredMixin, UpdateView):
 	template_name = "cardManager/card_update.html"
 
 
-# Renders dashboard template with user cards
+# Renders dashboard template with owner cards
 class UserDashboard(LoginRequiredMixin, ContextMixin, View):
 	template_name = 'cardManager/dashboard.html'
 
@@ -116,16 +116,16 @@ class UserDashboard(LoginRequiredMixin, ContextMixin, View):
 	# I need to alter the context that goes to the dashboard template
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		user_id = self.request.user.pk
-		user_cards = Card.objects.filter(user_id=user_id)
-		context['user_cards'] = user_cards
+		owner_id = self.request.user.pk
+		owner_cards = Card.objects.filter(owner_id=owner_id)
+		context['user_cards'] = owner_cards
 		return context
 
 
 
 # Class view for new user registration form
 class UserRegistration(CreateView):
-	form_class = UserForm
+	form_class = OwnerForm
 	template_name = "cardManager/register.html"
 	success_url = reverse_lazy('dashboard_view')
 
