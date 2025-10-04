@@ -1,14 +1,14 @@
-from django.contrib.auth.models import User
 from django import forms
 from .models import (
 	Card,
-	Profile
+	Profile,
+	Owner
 )
 
-class UserForm(forms.ModelForm):
+class OwnerForm(forms.ModelForm):
 	class Meta:
-		model = User
-		fields = ['first_name','last_name','username','email','password']
+		model = Owner
+		fields = ['first_name','last_name','email','pword']
 
 
 class CardForm(forms.ModelForm):
