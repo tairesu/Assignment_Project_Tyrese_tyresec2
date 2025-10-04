@@ -18,8 +18,7 @@ from cardManager.forms import (
 )
 from cardManager.models import (
 	Card,
-	Profile,
-	User
+	Profile
 )
 
 
