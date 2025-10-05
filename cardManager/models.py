@@ -74,3 +74,10 @@ class Card(models.Model):
 	def get_update_url(self):
 		return reverse('card_update_view', kwargs={'pk': self.pk})
 
+
+class Usage(models.Model):
+	card = models.ForeignKey(Card, on_delete=models.CASCADE, related_name='usage')
+	date_used = models.DateTimeField(default=timezone.now, editable=False)
+
+	def __str__(self):
+		return f'{self.date_used} {self.card}'
