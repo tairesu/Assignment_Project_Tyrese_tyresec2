@@ -18,7 +18,8 @@ from cardManager.forms import (
 )
 from cardManager.models import (
 	Card,
-	Profile
+	Profile,
+	Owner
 )
 
 
@@ -157,4 +158,17 @@ class LoginView(auth_views.LoginView):
 		print("Context Data from LoginView:", context)
 		return context
 
+
+# class loginOwner(View):
+# 	def __init__(self):
+# 		print('\nInitialize loginOwner')
+# 	def get(self,request, **kwargs):
+# 		return render(request, 'cardManager/login.html')
+
+# 	def post(self, request, **kwargs):
+# 		email = request.POST['email']
+# 		password = request.POST['password']
+# 		n_owners = Owner.objects.filter(email=email, pword=password).count()
+# 		print('Owners w/ Email and Password: ',n_owners )
+# 		return render(request, 'cardManager/login.html')
 
