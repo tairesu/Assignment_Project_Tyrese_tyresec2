@@ -38,7 +38,6 @@ def card_detail(request,card_token):
 	else:
 		return render(request, 'cardManager/invalid_token.html')
 
- 
 # Render profile template using the slugs instead of pk
 class ProfileDetail(DetailView):
 	model = Profile
@@ -80,21 +79,17 @@ class ProfileCreate(LoginRequiredMixin, CreateView):
 		return super().form_valid(form)
 
 
-# Renders card activate template with card
-def card_activate(request, card_token):
-	card = Card.objects.filter(token=card_token)[0]
-	is_activated = not (card.owner == None)
-	if is_activated:
-		#Redirect to card view url
-		return redirect('card_view', card_token=card_token)
-	context = {
-		'card': card,
-	}
-	# Save card_token and id into a request session 
-	request.session['activating_card_token'] = card_token
-	request.session['activating_card_id'] = card.card_id
-	request.session.save()
-	return render(request, 'cardManager/activate.html', context)
+class CardDetail(DetailView):
+	model = Card
+	slug_field = 'token'
+	slug_url_kwarg = 'card_token'
+	template_name = 'cardManager/activate.html'
+
+	def get(self,request, **kwargs):
+		card = self.get_object()
+		if card.owner:
+			return redirect('card_view', card_token=card.token)
+		return super().get(self, request, **kwargs)
 
 
 # Class view for editing Cards
