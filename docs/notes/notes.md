@@ -87,18 +87,20 @@ ___
 
 # Models
 
-![ER Diagram](https://raw.githubusercontent.com/tairesu/Assignment_Project_Tyrese_tyresec2/refs/heads/main/docs/notes/erDiagram.png)
+~~![ER Diagram](https://raw.githubusercontent.com/tairesu/Assignment_Project_Tyrese_tyresec2/refs/heads/main/docs/notes/erDiagram.png)~~
 
 #### Relationships: 
-- A User has many Cards
+- A User has 0 or many Cards
 - A User has 0 or 1 Profile
+- A Card must have 1 Design
+- A Design is used in 0 or many Cards (1->M)
   
-I chose my 3 models to make the process of scanning cards and handling Django reroutes easier. There are 4 different possible ways of handling a card. 
+I chose my models to make the process of handling card-based redirects easier. There are 4 different ways of handling a card. 
 
-1) A browser is opened and it points to the URL in the card model
-2) A customer can activate the card if there is no user attached to the card
-3) A browser is opened and it points to the attached users profile
-4) (Error Case: Opens a 404 not found )
+1) A customer can activate the card (checks Card.user)
+2) Redirect to the URL in the card model (Card.reroute_url)
+3) Redirect to the card owners profile (checks Card.show_profile)
+4) 404: Redirect to 404
 
 This setup was decided to effortlessly handle this reroute logic, because the attributes that determine this handling logic are found in one Model (Card).
 
@@ -113,6 +115,11 @@ This setup was decided to effortlessly handle this reroute logic, because the at
 - I do want to change the format for the card model to show unclaimed if user is not attached. Cards that are already on display or in my current inventory should be easily retrievable in the database. I'll add some conditions to the __Str__ method of Card
 - Whoops. It looks like i shouldve made profile slug's blank = False
 - I added a bio to the Profile. This decision was made to help fill the empty space in the profile.html template from the profile detail view.
+
+*[Sun Oct 5 2025]*
+
+- I've added the Design Model for more efficient stats gathering. I'm seeking to answer questions like which designs are the most/least popular. 
+- I've added the design foreign key to the card model, since the Design model holds front/rear design attributes. 
 
 ___
 
