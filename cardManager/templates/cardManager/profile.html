@@ -12,22 +12,36 @@
 	{% if profile.profile_photo %}
 		<img src="{{ profile.profile_photo.url }}" alt="">
 	{% endif %}
+	{% if profile.name %}
+		<p></p>
+		<p>{{ profile.name }}</p>
+	{% endif %}
+	{% if profile.bio %}
+		<p></p>
+		<p>{{ profile.bio }}</p>
+	{% endif %}
 	{% if profile.email %}
+		<p></p>
 		<p>{{ profile.email }}</p>
 	{% endif %}
 	{% if profile.linked_in %}
+		<p>LinkedIN: </p>
 		<p>{{ profile.linked_in }}</p>
 	{% endif %}
 	{% if profile.cell %}
+		<p>Cell: </p>
 		<p>{{ profile.cell }}</p>
 	{% endif %}
 	{% if profile.whatsapp %}
+		<p>Whatsapp: </p>
 		<p>{{ profile.whatsapp }}</p>
 	{% endif %}
 	{% if profile.snapchat %}
+		<p>Snapchat: </p>
 		<p>{{ profile.snapchat }}</p>
 	{% endif %}
 	{% if profile.instagram %}
+		<p>Instagram: </p>
 		<p>{{ profile.instagram }}</p>
 	{% endif %}
 {% endblock %}
