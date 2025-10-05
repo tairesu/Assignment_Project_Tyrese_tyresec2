@@ -5,8 +5,6 @@ from django.urls import reverse
 from django.db.models import UniqueConstraint
 
 
-
-
 class Owner(models.Model):
 	owner_id = models.AutoField(primary_key=True)
 	first_name = models.CharField(max_length=100, blank=False)
@@ -47,15 +45,24 @@ class Profile(models.Model):
 		return reverse('profile_update_view', kwargs={'pk': self.pk})
 
 
+class Design(models.Model):
+	design_id = models.AutoField(primary_key=True)
+	name = models.CharField(blank=False, null=False, max_length=50)
+	front_design = models.ImageField(upload_to='cardDesigns/', blank=True)
+	rear_design = models.ImageField(upload_to='cardDesigns/', blank=True)
+
+	def __str__(self):
+		return self.name
+
+
 class Card(models.Model):
 	card_id = models.AutoField(primary_key=True)
 	token = models.CharField(max_length=7, default=gen_token, blank=False,null=False)
 	owner = models.ForeignKey(Owner, on_delete=models.PROTECT, related_name='cards',null=True, blank=True)
 	alias = models.CharField(max_length=60, blank=True)
 	show_profile = models.BooleanField(default=False)
-	front_design = models.ImageField(upload_to='cardDesigns/', blank=True)
-	rear_design = models.ImageField(upload_to='cardDesigns/', blank=True)
 	reroute_url = models.URLField(max_length=200, blank=True)
+	design = models.ForeignKey(Design, on_delete=models.PROTECT, related_name='cards', null=False, blank=False)
 
 	class Meta:
 		constraints = [
@@ -67,3 +74,4 @@ class Card(models.Model):
 
 	def get_update_url(self):
 		return reverse('card_update_view', kwargs={'pk': self.pk})
+
