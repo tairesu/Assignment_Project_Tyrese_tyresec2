@@ -121,6 +121,14 @@ This setup was decided to effortlessly handle this reroute logic, because the at
 - I've added the Design Model for more efficient stats gathering. I'm seeking to answer questions like which designs are the most/least popular. 
 - I've added the design foreign key to the card model, since the Design model holds front/rear design attributes. 
 
+- The Design model holds the images taht'll go on a card. Customers may opt to customize their own cards post payment. This will insert into design with a preset name. For this I'll add a status model to differ between requested/approved cards.
+	- the goal is to distinguish b/w presets and user designs in Design model
+
+	Trainway (approved)
+	Mountain top (approved)
+	Custom: [owner]'s Custom Design (pending)
+
+	
 ___
 
 # Views
