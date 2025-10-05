@@ -19,9 +19,13 @@ from cardManager.forms import (
 from cardManager.models import (
 	Card,
 	Profile,
-	Owner
+	Owner,
+	Usage
 )
 
+def __add_to_usage(card):
+	new_use = Usage(card=card)
+	new_use.save()
 
 # Handles redirects for a scanned card matching card_token 
 def card_detail(request,card_token):
@@ -29,15 +33,19 @@ def card_detail(request,card_token):
 	is_owned = not (card.owner == None)
 	is_redirecting = not (card.reroute_url == "")
 	if is_owned and not card.show_profile and is_redirecting:
+		__add_to_usage(card)
 		return redirect(card.reroute_url)
 	elif is_owned and card.show_profile: 
+		__add_to_usage(card)
 		return redirect('profile_view', profile_slug=card.owner.profile.profile_slug)
 	elif not is_owned:
+		__add_to_usage(card)
 		return redirect('card_activate_view', card_token=card_token)	
 	elif is_owned and not is_redirecting:
 		return redirect('card_update_view',pk=card.pk)
 	else:
 		return render(request, 'cardManager/invalid_token.html')
+
 
 # Render profile template using the slugs instead of pk
 class ProfileDetail(DetailView):
