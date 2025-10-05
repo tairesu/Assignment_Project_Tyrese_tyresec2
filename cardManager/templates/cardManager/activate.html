@@ -7,15 +7,11 @@
 Activating card {{ card.token }}
 {% endblock opener %}
 {% block content %}
-<b>Front:</b>
-<img src="/media/{{card.front_design}}" alt="">
-<b>Rear:</b>
-<img src="/media/{{card.rear_design}}" alt="">
+<img src="/media/{{card.design.front_design }}" alt="">
 {% if request.user.is_authenticated %}
-<p>{{  request.user.is_authenticated }}</p>
-	<button id="activateCardBtn">Claim this card</button>
+	<button id="activateCardBtn" class="bg-[var(--color-main)] w-full text-center py-4 rounded-md mt-8">Claim this card</button>
 {% else %}
-	<a href="{% url 'login_view' %}?next=/card/{{card.token}}"><button id="registerBtn">Sign in to Claim this card</button></a>
+	<a href="{% url 'login_view' %}?next=/card/{{card.token}}"><button id="registerBtn" class="bg-[var(--color-main)] w-full text-center py-4 rounded-md mt-8">Sign in to Claim this card</button></a>
 
 {% endif %}
 {% endblock %}
