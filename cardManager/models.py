@@ -57,7 +57,7 @@ class Design(models.Model):
 
 class Card(models.Model):
 	card_id = models.AutoField(primary_key=True)
-	token = models.CharField(max_length=7, default=gen_token, blank=False,null=False)
+	token = models.CharField(max_length=7, default=gen_token, blank=False,null=False, unique=True)
 	owner = models.ForeignKey(Owner, on_delete=models.PROTECT, related_name='cards',null=True, blank=True)
 	alias = models.CharField(max_length=60, blank=True)
 	show_profile = models.BooleanField(default=False)
@@ -66,7 +66,7 @@ class Card(models.Model):
 
 	class Meta:
 		constraints = [
-			UniqueConstraint(fields=['token'], name='unique_card_token')
+			UniqueConstraint(fields=['owner','alias'], name='unique_card_alias')
 		]
 
 	def __str__(self):
