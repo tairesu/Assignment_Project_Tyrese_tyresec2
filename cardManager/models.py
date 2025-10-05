@@ -12,7 +12,7 @@ class Owner(models.Model):
 	email = models.EmailField(max_length=200, blank=False, unique=True)
 	pword = models.CharField(max_length=128, blank=False)
 	date_created = models.DateTimeField(default=timezone.now, editable=False)
-	last_login = models.DateTimeField(default=timezone.now, editable=True )
+	last_login = models.DateTimeField(default=timezone.now, editable=False )
 
 	def __str__(self):
 		return f'{self.first_name} {self.last_name}'
@@ -49,7 +49,6 @@ class Design(models.Model):
 	design_id = models.AutoField(primary_key=True)
 	name = models.CharField(blank=False, null=False, max_length=50)
 	front_design = models.ImageField(upload_to='cardDesigns/', blank=True)
-	rear_design = models.ImageField(upload_to='cardDesigns/', blank=True)
 
 	def __str__(self):
 		return self.name
