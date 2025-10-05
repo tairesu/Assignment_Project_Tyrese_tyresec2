@@ -76,7 +76,7 @@ class Card(models.Model):
 
 
 class Usage(models.Model):
-	card = models.ForeignKey(Card, on_delete=models.CASCADE, related_name='usage')
+	card = models.ForeignKey(Card, on_delete=models.CASCADE, related_name='usage',editable=False)
 	date_used = models.DateTimeField(default=timezone.now, editable=False)
 
 	def __str__(self):
