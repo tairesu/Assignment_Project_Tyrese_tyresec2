@@ -6,7 +6,7 @@ from django.conf import settings
 from django.contrib.auth import login, views as auth_views
 from django.http import HttpResponse
 from django.http.response import JsonResponse
-from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
+# from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.views.generic import UpdateView, CreateView, ListView, DetailView, RedirectView
 from django.views.generic.base import ContextMixin, View
 from django.template import loader
@@ -52,7 +52,7 @@ class ProfileDetail(DetailView):
 	slug_field = 'profile_slug'
 	slug_url_kwarg = 'profile_slug'
 
-class ProfileUpdate(LoginRequiredMixin, UpdateView):
+class ProfileUpdate(UpdateView):
 	model = Profile
 	form_class = ProfileForm
 	template_name = 'cardManager/profile_update.html'
@@ -63,7 +63,7 @@ class ProfileUpdate(LoginRequiredMixin, UpdateView):
 		# Send slug over to profile detail view
 		return reverse_lazy('profile_view', kwargs={'profile_slug': profile_slug })
 
-class ProfileCreate(LoginRequiredMixin, CreateView):
+class ProfileCreate(CreateView):
 	model = Profile
 	form_class = ProfileForm
 	template_name = 'cardManager/profile_create.html'
@@ -100,7 +100,7 @@ class CardDetail(DetailView):
 
 
 # Class view for editing Cards
-class CardUpdate(LoginRequiredMixin, UpdateView):
+class CardUpdate(UpdateView):
 	model = Card
 	form_class = CardForm
 	success_url = reverse_lazy('dashboard_view')
@@ -108,7 +108,7 @@ class CardUpdate(LoginRequiredMixin, UpdateView):
 
 
 # Renders dashboard template with owner cards
-class UserDashboard(LoginRequiredMixin, ContextMixin, View):
+class UserDashboard(ContextMixin, View):
 	template_name = 'cardManager/dashboard.html'
 
 	def get(self, request, **kwargs):
@@ -149,32 +149,3 @@ class UserRegistration(CreateView):
 		context = super().get_context_data(**kwargs)
 		context['nextUrlParam'] = self.request.GET.get('next') or None
 		return context
-
-
-class LoginView(auth_views.LoginView):
-	template_name = 'cardManager/login.html'
-	success_url = reverse_lazy('dashboard_view')
-
-	def get_success_url(self):
-		return self.request.GET.get('next') or self.success_url
-	#Grab the next url parameter as context
-	def get_context_data(self, **kwargs):
-		context = super().get_context_data(**kwargs)
-		context['nextUrlParam'] = self.request.GET.get('next') or None
-		print("Context Data from LoginView:", context)
-		return context
-
-
-# class loginOwner(View):
-# 	def __init__(self):
-# 		print('\nInitialize loginOwner')
-# 	def get(self,request, **kwargs):
-# 		return render(request, 'cardManager/login.html')
-
-# 	def post(self, request, **kwargs):
-# 		email = request.POST['email']
-# 		password = request.POST['password']
-# 		n_owners = Owner.objects.filter(email=email, pword=password).count()
-# 		print('Owners w/ Email and Password: ',n_owners )
-# 		return render(request, 'cardManager/login.html')
-

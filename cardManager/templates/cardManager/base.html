@@ -45,11 +45,6 @@
 		</div>
 		<div class="flex gap-2" name="navbar-links">
 			{% if request.user.is_authenticated %}
-	            <form action="{% url 'logout_view' %}" method="post">
-	                {% csrf_token %}
-	                <button type="submit">Log Out</button>
-	            </form>
-
 	            {% if request.user.profile %}
 	            	<a href="{{ request.user.profile.get_update_url }}">
 	            		<button>Edit Profile</button>
