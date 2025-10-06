@@ -14,11 +14,15 @@
 				<img class="w-[8rem] h-[5rem] rounded-sm" src="{{ card.design.front_design.url }}"/>
 			</a>
 			<div>
-				<p>{{card}}</p>
+				{% if card.alias %}
+					<p>{{ card.alias }}</p>
+					{% else %}
+					<p>{{ card }}</p>
+				{% endif %}
 				{% if card.show_profile %}
-				<p class="text-darkgrey">Points to your profile</p>
+					<p class="text-darkgrey">Points to your profile</p>
 				{% elif not card.show_profile and card.reroute_url %}
-				<p class="text-darkgrey">{{ card.reroute_url }}</p>
+					<p class="text-darkgrey">{{ card.reroute_url }}</p>
 				{% else %}
 				{% endif %}
 				<a href="{{ card.get_update_url }}">Edit Card</a>
