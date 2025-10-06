@@ -7,7 +7,7 @@ from django.contrib.auth import login, views as auth_views
 from django.http import HttpResponse
 from django.http.response import JsonResponse
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
-from django.views.generic import UpdateView, CreateView, ListView, DetailView
+from django.views.generic import UpdateView, CreateView, ListView, DetailView, RedirectView
 from django.views.generic.base import ContextMixin, View
 from django.template import loader
 from django.views.decorators.csrf import csrf_exempt
@@ -23,28 +23,26 @@ from cardManager.models import (
 	Usage
 )
 
-def __add_to_usage(card):
+def __add_to_usage(request, card):
+	print('\ninit\'d __add_to_usage')
 	new_use = Usage(card=card)
 	new_use.save()
 
 # Handles redirects for a scanned card matching card_token 
 def card_detail(request,card_token):
-	card = Card.objects.get(token=card_token)
+	card = get_object_or_404(Card, token=card_token)
+	__add_to_usage(request, card)
 	is_owned = not (card.owner == None)
 	is_redirecting = not (card.reroute_url == "")
+
 	if is_owned and not card.show_profile and is_redirecting:
-		__add_to_usage(card)
 		return redirect(card.reroute_url)
-	elif is_owned and card.show_profile: 
-		__add_to_usage(card)
+	elif is_owned and card.show_profile:
 		return redirect('profile_view', profile_slug=card.owner.profile.profile_slug)
-	elif not is_owned:
-		__add_to_usage(card)
-		return redirect('card_activate_view', card_token=card_token)	
 	elif is_owned and not is_redirecting:
 		return redirect('card_update_view',pk=card.pk)
-	else:
-		return render(request, 'cardManager/invalid_token.html')
+	elif not is_owned:
+		return redirect('card_activate_view', card_token=card_token)	
 
 
 # Render profile template using the slugs instead of pk
