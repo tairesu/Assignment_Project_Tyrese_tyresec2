@@ -7,8 +7,22 @@
 {% endblock %}
 {% block content %}
 	{% for card in user_cards %}
-		<p>{{card}}</p>
-		<a href="{{ card.get_update_url }}">Edit Card</a>
+		<div class="flex flex-row gap-2">
+			<div>
+				<img class="w-[8rem] h-[5rem] rounded-sm" src="{{ card.design.front_design.url }}"/>
+			</div>
+			<div>
+				<p>{{card}}</p>
+				{% if card.show_profile %}
+				<p class="text-darkgrey">Points to your profile</p>
+				{% elif not card.show_profile and card.reroute_url %}
+				<p class="text-darkgrey">{{ card.reroute_url }}</p>
+				{% else %}
+				{% endif %}
+				<a href="{{ card.get_update_url }}">Edit Card</a>
+			</div>
+			
+		</div>
 		{% empty %}
 		<p>Looks like there aren't any cards here.</p>
 	{% endfor %}
