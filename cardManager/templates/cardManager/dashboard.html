@@ -6,11 +6,11 @@
 	User: {{ request.user }}
 {% endblock %}
 {% block content %}
+	<div class="flex flex-col gap-4">
+		
 	{% for card in user_cards %}
 		<div class="flex flex-row gap-2">
-			<div>
-				<img class="w-[8rem] h-[5rem] rounded-sm" src="{{ card.design.front_design.url }}"/>
-			</div>
+			<img class="w-[8rem] h-[5rem] rounded-sm" src="{{ card.design.front_design.url }}"/>
 			<div>
 				<p>{{card}}</p>
 				{% if card.show_profile %}
@@ -26,4 +26,5 @@
 		{% empty %}
 		<p>Looks like there aren't any cards here.</p>
 	{% endfor %}
+	</div>
 {% endblock %}
