@@ -7,15 +7,10 @@
 Activating card {{ card.token }}
 {% endblock opener %}
 {% block content %}
-<img src="/media/{{card.design.front_design }}" alt="">
-{% if request.user.is_authenticated %}
-	<button id="activateCardBtn" class="bg-[var(--color-main)] w-full text-center py-4 rounded-md mt-8">Claim this card</button>
-{% else %}
-	<a href="{% url 'login_view' %}?next=/card/{{card.token}}"><button id="registerBtn" class="bg-[var(--color-main)] w-full text-center py-4 rounded-md mt-8">Sign in to Claim this card</button></a>
-
-{% endif %}
+	<img src="/media/{{card.design.front_design }}" alt="">
+	<a href="">
+		<button id="activateCardBtn" class="bg-[var(--color-main)] w-full text-center py-4 rounded-md mt-8">Claim this card</button>
+	</a>
 {% endblock %}
 {% block extra_scripts %}
-    <script src="https://js.stripe.com/v3/"></script>
-	<script src="{% static 'cardManager/js/payment_integration.js' %}"></script>
 {% endblock %}
