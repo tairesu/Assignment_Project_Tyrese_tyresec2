@@ -120,7 +120,9 @@ class UserDashboard(ContextMixin, View):
 		context = super().get_context_data(**kwargs)
 		owner_id = self.request.user.pk
 		owner_cards = Card.objects.filter(owner_id=owner_id)
+		recent_activities = Usage.objects.filter(card__owner=owner_id).order_by('-date_used')[0:5]
 		context['user_cards'] = owner_cards
+		context['recent_activities'] = recent_activities
 		return context
 
 

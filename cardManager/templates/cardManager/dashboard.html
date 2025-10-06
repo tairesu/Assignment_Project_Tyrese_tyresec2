@@ -6,18 +6,7 @@
 	User: {{ request.user }}
 {% endblock %}
 {% block content %}
-	
-		<div class="activity flex flex-col">
-			<h2 class="text-xl">Recent Activity</h2>
-			{% for activity in recent_activities%}
-				<div class="flex gap-2">
-					<p>{{ activity }}</p>
-				</div>
-			{% empty %}
-				<p>No recent activity yet</p>
-			{% endfor %}
-		</div>
-	<div class="flex flex-col gap-4 mt-10">
+	<div class="flex flex-col gap-4 mb-10">
 		<h2 class="text-xl">My Cards</h2>
 	{% for card in user_cards %}
 		<div class="flex flex-row gap-2">
@@ -44,4 +33,25 @@
 		<p>Looks like there aren't any cards here.</p>
 	{% endfor %}
 	</div>
+		<div class="activity flex flex-col">
+			<h2 class="text-xl">Recent Activity</h2>
+			{% for activity in recent_activities%}
+			<div class="flex flex-row items-center gap-2">
+				<div>
+					<img src="{{ activity.card.design.front_design.url }}" class="w-[3rem] h-[1.7rem] rounded-sm">
+				</div>
+				<div class="flex flex-col mt-2">
+					{% if activity.card.alias %}
+					<p>{{ activity.card.alias }} was tapped</p>
+					{% else %}
+					<p>{{ activity.card }} was tapped</p>
+				{% endif %}
+					<p class="text-xs">{{ activity.date_used|date:"h:i a m/j/y" }} </p>
+				</div>
+			</div>
+			{% empty %}
+				<p>No recent activity yet</p>
+			{% endfor %}
+		</div>
+	
 {% endblock %}
