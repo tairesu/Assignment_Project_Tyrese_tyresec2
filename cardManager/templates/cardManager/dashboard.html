@@ -6,8 +6,19 @@
 	User: {{ request.user }}
 {% endblock %}
 {% block content %}
-	<div class="flex flex-col gap-4">
-		
+	
+		<div class="activity flex flex-col">
+			<h2 class="text-xl">Recent Activity</h2>
+			{% for activity in recent_activities%}
+				<div class="flex gap-2">
+					<p>{{ activity }}</p>
+				</div>
+			{% empty %}
+				<p>No recent activity yet</p>
+			{% endfor %}
+		</div>
+	<div class="flex flex-col gap-4 mt-10">
+		<h2 class="text-xl">My Cards</h2>
 	{% for card in user_cards %}
 		<div class="flex flex-row gap-2">
 			<a href="{{ card.get_absolute_url }}">
