@@ -16,7 +16,8 @@ from cardManager.models import (
 	Card,
 	Profile,
 	Owner,
-	Usage
+	Usage,
+    Design
 )
 
 # Create and Saves Usage instance, given card field
@@ -94,6 +95,15 @@ class Stats(ListView):
         user_taps = Usage.objects.exclude(card__owner=None).values('card__owner_id').annotate(n_card_taps=Count('card'))
         cleaned_user_taps = [{'user':Owner.objects.get(pk=item['card__owner_id']),'n_card_taps':item['n_card_taps']} for item in user_taps ]
         context['user_taps'] = cleaned_user_taps
+
+        """ 
+        Lets find which designs are the used least/most
+        Excluding the unclaimed cards, count the number of times each design gets used
+        """
+        design_usage = Card.objects.exclude(owner=None).values('design').annotate(n_uses=Count('design')).order_by('-n_uses')
+        cleaned_design_usage = [{'design':Design.objects.get(pk=item['design']),'n_uses':item['n_uses']} for item in design_usage ]
+        context['design_usage'] = cleaned_design_usage
+        
         print('Stats.get_context_data() => ', context)
         return context
 
