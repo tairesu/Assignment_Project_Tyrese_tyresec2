@@ -243,11 +243,11 @@ If a card is owned,  pass `card_token` to the card detail view (/card/<str:card_
 - To handle Stripe, I've implemented 3 new csrf_exempt function views: **stripe_config**, **create-checkout-session**, **stripe_webhook**. And 2 new function views: **success**, **cancelled**
 
 
-## CardUpdate(UpdateView)
+~~## CardUpdate(UpdateView)~~
 
 Renders the CardForm to the card_update template. (It reroutes to the dashboard) 
 
-## LoginView(auth_views.LoginView)
+~~## LoginView(auth_views.LoginView)~~
 
 Renders login template
 
@@ -337,7 +337,7 @@ A view that renders the cards, that belong to a user, into the `dashboard.html`t
 		```
 		- Works perfectly.  I expect their to be more info/metrics on the dashboard later, so I'll keep this code
 
-## ProfileUpdate(UpdateView)
+~~## ProfileUpdate(UpdateView)~~
 
 Renders ProfileForm to `profile_update.html` template. **Success url will dynamically route to the 'profile_view' URL with the proper profile_slug** 
 
@@ -351,7 +351,7 @@ Renders ProfileForm to `profile_update.html` template. **Success url will dynami
 
 - Adding get_success_url(self) to redirect to user profile. I opted to use reverse_lazy after trying to include some HttpResponseRedirect method because I knew the name of the URL view ('profile_view'), and what variable it needs in the URL parameter (<str:profile_slug). 
 
-## ProfileCreate(CreateView, LoginRequiredMixin): 
+~~## ProfileCreate(CreateView, LoginRequiredMixin): ~~
 
 Renders Profile form to `profile_create.html`
 
@@ -362,7 +362,7 @@ Renders Profile form to `profile_create.html`
 - Adding LoginRequiredMixin class view because people shouldn't have access to creating a profile if they aren't signed in . 
 
 
-## LogoutView(auth_views.LogoutView)
+~~## LogoutView(auth_views.LogoutView)~~
 
 Logs the user out. Requires post request
 
@@ -404,7 +404,7 @@ ___
 
 # Forms
 
-## ProfileForm
+~~## ProfileForm~~
 
 #### dev notes:
 
@@ -437,7 +437,7 @@ ___
 - I'm adding the next parameter to the activate card button's url. It will normally point to the login/ view (unless a user is already signed in... Then it'd point to ). This lets me control the success url over at the login view. If the next parameter is found, the success url of the login form will be the url pathway 
 
 
-## profile_update.html 
+~~## profile_update.html ~~
 
 #### dev notes:
 
@@ -445,7 +445,7 @@ ___
 
 - Initialized template w/ form from `ProfileUpdate` view
 
-## profile_create.html
+~~## profile_create.html~~
 
 The template for the ProfileCreate view. 
 

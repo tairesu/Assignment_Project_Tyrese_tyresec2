@@ -46,11 +46,11 @@
 		<div class="flex gap-2" name="navbar-links">
 			{% if request.user.is_authenticated %}
 	            {% if request.user.profile %}
-	            	<a href="{{ request.user.profile.get_update_url }}">
+	            	<a href="">
 	            		<button>Edit Profile</button>
 	            	</a>
 	            {% else %}
-	            	<a href="{% url 'profile_create_view' %}"><button>Create Profile</button></a>
+	            	<a href=""><button>Create Profile</button></a>
 	            {% endif %}
 	        {% endif %}
 	    </div>
