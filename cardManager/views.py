@@ -91,6 +91,9 @@ class Stats(ListView):
         context['n_taps'] = Usage.objects.count()
         context['n_users'] = Owner.objects.count()
         context['n_cards_claimed'] = Card.objects.exclude(owner=None).count()
+        user_taps = Usage.objects.exclude(card__owner=None).values('card__owner_id').annotate(n_card_taps=Count('card'))
+        cleaned_user_taps = [{'user':Owner.objects.get(pk=item['card__owner_id']),'n_card_taps':item['n_card_taps']} for item in user_taps ]
+        context['user_taps'] = cleaned_user_taps
         print('Stats.get_context_data() => ', context)
         return context
 

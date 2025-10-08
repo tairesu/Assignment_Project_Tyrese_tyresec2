@@ -6,12 +6,12 @@
     <div class="flex flex-row gap-4 mb-10 text-white">
         <div class="flex flex-col gap-2">
             <h2 class="text-xl">{{ n_taps }}</h2>
-            <p class="text-sm">Cards Tapped</p>
+            <p class="text-sm">Taps</p>
     
         </div>
         <div class="flex flex-col gap-2 text-white">
             <h2 class="text-xl">{{ n_users }}</h2>
-            <p class="text-sm">Total Users</p>
+            <p class="text-sm">Owners</p>
     
         </div>
         <div class="flex flex-col gap-2 text-white">
@@ -21,6 +21,32 @@
         </div>
     </div>
     
+		<div class=" flex flex-col text-white">
+			<h2 class="text-xl">Leaderboard</h2>
+            <table class="mt-2">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Owner</th>
+                        <th># Taps</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user_tap in user_taps %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ user_tap.user }}</td>
+                        <td>{{ user_tap.n_card_taps }}</td>
+                    </tr>
+                    {% empty %}
+				    <tr>
+                        <td colspan="3">No users yet</td>
+                    </tr>
+			        {% endfor %}
+                </tbody>
+            </table> 
+			
+		</div>
 		<div class="activity flex flex-col">
 			<h2 class="text-xl">Designs</h2>
 			{% for activity in recent_activities%}
