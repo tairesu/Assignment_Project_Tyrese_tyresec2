@@ -3,14 +3,11 @@
 	Stats
 {% endblock %}
 {% block content %}
-    <div class="flex flex-col gap-4 mb-10">
-        <h2 class="text-xl">Leaderboard</h2>
+    <div class="flex flex-col gap-4 mb-10 text-white">
+        <h2 class="text-xl">{{ n_taps }}</h2>
+        <p>Cards Tapped</p>
 
     </div>
-	<div class="flex flex-col gap-4 mb-10">
-		<h2 class="text-xl">Leaderboard</h2>
-	
-	</div>
 		<div class="activity flex flex-col">
 			<h2 class="text-xl">Designs</h2>
 			{% for activity in recent_activities%}

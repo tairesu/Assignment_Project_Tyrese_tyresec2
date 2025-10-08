@@ -10,6 +10,7 @@ from django.http.response import JsonResponse
 from django.views.generic import UpdateView, CreateView, ListView, DetailView, RedirectView
 from django.views.generic.base import ContextMixin, View
 from django.template import loader
+from django.db.models import Count
 from django.views.decorators.csrf import csrf_exempt
 from cardManager.models import (
 	Card,
@@ -87,6 +88,8 @@ class Stats(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['n_taps'] = Usage.objects.count()
+        print('Stats.get_context_data() => ', context)
         return context
 
 
