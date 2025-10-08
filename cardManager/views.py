@@ -90,6 +90,7 @@ class Stats(ListView):
         context = super().get_context_data(**kwargs)
         context['n_taps'] = Usage.objects.count()
         context['n_users'] = Owner.objects.count()
+        context['n_cards_claimed'] = Card.objects.exclude(owner=None).count()
         print('Stats.get_context_data() => ', context)
         return context
 
