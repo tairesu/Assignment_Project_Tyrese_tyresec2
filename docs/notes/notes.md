@@ -399,7 +399,18 @@ Logs the user out. Requires post request
 
 
 
+## Stats(ListView)
+Renders app-wide stats to statistics template
 
+#### dev notes:
+
+**[Wed Oct 8 2025]**
+
+- There are questions I want to have answered about this application: 
+	- Which owner has tapped the most cards? (Leaderboard)
+	- Which design is least/most popular? 
+	- How many cards are unclaimed/claimed ?
+	- How many taps was my system responsible for? (N Total)
 ___
 
 # Forms

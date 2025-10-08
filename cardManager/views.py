@@ -80,3 +80,13 @@ class UserDashboard(ContextMixin, View):
 		context['user_cards'] = owner_cards
 		context['recent_activities'] = recent_activities
 		return context
+
+class Stats(ListView):
+    model = Usage
+    template_name = 'cardManager/stats.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+
