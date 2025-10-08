@@ -18,19 +18,14 @@ from django.contrib import admin
 from django.urls import path, include
 # from django.contrib.auth import views as auth_views
 from cardManager import views
-from cardManager.views import UserRegistration
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
     path('card/<str:card_token>/', views.card_detail, name='card_view'),
     path('card/<str:card_token>/activate/', views.CardDetail.as_view(), name='card_activate_view'),
-    path('card/<int:pk>/update/', views.CardUpdate.as_view(), name='card_update_view'),
-    path('profile/create/', views.ProfileCreate.as_view(), name='profile_create_view'),
     path('profile/<str:profile_slug>/', views.ProfileDetail.as_view(), name='profile_view'),
-    path('profile/<int:pk>/update/', views.ProfileUpdate.as_view(), name='profile_update_view'),
     path('dashboard/', views.UserDashboard.as_view(), name='dashboard_view'),
-    path('register/', views.UserRegistration.as_view(), name='register_view'),
     path('admin/', admin.site.urls),
 ]
 
