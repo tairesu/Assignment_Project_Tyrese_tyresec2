@@ -1,4 +1,4 @@
-import stripe
+#import stripe
 from datetime import datetime
 from django.urls import reverse_lazy
 from django.shortcuts import render, redirect, get_object_or_404
