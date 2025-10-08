@@ -21,7 +21,7 @@
         </div>
     </div>
     
-		<div class=" flex flex-col text-white">
+		<div class=" flex flex-col text-white mb-10">
 			<h2 class="text-xl">Leaderboard</h2>
             <table class="mt-2">
                 <thead>
@@ -47,25 +47,32 @@
             </table> 
 			
 		</div>
-		<div class="activity flex flex-col">
-			<h2 class="text-xl">Designs</h2>
-			{% for activity in recent_activities%}
-			<div class="flex flex-row items-center gap-2">
-				<div>
-					<img src="{{ activity.card.design.front_design.url }}" class="w-[3rem] h-[1.7rem] rounded-sm">
-				</div>
-				<div class="flex flex-col mt-2">
-					{% if activity.card.alias %}
-					<p>{{ activity.card.alias }} was tapped</p>
-					{% else %}
-					<p>{{ activity.card }} was tapped</p>
-				{% endif %}
-					<p class="text-xs">{{ activity.date_used|date:"h:i a m/j/y" }} </p>
-				</div>
-			</div>
-			{% empty %}
-				<p>No recent activity yet</p>
-			{% endfor %}
+		<div class=" flex flex-col text-white">
+			<h2 class="text-xl">Design Usage</h2>
+			<table class="mt-2">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Design</th>
+                        <th># Uses</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for design_dict in design_usage %}
+                    <tr>
+                        <td>
+                            <img src="{{ design_dict.design.front_design.url }}" class="w-[3rem] h-[1.7rem] rounded-sm">
+                        </td>
+                        <td>{{ design_dict.design }}</td>
+                        <td>{{ design_dict.n_uses }}</td>
+                    </tr>
+                    {% empty %}
+				    <tr>
+                        <td colspan="3">No users yet</td>
+                    </tr>
+			        {% endfor %}
+                </tbody>
+            </table> 
 		</div>
 	
 {% endblock %}
