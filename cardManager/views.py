@@ -89,19 +89,68 @@ class Stats(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        # Narrowed QuerySet containing Card instances that belong to someone 
+        claimed_cards = Card.objects.exclude(owner=None)
+        # Total number of cards that belong to someone
+        context['n_cards_claimed'] = claimed_cards.count()
+
+        # Total number of Usage model records
         context['n_taps'] = Usage.objects.count()
+
+        # Total number of card Owners
         context['n_users'] = Owner.objects.count()
-        context['n_cards_claimed'] = Card.objects.exclude(owner=None).count()
-        user_taps = Usage.objects.exclude(card__owner=None).values('card__owner_id').annotate(n_card_taps=Count('card'))
-        cleaned_user_taps = [{'user':Owner.objects.get(pk=item['card__owner_id']),'n_card_taps':item['n_card_taps']} for item in user_taps ]
+       	"""
+		Card taps per owner:
+
+		1) Start with all Usage objects.
+		2) Exclude usages where the related card has no owner.
+		3) Group the remaining usages by the card owner's ID.
+		4) Annotate each group with a new field 'n_card_taps' 
+		   representing the number of Usage records (taps)
+		   associated with that owner's cards.
+		"""
+        user_taps = (
+        	Usage.objects
+        	.exclude(card__owner=None)
+        	.values('card__owner_id')
+        	.annotate(n_card_taps=Count('card'))
+        ) # ==> <QuerySet [{'card__owner_id': 1, 'n_card_taps': 37},{..}]>
+
+		# Create a list that formats user_taps to include Owner instance (instead of the owner's ID)   
+        cleaned_user_taps = [
+	        {
+	        	# Use card__owner_id to retrieve Owner instance 
+	        	'user': Owner.objects.get(pk=item['card__owner_id']),
+	        	# Keep n_card_taps
+	        	'n_card_taps': item['n_card_taps']
+	        } 
+        	for item in user_taps 
+        ] # ==> [{'user': <Owner: Tyrese Cook>, 'n_card_taps': 37}, {...}]
         context['user_taps'] = cleaned_user_taps
 
         """ 
-        Lets find which designs are the used least/most
-        Excluding the unclaimed cards, count the number of times each design gets used
+        uses per design
+
+        1) Start with claimed Card objects
+        2) Group the remaining cards by the card design_id
+        3) Annotate each unique design with a new field 'n_uses'
+           which counts the nuber of Card records
+           associated with a unique design
+        4) Order data by n_uses
         """
-        design_usage = Card.objects.exclude(owner=None).values('design').annotate(n_uses=Count('design')).order_by('-n_uses')
-        cleaned_design_usage = [{'design':Design.objects.get(pk=item['design']),'n_uses':item['n_uses']} for item in design_usage ]
+
+        design_usage = claimed_cards.values('design_id').annotate(n_uses=Count('design')).order_by('-n_uses') # ==> <QuerySet [{'design_id':1, 'n_uses': 2]>
+
+       	# Create a list that formats design_usage to include Design instances (instead of design_ids)
+        cleaned_design_usage = [
+        	{
+        		# Use design_id to retrieve Design instance
+        		'design':Design.objects.get(pk=item['design_id']),
+        		# Keep the n_uses 
+        		'n_uses':item['n_uses']
+        	} 
+        	for item in design_usage 
+        ] # ==> [{'design': <Design: Abstract>, 'n_uses': 2},{...}]
         context['design_usage'] = cleaned_design_usage
         
         print('Stats.get_context_data() => ', context)
