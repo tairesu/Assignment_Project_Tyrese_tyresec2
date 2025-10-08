@@ -3,9 +3,17 @@
 	Stats
 {% endblock %}
 {% block content %}
-    <div class="flex flex-col gap-4 mb-10 text-white">
-        <h2 class="text-xl">{{ n_taps }}</h2>
-        <p>Cards Tapped</p>
+    <div class="flex flex-row gap-4 mb-10 text-white">
+        <div class="flex flex-col gap-2">
+            <h2 class="text-xl">{{ n_taps }}</h2>
+            <p class="text-sm">Cards Tapped</p>
+    
+        </div>
+        <div class="flex flex-col gap-2 text-white">
+            <h2 class="text-xl">{{ n_users }}</h2>
+            <p class="text-sm">Total Users</p>
+    
+        </div>
 
     </div>
 		<div class="activity flex flex-col">
