@@ -93,9 +93,19 @@ class Stats(ListView):
 		query = self.request.GET.get('query')
 		card_results = None
 		if query:
-			card_results = Card.objects.filter(Q(alias__icontains=query) | Q(token__icontains=query))
+			card_results = (
+				Card.objects
+				.filter(
+					Q(alias__icontains=query) |
+					Q(token__icontains=query) | 
+					Q(owner__first_name__icontains=query) |
+					Q(owner__last_name__icontains=query) |
+					Q(owner__email__startswith=query) 
+				)
+			)
 
-		print('Search() card_results', card_results)
+		context['query'] = query
+		context['card_results'] = card_results
 
         # Narrowed QuerySet containing Card instances that belong to someone 
 		claimed_cards = Card.objects.exclude(owner=None)
@@ -161,7 +171,7 @@ class Stats(ListView):
 		] # ==> [{'design': <Design: Abstract>, 'n_uses': 2},{...}]
 		context['design_usage'] = cleaned_design_usage
 
-		print('Stats.get_context_data() => ', context)
+		#print('Stats.get_context_data() => ', context)
 		return context
 
 
