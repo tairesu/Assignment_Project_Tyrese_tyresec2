@@ -24,3 +24,8 @@ It enables this application to verify if payment is confirmed, and it relies on 
 - Switched from dashboard fbv to cbv 
 - Add conditional block to display anchor tag (w/ proper next paremeters) in login.html
 
+## A6 Updates 
+
+- I purged everything that we haven't covered in class: Forms, Login/Logout Views, Stripe, etc
+- I created two aggregations (leaderboard, and design usage) and one filtering functionality (for searching cards)
+
