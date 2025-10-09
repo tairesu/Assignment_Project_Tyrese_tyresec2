@@ -10,7 +10,7 @@ from django.http.response import JsonResponse
 from django.views.generic import UpdateView, CreateView, ListView, DetailView, RedirectView
 from django.views.generic.base import ContextMixin, View
 from django.template import loader
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.views.decorators.csrf import csrf_exempt
 from cardManager.models import (
 	Card,
@@ -83,23 +83,32 @@ class UserDashboard(ContextMixin, View):
 		context['recent_activities'] = recent_activities
 		return context
 
+
 class Stats(ListView):
-    model = Usage
-    template_name = 'cardManager/stats.html'
+	model = Usage
+	template_name = 'cardManager/stats.html'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		query = self.request.GET.get('query')
+		card_results = None
+		if query:
+			card_results = Card.objects.filter(Q(alias__icontains=query) | Q(token__icontains=query))
+
+		print('Search() card_results', card_results)
+
         # Narrowed QuerySet containing Card instances that belong to someone 
-        claimed_cards = Card.objects.exclude(owner=None)
-        # Total number of cards that belong to someone
-        context['n_cards_claimed'] = claimed_cards.count()
+		claimed_cards = Card.objects.exclude(owner=None)
+		# Total number of cards that belong to someone
+		context['n_cards_claimed'] = claimed_cards.count()
 
-        # Total number of Usage model records
-        context['n_taps'] = Usage.objects.count()
+		# Total number of Usage model records
+		context['n_taps'] = Usage.objects.count()
 
-        # Total number of card Owners
-        context['n_users'] = Owner.objects.count()
-       	"""
+		# Total number of card Owners
+		context['n_users'] = Owner.objects.count()
+
+		"""
 		Card taps per owner:
 
 		1) Start with all Usage objects.
@@ -109,51 +118,50 @@ class Stats(ListView):
 		   representing the number of Usage records (taps)
 		   associated with that owner's cards.
 		"""
-        user_taps = (
-        	Usage.objects
-        	.exclude(card__owner=None)
-        	.values('card__owner_id')
-        	.annotate(n_card_taps=Count('card'))
-        ) # ==> <QuerySet [{'card__owner_id': 1, 'n_card_taps': 37},{..}]>
+		user_taps = (
+			Usage.objects
+			.exclude(card__owner=None)
+			.values('card__owner_id')
+			.annotate(n_card_taps=Count('card'))
+		) # ==> <QuerySet [{'card__owner_id': 1, 'n_card_taps': 37},{..}]>
 
 		# Create a list that formats user_taps to include Owner instance (instead of the owner's ID)   
-        cleaned_user_taps = [
-	        {
-	        	# Use card__owner_id to retrieve Owner instance 
-	        	'user': Owner.objects.get(pk=item['card__owner_id']),
-	        	# Keep n_card_taps
-	        	'n_card_taps': item['n_card_taps']
-	        } 
-        	for item in user_taps 
-        ] # ==> [{'user': <Owner: Tyrese Cook>, 'n_card_taps': 37}, {...}]
-        context['user_taps'] = cleaned_user_taps
+		cleaned_user_taps = [
+		    {
+		    	# Use card__owner_id to retrieve Owner instance 
+		    	'user': Owner.objects.get(pk=item['card__owner_id']),
+		    	# Keep n_card_taps
+		    	'n_card_taps': item['n_card_taps']
+		    } 
+			for item in user_taps 
+		] # ==> [{'user': <Owner: Tyrese Cook>, 'n_card_taps': 37}, {...}]
+		context['user_taps'] = cleaned_user_taps
 
-        """ 
-        uses per design
+		""" 
+		uses per design
 
-        1) Start with claimed Card objects
-        2) Group the remaining cards by the card design_id
-        3) Annotate each unique design with a new field 'n_uses'
-           which counts the nuber of Card records
-           associated with a unique design
-        4) Order data by n_uses
-        """
+		1) Start with claimed Card objects
+		2) Group the remaining cards by the card design_id
+		3) Annotate each unique design with a new field 'n_uses'
+		   which counts the nuber of Card records
+		   associated with a unique design
+		4) Order data by n_uses
+		"""
+		design_usage = claimed_cards.values('design_id').annotate(n_uses=Count('design')).order_by('-n_uses') # ==> <QuerySet [{'design_id':1, 'n_uses': 2]>
 
-        design_usage = claimed_cards.values('design_id').annotate(n_uses=Count('design')).order_by('-n_uses') # ==> <QuerySet [{'design_id':1, 'n_uses': 2]>
+			# Create a list that formats design_usage to include Design instances (instead of design_ids)
+		cleaned_design_usage = [
+			{
+				# Use design_id to retrieve Design instance
+				'design':Design.objects.get(pk=item['design_id']),
+				# Keep the n_uses 
+				'n_uses':item['n_uses']
+			} 
+			for item in design_usage 
+		] # ==> [{'design': <Design: Abstract>, 'n_uses': 2},{...}]
+		context['design_usage'] = cleaned_design_usage
 
-       	# Create a list that formats design_usage to include Design instances (instead of design_ids)
-        cleaned_design_usage = [
-        	{
-        		# Use design_id to retrieve Design instance
-        		'design':Design.objects.get(pk=item['design_id']),
-        		# Keep the n_uses 
-        		'n_uses':item['n_uses']
-        	} 
-        	for item in design_usage 
-        ] # ==> [{'design': <Design: Abstract>, 'n_uses': 2},{...}]
-        context['design_usage'] = cleaned_design_usage
-        
-        print('Stats.get_context_data() => ', context)
-        return context
+		print('Stats.get_context_data() => ', context)
+		return context
 
 
