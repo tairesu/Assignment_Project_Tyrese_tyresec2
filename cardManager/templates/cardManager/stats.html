@@ -19,11 +19,11 @@
         </div>
             {% for card in card_results %}
                 <div class="flex mb-10">
-                    <img src="{{ card.design.front_design.url }}" class="w-[3rem] h-[1.7rem] rounded-sm">
+                    <img src="/media/{{ card.design.front_design.url }}" class="w-[3rem] h-[1.7rem] rounded-sm">
                     <p>{{ card }}</p>
                 </div>
             {% endfor %}
-    {% elif card_results|length == 0 and query%}
+    {% elif card_results|length == 0 and query %}
         <div class="mb-4 flex flex-col text-white">
             <p class="text-sm">No cards found </p>
         </div>
@@ -33,17 +33,14 @@
         <div class="flex flex-col gap-2">
             <h2 class="text-xl">{{ n_taps }}</h2>
             <p class="text-sm">Taps</p>
-    
         </div>
         <div class="flex flex-col gap-2 text-white">
             <h2 class="text-xl">{{ n_users }}</h2>
             <p class="text-sm">Owners</p>
-    
         </div>
         <div class="flex flex-col gap-2 text-white">
             <h2 class="text-xl">{{ n_cards_claimed }}</h2>
             <p class="text-sm">Cards Claimed</p>
-    
         </div>
     </div>
     
@@ -87,7 +84,7 @@
                     {% for design_dict in design_usage %}
                     <tr>
                         <td>
-                            <img src="{{ design_dict.design.front_design.url }}" class="w-[3rem] h-[1.7rem] rounded-sm">
+                            <img src="/media/{{ design_dict.design.front_design.url }}" class="w-[3rem] h-[1.7rem] rounded-sm">
                         </td>
                         <td>{{ design_dict.design }}</td>
                         <td>{{ design_dict.n_uses }}</td>
