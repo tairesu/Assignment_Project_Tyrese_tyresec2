@@ -398,7 +398,6 @@ Logs the user out. Requires post request
 	- **AHA! I needed to update settings.LOGIN_URL** 
 
 
-
 ## Stats(ListView)
 Renders app-wide stats to statistics template
 
@@ -411,6 +410,11 @@ Renders app-wide stats to statistics template
 	- Which design is least/most popular? 
 	- How many cards are unclaimed/claimed ?
 	- How many taps was my system responsible for? (N Total)
+
+- `cleaned_user_taps` and `user_taps` answers how many taps each user is responsible for.  User_taps will use Count and annotate to count the number of unqiue card__owner_ids.
+	- The format of this doesnt allow me to access the Owner models. So I created a list of dictionaries, where each obj is composed of two keys: `user` and `n_card_taps`. 
+	- `user` will be the unique Owner instance 
+	- `n_card_taps` the # of times a user tapped their cards
 ___
 
 # Forms
@@ -508,4 +512,8 @@ ___
 [^7]: Tailwind 'Play Cdn' (https://tailwindcss.com/docs/installation/play-cdn)
 [^8]: Linear Gradient in Tailwind (https://tailwindcss.com/docs/background-image)
 [^9]: CBVs subclass SingleObjectMixin! (https://docs.djangoproject.com/en/5.2/ref/class-based-views/mixins-single-object/)
+[^10]: Aggregations? (https://docs.djangoproject.com/en/5.2/topics/db/aggregation/)
+[^11]: Querying in Django (https://docs.djangoproject.com/en/5.2/topics/db/queries/)
+
+[^12]: For-loop counter in template (https://stackoverflow.com/questions/11481499/django-iterate-number-in-for-loop-of-a-template)
 
