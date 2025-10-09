@@ -11,7 +11,7 @@
 	{% for card in user_cards %}
 		<div class="flex flex-row gap-2">
 			<a href="{{ card.get_absolute_url }}">
-				<img class="w-[8rem] h-[5rem] rounded-sm" src="{{ card.design.front_design.url }}"/>
+				<img class="w-[8rem] h-[5rem] rounded-sm" src="/media/{{ card.design.front_design.url }}"/>
 			</a>
 			<div>
 				{% if card.alias %}
@@ -38,7 +38,7 @@
 			{% for activity in recent_activities%}
 			<div class="flex flex-row items-center gap-2">
 				<div>
-					<img src="{{ activity.card.design.front_design.url }}" class="w-[3rem] h-[1.7rem] rounded-sm">
+					<img src="/media/{{ activity.card.design.front_design.url }}" class="w-[3rem] h-[1.7rem] rounded-sm">
 				</div>
 				<div class="flex flex-col mt-2">
 					{% if activity.card.alias %}
