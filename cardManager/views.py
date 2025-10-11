@@ -174,8 +174,8 @@ class Stats(ListView):
         usage_by_day = (
             Usage.objects
             .exclude(card__owner=None)
-            .values(unique_days=TruncDay('date_used'))
-            .annotate(n_taps=Count('unique_days'))
+            .values(unique_day=TruncDay('date_used'))
+            .annotate(n_taps=Count('unique_day'))
         )
         context['usage_by_day'] = usage_by_day
         print('Stats.get_context_data() => ', context)
