@@ -28,7 +28,7 @@
             <p class="text-sm">No cards found </p>
         </div>
     {% endif %}
-
+    
     <div class="flex flex-row gap-4 mb-10 text-white">
         <div class="flex flex-col gap-2">
             <h2 class="text-xl">{{ n_taps }}</h2>
@@ -42,6 +42,15 @@
             <h2 class="text-xl">{{ n_cards_claimed }}</h2>
             <p class="text-sm">Cards Claimed</p>
         </div>
+    </div>
+    <div class="flex flex-col gap-4 mb-10 text-white">
+        <h2 class="text-xl">Daily Usage</h2>
+        {% for day in usage_by_day %}
+            <div class="flex gap-2">
+                <p>+{{ day.n_taps }} Uses</p>
+                <p>{{ day.unique_day|date:"M j, Y" }}</p>
+            </div>
+        {% endfor %}
     </div>
     
 		<div class=" flex flex-col text-white mb-10">
