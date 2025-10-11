@@ -1,4 +1,5 @@
 {% extends 'cardManager/base.html'%}
+{% load static %}
 {% block title %}
 	Stats
     {% endblock %}
@@ -95,4 +96,7 @@
             </div>
 		</div>
 	
+{% endblock %}
+{% block extra_scripts %}
+<script src="{% static 'js/get_plotly_data.js' %}?v={{ tz }}"></script>
 {% endblock %}

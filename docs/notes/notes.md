@@ -521,6 +521,17 @@ The template for the login view
 
 ___
 
+## stats.html
+
+A playground for displaying data aggregations and visualizations
+
+#### dev notes:
+
+**[Sat Oct 11 2025]**
+
+- This was developed a couple of days ago
+- Today I've decided to use plotly js to show a line graph of daily card usage. It seems simple and its all done in javascript [^14]. I'll create Json objects that my javascript will fetch from a url. 
+
 # Helpful resources
 
 [^1]: https://stackoverflow.com/questions/5517950/django-media-url-and-media-root
@@ -537,3 +548,4 @@ ___
 
 [^12]: For-loop counter in template (https://stackoverflow.com/questions/11481499/django-iterate-number-in-for-loop-of-a-template)
 [^13]: Annotating unique Datetime fields (https://forum.djangoproject.com/t/combining-count-and-queryset-datetimes/2799)
+[^14]: Data Visualization using Plotly.js (https://plotly.com/javascript/line-charts/)
