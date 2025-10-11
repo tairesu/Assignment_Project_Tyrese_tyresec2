@@ -1,0 +1,47 @@
+/* 
+
+Small Cards with <h2> and <p> elements.
+<h2> - Data Value
+<p> - Data Label 
+
+*/
+.cards-sm{
+    
+    .card.flex-col{
+        flex: 1 0;
+        padding:1rem;
+        flex-direction:column-reverse;
+        background:var(--color-contrast-container);
+
+        /*This should get the users attention */
+        border-left:4px solid var(--color-main);
+
+        /* Data Label*/
+        h2{
+        }
+        
+        /* Data Value*/
+        p{
+            color:var(--color-main)
+
+        }
+    }
+}
+
+@media screen and (max-width: 530px) {
+    .cards-sm{
+        flex-direction: column;
+        .card.flex-col{
+            
+    
+            /* Data Label*/
+            h2{
+            }
+            
+            /* Data Value*/
+            p{
+    
+            }
+        }
+    }
+}
