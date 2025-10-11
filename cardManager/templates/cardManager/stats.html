@@ -2,7 +2,11 @@
 {% load static %}
 {% block title %}
 	Stats
-    {% endblock %}
+{% endblock %}
+{% block extra_head_scripts %}
+<script src="{% static 'js/plotly-3.1.0.min.js' %}">
+</script>
+{% endblock %}
     {% block content %}
     <div class="flex flex-row gap-4 mb-10 text-white cards-sm">
         <div class="flex flex-col gap-2 card">
