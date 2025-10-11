@@ -55,7 +55,7 @@
     
 		<div class=" flex flex-col text-white mb-10">
 			<h2 class="text-xl">Leaderboard</h2>
-            <table class="mt-2">
+            <table class="card-table mt-5">
                 <thead>
                     <tr>
                         <th></th>
@@ -81,30 +81,18 @@
 		</div>
 		<div class=" flex flex-col text-white">
 			<h2 class="text-xl">Design Usage</h2>
-			<table class="mt-2">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th class="text-sm">Design</th>
-                        <th class="text-sm"># Uses</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for design_dict in design_usage %}
-                    <tr>
-                        <td>
-                            <img src="{{ design_dict.design.front_design.url }}" class="w-[3rem] h-[1.7rem] rounded-sm">
-                        </td>
-                        <td>{{ design_dict.design }}</td>
-                        <td>{{ design_dict.n_uses }}</td>
-                    </tr>
-                    {% empty %}
-				    <tr>
-                        <td colspan="3">No users yet</td>
-                    </tr>
-			        {% endfor %}
-                </tbody>
-            </table> 
+            <div class="flex gap-4 flex-wrap cards mt-4">
+                {% for design_dict in design_usage %}
+                <div class="flex flex-col justify-center items-center rounded-full w-15 h-15 p-2 relative" style="background:url('{{ design_dict.design.front_design.url }}');background-size:cover">
+                    <p class="bg-[var(--color-bkg-transparent)] w-10 h-10 flex rounded-full justify-center items-center text-xl font-bold absolute">{{ design_dict.n_uses }}</p>
+                </div>
+                </tr>
+                {% empty %}
+                <div>
+                    <p> No designs yet
+                </div>
+                {% endfor %}
+            </div>
 		</div>
 	
 {% endblock %}

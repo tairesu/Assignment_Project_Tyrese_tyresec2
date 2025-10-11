@@ -1,4 +1,4 @@
-table.mt-2 {
+table.card-table {
     background: var(--color-contrast-container);
     td,th {
         padding:10px
@@ -21,7 +21,13 @@ table.mt-2 {
         border-bottom: 3px solid #010a0e;
     }
 }
-
+.card-circle {
+    background:var(--color-contrast-container);
+    border-radius: 50%;
+    p {
+        background-color: var(--color-bkg-transparent);
+    }
+}
 /* 
 
 Small Cards with <h2> and <p> elements.
