@@ -188,4 +188,21 @@ class Stats(ListView):
         print('Stats.get_context_data() => ', context)
         return context
 
-
+def design_usage_plotly_data(request):
+    usage_by_day = (
+        Usage.objects
+        .exclude(card__owner=None)
+        .values(unique_day=TruncDay('date_used'))
+        .annotate(n_taps=Count('unique_day'))
+        .order_by('-unique_day')
+    )
+    
+    x = [queryset['unique_day'] for queryset in usage_by_day]
+    y = [queryset['n_taps'] for queryset in usage_by_day]
+    
+    plotly_data = {
+        'x': x,
+        'y': y,
+    }
+    return JsonResponse(plotly_data, safe=False)
+    
