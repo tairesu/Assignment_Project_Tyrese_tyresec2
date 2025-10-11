@@ -1,8 +1,22 @@
 {% extends 'cardManager/base.html'%}
 {% block title %}
 	Stats
-{% endblock %}
-{% block content %}
+    {% endblock %}
+    {% block content %}
+    <div class="flex flex-row gap-4 mb-10 text-white cards-sm">
+        <div class="flex flex-col gap-2 card">
+            <h2 class="text-2xl">{{ n_taps }}</h2>
+            <p class="text-sm">Taps</p>
+        </div>
+        <div class="flex flex-col gap-2 text-white card">
+            <h2 class="text-2xl">{{ n_users }}</h2>
+            <p class="text-sm">Owners</p>
+        </div>
+        <div class="flex flex-col gap-2 text-white card">
+            <h2 class="text-2xl">{{ n_cards_claimed }}</h2>
+            <p class="text-sm">Cards Claimed</p>
+        </div>
+    </div>
     <div class="mb-4 flex flex-row position-relative">
         <form method="get">
             {% if query %}
@@ -29,20 +43,6 @@
         </div>
     {% endif %}
     
-    <div class="flex flex-row gap-4 mb-10 text-white cards-sm">
-        <div class="flex flex-col gap-2 card">
-            <h2 class="text-2xl">{{ n_taps }}</h2>
-            <p class="text-sm">Taps</p>
-        </div>
-        <div class="flex flex-col gap-2 text-white card">
-            <h2 class="text-2xl">{{ n_users }}</h2>
-            <p class="text-sm">Owners</p>
-        </div>
-        <div class="flex flex-col gap-2 text-white card">
-            <h2 class="text-2xl">{{ n_cards_claimed }}</h2>
-            <p class="text-sm">Cards Claimed</p>
-        </div>
-    </div>
     <div class="flex flex-col gap-4 mb-10 text-white">
         <h2 class="text-xl">Daily Usage</h2>
         {% for day in usage_by_day %}
@@ -59,14 +59,14 @@
                 <thead>
                     <tr>
                         <th></th>
-                        <th>Owner</th>
-                        <th># Taps</th>
+                        <th class="text-sm">Owner</th>
+                        <th class="text-sm"># Taps</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for user_tap in user_taps %}
                     <tr>
-                        <td>{{ forloop.counter }}</td>
+                        <td class="text-xl">{{ forloop.counter }}</td>
                         <td>{{ user_tap.user }}</td>
                         <td>{{ user_tap.n_card_taps }}</td>
                     </tr>
@@ -85,8 +85,8 @@
                 <thead>
                     <tr>
                         <th></th>
-                        <th>Design</th>
-                        <th># Uses</th>
+                        <th class="text-sm">Design</th>
+                        <th class="text-sm"># Uses</th>
                     </tr>
                 </thead>
                 <tbody>
