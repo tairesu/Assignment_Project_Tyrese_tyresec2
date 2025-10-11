@@ -31,10 +31,12 @@ def __add_to_usage(request, card):
     # Handles redirects for a scanned card matching card_token 
 def card_detail(request,card_token):
     card = get_object_or_404(Card, token=card_token)
-    __add_to_usage(request, card)
     is_owned = not (card.owner == None)
     is_redirecting = not (card.reroute_url == "")
 
+    if is_owned:
+        __add_to_usage(request, card) 
+        
     if is_owned and not card.show_profile and is_redirecting:
         return redirect(card.reroute_url)
     elif is_owned and card.show_profile:
