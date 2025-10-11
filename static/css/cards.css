@@ -1,3 +1,27 @@
+table.mt-2 {
+    background: var(--color-contrast-container);
+    td,th {
+        padding:10px
+    }
+    thead tr {
+        text-align:left;
+        color:var(--color-main);
+        * {
+            font-weight:300;
+        }
+    }
+    tbody tr td:first-child{
+        text-align:center;
+
+        * {
+            margin:auto
+        }
+    }
+    thead tr:first-child{
+        border-bottom: 3px solid #010a0e;
+    }
+}
+
 /* 
 
 Small Cards with <h2> and <p> elements.
