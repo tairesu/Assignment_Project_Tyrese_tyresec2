@@ -136,6 +136,7 @@ class Stats(ListView):
             .exclude(card__owner=None)
             .values('card__owner_id')
             .annotate(n_card_taps=Count('card'))
+            .order_by('-n_card_taps')[0:3]
         ) # ==> <QuerySet [{'card__owner_id': 1, 'n_card_taps': 37},{..}]>
 
         # Create a list that formats user_taps to include Owner instance (instead of the owner's ID)   
@@ -160,8 +161,11 @@ class Stats(ListView):
             associated with a unique design
         4) Order data by n_uses
         """
-        design_usage = claimed_cards.values('design_id').annotate(n_uses=Count('design')).order_by('-n_uses') # ==> <QuerySet [{'design_id':1, 'n_uses': 2]>
-
+        design_usage = (
+            claimed_cards.values('design_id')
+            .annotate(n_uses=Count('design'))
+            .order_by('-n_uses') # ==> <QuerySet [{'design_id':1, 'n_uses': 2]>
+        )
             # Create a list that formats design_usage to include Design instances (instead of design_ids)
         cleaned_design_usage = [
             {
@@ -178,6 +182,7 @@ class Stats(ListView):
             .exclude(card__owner=None)
             .values(unique_day=TruncDay('date_used'))
             .annotate(n_taps=Count('unique_day'))
+            .order_by('-unique_day')
         )
         context['usage_by_day'] = usage_by_day
         print('Stats.get_context_data() => ', context)
