@@ -116,7 +116,7 @@ class Stats(ListView):
         context['n_cards_claimed'] = claimed_cards.count()
 
         # Total number of Usage model records
-        context['n_taps'] = Usage.objects.count()
+        context['n_taps'] = Usage.objects.exclude(card__owner=None).count()
 
         # Total number of card Owners
         context['n_users'] = Owner.objects.count()
