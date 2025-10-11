@@ -415,6 +415,26 @@ Renders app-wide stats to statistics template
 	- The format of this doesnt allow me to access the Owner models. So I created a list of dictionaries, where each obj is composed of two keys: `user` and `n_card_taps`. 
 	- `user` will be the unique Owner instance 
 	- `n_card_taps` the # of times a user tapped their cards
+
+**[Sat Oct 11 2025]**
+
+- I want to perform another aggregation of card taps grouped by unique  dates. I'd love to see how many people are using the cards.  I fear that the Model time stamps will get in the way of the process, unless I can format the dates before annotating them. 
+
+- The dates are problematic as expected. I tried using Extract Year in the annotate method , but it annotated with a new attribute with just the year 2025.
+
+- I snooped around and found a function that'll help me in `django.db.models.functions` called `TruncMonth`. 
+	- I went into django's shell and ran `Usage.objects.exclude(card__owner=None).values('date_used').annotate(n_taps=Count('date_used'))`
+	- This was the head of that result: <QuerySet [{'date_used': datetime.datetime(2025, 10, 5, 23, 38, 34, 680625, tzinfo=datetime.timezone.utc),  'n_taps': 1},{...}]
+
+	- *Running annotate while selecting the date_used column gave me 38 items in the queryset*. The same number of usages that exist excluding the unclaimed cards. Essentially, `Usage.objects.exlude(card__owner=None) == Usage.objects.exclude(card__owner=None).values('date_used').annotate(n_taps=Count('date_used')).count()`, *and that is incorrect*
+
+	- The latter portion of that should be smaller, so I tried TruncMonth like so: `Usage.objects.exclude(card__owner=None).values(n=TruncMonth('date_used')).annotate(n_taps=Count('n'))`
+
+	- That returned a single queryset: `<QuerySet [{'n': datetime.datetime(2025, 10, 1, 0, 0, tzinfo=zoneinfo.ZoneInfo(key='UTC')), 'n_taps': 38}]>` This set the hours and minutes of all my date_used fields to 0, and the day to be 1. All of my tests were conducted in the month of october, so annotate saw this as one unique datetime and counted every possible occurence. 
+	- I took a guess and imported `TruncDay` and it worked. I substituted TruncMonth with TruncDay, and got this: `<QuerySet [{'n': datetime.datetime(2025, 10, 5, 0, 0, tzinfo=zoneinfo.ZoneInfo(key='UTC')), 'n_taps': 4}, {'n': datetime.datetime(2025, 10, 6, 0, 0, tzinfo=zoneinfo.ZoneInfo(key='UTC')), 'n_taps': 28}, {'n': datetime.datetime(2025, 10, 8, 0, 0, tzinfo=zoneinfo.ZoneInfo(key='UTC')), 'n_taps': 6}]>`. TruncDay formats the datetimes to set hour and minutes to 0. Since my tests were conducted on different days, there were more datetime objects instead of the one I got from TruncMonth. That explains why there were 3 unique objects. `TruncDay` is what I was looking for!!
+
+
+
 ___
 
 # Forms
@@ -516,4 +536,4 @@ ___
 [^11]: Querying in Django (https://docs.djangoproject.com/en/5.2/topics/db/queries/)
 
 [^12]: For-loop counter in template (https://stackoverflow.com/questions/11481499/django-iterate-number-in-for-loop-of-a-template)
-
+[^13]: Annotating unique Datetime fields (https://forum.djangoproject.com/t/combining-count-and-queryset-datetimes/2799)
