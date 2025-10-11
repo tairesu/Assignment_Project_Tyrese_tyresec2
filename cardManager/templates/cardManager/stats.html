@@ -19,7 +19,7 @@
         </div>
             {% for card in card_results %}
                 <div class="flex mb-10">
-                    <img src="/media/{{ card.design.front_design.url }}" class="w-[3rem] h-[1.7rem] rounded-sm">
+                    <img src="{{ card.design.front_design.url }}" class="w-[3rem] h-[1.7rem] rounded-sm">
                     <p>{{ card }}</p>
                 </div>
             {% endfor %}
@@ -93,7 +93,7 @@
                     {% for design_dict in design_usage %}
                     <tr>
                         <td>
-                            <img src="/media/{{ design_dict.design.front_design.url }}" class="w-[3rem] h-[1.7rem] rounded-sm">
+                            <img src="{{ design_dict.design.front_design.url }}" class="w-[3rem] h-[1.7rem] rounded-sm">
                         </td>
                         <td>{{ design_dict.design }}</td>
                         <td>{{ design_dict.n_uses }}</td>
