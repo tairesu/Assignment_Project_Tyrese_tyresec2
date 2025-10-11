@@ -1,0 +1,12 @@
+:root{
+			--color-main:#0091CA;
+			--color-main-dark:#022230;
+			--color-secondary:;
+			--color-secondary-dark:;
+			--color-input-bkg:#081b2b66;
+			--color-danger:red;
+			--color-input-border:#1f719340;
+		}
+		.bkg-gradient {
+			background:#010a0e;
+		}
