@@ -7,9 +7,11 @@
 			--color-danger:red;
 			--color-input-border:#1f719340;
 			--color-contrast-container:#151c3057;
+			--color-bkg:#010a0e;
+			--color-bkg-transparent:#010a0ebb;
 }
 .bkg-gradient {
-	background:#010a0e;
+	background:var(--color-bkg);
 }
 table{
 	max-width: 450px;
