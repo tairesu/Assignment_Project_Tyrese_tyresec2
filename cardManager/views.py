@@ -190,8 +190,8 @@ class Stats(ListView):
     
 def __parse_qs(queryset,target_elem, type='scatter'):
     graph_data = {
-        'x': [ usage['unique_day'] for usage in queryset],
-        'y': [ usage['n_taps'] for usage in queryset],
+        'x': [ usage['x'] for usage in queryset],
+        'y': [ usage['y'] for usage in queryset],
         'type': type,
         'target_elem': target_elem,
     }
@@ -204,13 +204,29 @@ def config_plotly(request):
     daily_usage_qs = (
         Usage.objects
         .exclude(card__owner=None)
-        .values(unique_day=TruncDay('date_used'))
-        .annotate(n_taps=Count('unique_day'))
-        .order_by('-unique_day')
-    ) # ==> <Queryset: [{},{}]>
+        .values(x=TruncDay('date_used'))
+        .annotate(y=Count('x'))
+        .order_by('-y')
     
+    ) 
+    print("\n config_plotly daily_usage_qs:", daily_usage_qs )# ==> <Queryset: [{},{}]>
+    
+    user_taps_qs = (
+        Usage.objects
+        .exclude(card__owner=None)
+        .values('card__owner_id')
+        .annotate(y=Count('card__owner_id'))
+        .order_by('-y')[0:3]
+        )
+    clean_user_taps_qs = [
+        { 'x':user_tap['card__owner_id'], 'y': user_tap['y']}
+        for user_tap in user_taps_qs
+        ]
+    print("\n config_plotly user_taps_qs:",  clean_user_taps_qs)# ==> <Queryset: [{},{}]>
     # Register daily usage to graphs 
     graphs.append(__parse_qs(daily_usage_qs, target_elem='__plot_design_usage', type='line'))
+    graphs.append(__parse_qs(clean_user_taps_qs, target_elem='__plot_design_usage', type='bar'))
+    
     print("config_plotly graphs", graphs)
     
     plotly_data = {
