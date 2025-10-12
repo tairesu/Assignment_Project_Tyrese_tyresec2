@@ -187,22 +187,34 @@ class Stats(ListView):
         context['usage_by_day'] = usage_by_day
         print('Stats.get_context_data() => ', context)
         return context
+    
+def __parse_qs(queryset,target_elem, type='scatter'):
+    graph_data = {
+        'x': [ usage['unique_day'] for usage in queryset],
+        'y': [ usage['n_taps'] for usage in queryset],
+        'type': type,
+        'target_elem': target_elem,
+    }
+    return graph_data
 
-def design_usage_plotly_data(request):
-    usage_by_day = (
+def config_plotly(request):
+    graphs = []
+    # Define graph data
+    
+    daily_usage_qs = (
         Usage.objects
         .exclude(card__owner=None)
         .values(unique_day=TruncDay('date_used'))
         .annotate(n_taps=Count('unique_day'))
         .order_by('-unique_day')
-    )
+    ) # ==> <Queryset: [{},{}]>
     
-    x = [queryset['unique_day'] for queryset in usage_by_day]
-    y = [queryset['n_taps'] for queryset in usage_by_day]
+    # Register daily usage to graphs 
+    graphs.append(__parse_qs(daily_usage_qs, target_elem='__plot_design_usage', type='line'))
+    print("config_plotly graphs", graphs)
     
     plotly_data = {
-        'x': x,
-        'y': y,
+        'graphs' : graphs,
     }
     return JsonResponse(plotly_data, safe=False)
     
