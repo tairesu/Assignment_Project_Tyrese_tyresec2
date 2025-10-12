@@ -17,12 +17,13 @@ function plot_design_usage(seed_data={},type='bar') {
         x: seed_data['x'],
         y: seed_data['y'],
         marker: {
-            color: 'white'
+            size:15,
+            color:'white',
         },
         line: {
             simplify: true,
             width:6,
-            color:'red'
+            color:'transparent',
         },
         
       };
@@ -31,21 +32,29 @@ function plot_design_usage(seed_data={},type='bar') {
       
       var layout = {
         /* I found these two in the official documentation */
+        autosize:false,
+        automargin: false,
         paper_bgcolor: 'transparent',
         plot_bgcolor: 'transparent',
-        font: {size: 18},
+        font: {size: 12},
+        margin: {b: '30',t:'0', l:'25', r:'0'},
         xaxis: {
             type: "date",
-            gridcolor: 'transparent',
+            gridcolor: '#151c3057',
+            tickformat: '%m/%d',
+            color: 'white',
         },
         yaxis: {
-            gridcolor: 'transparent'
-        }
+            
+            gridcolor: '#151c3057',
+            color: '#0091CA',
+        },
+        width: 300,
+        height:200
     }
   
       
       var config = {
-        responsive: true,
         staticPlot: true,
     };
       Plotly.newPlot('__plot_design_usage', data, layout, config );
