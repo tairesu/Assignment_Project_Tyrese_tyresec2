@@ -531,6 +531,54 @@ A playground for displaying data aggregations and visualizations
 
 - This was developed a couple of days ago
 - Today I've decided to use plotly js to show a line graph of daily card usage. It seems simple and its all done in javascript [^14]. I'll create Json objects that my javascript will fetch from a url. 
+# Static 
+
+## /css
+## /js/get_plotly_data.js
+
+Retrieves JSON data from view and generates charts accordingly
+
+#### dev_notes:
+
+**[Sat Oct 11 2025]**
+
+-This was fun. I've successfully managed to retrieve aggregated data from my database and graph it using JSONResponse and plotly. I created plot_design_usage to render the graph and define base variables (element id, data, layout, config)
+
+- I need to expand this setup to enable the creation of model graphs. Lets start at the beginning: 
+	1) JS Fetch Request comes to /stats/fetch_plotly_data
+	2) Python view performs database aggregation, and returns json reponse 
+		``` {x:[],y:[]}```
+	3) When json response arrives, return the json version of the response
+	4) With json data (`data`), call plot_design_usage function
+
+- What if I added the leaderboard seed data into the json response data? 
+	- Well my plotly wouldn't look too different. I would have to define my trace obj,  layout obj, element id, and config obj differently. (Thats pretty different). If I executed the graphs via a class instance, i could loop through a json response  effortlessly. 
+	- Imagine a response like this: 
+
+	{
+		graphs: [{},{},{}]
+	}
+
+	- Each {} containing keys:
+		- `target_elem`
+		- `traces` array 
+		- `layout` obj
+		- `config` obj
+	- Well that would be annoying to config and send in python. Lets be lazy and have python have less to send.  I need x and y, and the target element
+		- Each {} containing keys:
+			- `target_elem`
+			- `traces` array 
+			- `layout` obj
+			- `config` obj
+	- I could loop through this response, and create a hypothetical Plot instance. That Plot instance would have the following methods: 
+		- `plot(**kwargs)`: calls Plotly.newPlot and passes params
+		- `__set_config(new_config={})`: set self.config to be new_config
+		- `__set_traces([])`: loops through traces and append to self.traces
+		- `__set_data()`: loops through traces and appends to self.data
+		- `__set_layout({})`
+
+
+
 
 # Helpful resources
 
