@@ -1,14 +1,26 @@
 {% extends 'cardManager/base.html'%}
 {% load static %}
 {% block title %}
-	Stats
+Stats
 {% endblock %}
 {% block extra_head_scripts %}
 <script src="{% static 'js/plotly-3.1.0.min.js' %}">
 </script>
 {% endblock %}
-    {% block content %}
-    <div class="flex flex-row gap-4 mb-10 text-white cards-sm">
+{% block content %}
+<div class="flex flex-col gap-4 mb-10 text-white">
+    <h2 class="text-xl">Daily Usage</h2>
+    <div id="__plot_design_usage" class="flex mt-4">
+            
+    </div>
+    {% for day in usage_by_day %}
+        <div class="flex gap-2 hidden">
+            <p>+{{ day.n_taps }} Uses</p>
+            <p>{{ day.unique_day|date:"M j, Y" }}</p>
+        </div>
+    {% endfor %}
+</div>
+<div class="flex flex-row gap-4 mb-10 text-white cards-sm">
         <div class="flex flex-col gap-2 card">
             <h2 class="text-2xl">{{ n_taps }}</h2>
             <p class="text-sm">Taps</p>
@@ -21,7 +33,33 @@
             <h2 class="text-2xl">{{ n_cards_claimed }}</h2>
             <p class="text-sm">Cards Claimed</p>
         </div>
-    </div>
+</div>
+<div class=" flex flex-col text-white mb-10">
+    <h2 class="text-xl">Leaderboard</h2>
+    <table class="card-table mt-5">
+        <thead>
+            <tr>
+                <th></th>
+                <th class="text-sm">Owner</th>
+                <th class="text-sm"># Taps</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user_tap in user_taps %}
+            <tr>
+                <td class="text-xl">{{ forloop.counter }}</td>
+                <td>{{ user_tap.user }}</td>
+                <td>{{ user_tap.n_card_taps }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3">No users yet</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table> 
+    
+</div>
     <div class="mb-4 flex flex-row position-relative">
         <form method="get">
             {% if query %}
@@ -48,45 +86,8 @@
         </div>
     {% endif %}
     
-    <div class="flex flex-col gap-4 mb-10 text-white">
-        <h2 class="text-xl">Daily Usage</h2>
-        <div id="__plot_design_usage" class="flex mt-4">
-                
-        </div>
-        {% for day in usage_by_day %}
-            <div class="flex gap-2">
-                <p>+{{ day.n_taps }} Uses</p>
-                <p>{{ day.unique_day|date:"M j, Y" }}</p>
-            </div>
-        {% endfor %}
-    </div>
     
-		<div class=" flex flex-col text-white mb-10">
-			<h2 class="text-xl">Leaderboard</h2>
-            <table class="card-table mt-5">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th class="text-sm">Owner</th>
-                        <th class="text-sm"># Taps</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for user_tap in user_taps %}
-                    <tr>
-                        <td class="text-xl">{{ forloop.counter }}</td>
-                        <td>{{ user_tap.user }}</td>
-                        <td>{{ user_tap.n_card_taps }}</td>
-                    </tr>
-                    {% empty %}
-				    <tr>
-                        <td colspan="3">No users yet</td>
-                    </tr>
-			        {% endfor %}
-                </tbody>
-            </table> 
-			
-		</div>
+		
 		<div class=" flex flex-col text-white">
 			<h2 class="text-xl">Design Usage</h2>
             <div class="flex gap-4 flex-wrap cards mt-4">
