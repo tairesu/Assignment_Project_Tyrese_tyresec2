@@ -577,6 +577,10 @@ Retrieves JSON data from view and generates charts accordingly
 		- `__set_data()`: loops through traces and appends to self.data
 		- `__set_layout({})`
 
+	- Now that I create a class that will plot the graphs I've run into issues. In views.py config_plotly, I've developed a pipeline that pushes parsed aggregate querysets into a list called graphs. 
+		-	In my parse qs function, I need to map the appropriate key value pair from the aggregate queryset into the x key.
+		- When i formulate the queryset, I can rename a column (like annotate). To ensure that __parse_qs grab the right key value pair, I'll get my queryset to have an 'x' field. [^15]
+
 
 
 
@@ -597,3 +601,4 @@ Retrieves JSON data from view and generates charts accordingly
 [^12]: For-loop counter in template (https://stackoverflow.com/questions/11481499/django-iterate-number-in-for-loop-of-a-template)
 [^13]: Annotating unique Datetime fields (https://forum.djangoproject.com/t/combining-count-and-queryset-datetimes/2799)
 [^14]: Data Visualization using Plotly.js (https://plotly.com/javascript/line-charts/)
+[^15]: renaming values in django (https://stackoverflow.com/questions/10598940/how-to-rename-items-in-values-in-django)

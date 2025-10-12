@@ -2,33 +2,29 @@
 
 Plotly code comes from a getting started tutorial @ https://plotly.com/javascript/
 Shortly after that I built a view that returns trace json data (x & y) 
- I'm currently building a handler for Plotly, 
- and I stumbled upon the official documentation (https://plotly.com/javascript/reference/)
+ I'm currently building a handler for Plotly, and I stumbled upon the official documentation (https://plotly.com/javascript/reference/)
 
-*/
-/*
-I dislike functions > 15 lines of code,
+I want my application to display multiple Plotly graphs given a list of graph data.
+The original function for plotting a single graph was too long for my taste
+I dislike functions >15 lines of code,
 so I made a class to break up the code into readable blocks,
-(and handle execution smoothly)
 
 */
 class Plot {
-    constructor(graph_data) {
-        this.__load_base_layout(),
-        this.__load_base_traces(),
-        this.__load_base_config(),
-        
-        this.graph_data = graph_data;
+    constructor(graph_data={}) {
+        /* Process data from JSON object into class attributes  */
         this.x = graph_data['x'];
         this.y = graph_data['y'];
         this.target_elem = graph_data['target_elem'];
         this.type = graph_data['type'];
-        this.traces = this.__get_trace();
-        this.layout = this.__get_layout();
-        this.config = this.__get_config();
+        /* Initialize the default values */
+        this.__init_layout();
+        this.__init_traces();
+        this.__init_config();
 
     }
-    __load_base_layout() {
+    /* Sets this class' layout attribute to a default layout object */
+    __init_layout() {
         this.__set_layout({
             /* I found these two in the official documentation */
             autosize:false,
@@ -49,20 +45,19 @@ class Plot {
             height:200,
         })
     }
+
     __set_layout(layout) {
         this.layout = layout;
     }
-    __get_layout() {
-        return this.layout;
-    }
-    __load_base_traces(){
+    /* Sets this class' trace attribute to a default trace object */
+    __init_traces(){
         let base_trace = {
             type: this.type,
             x: this.x,
             y: this.y,
             marker: {
                 size:15,
-                color:'white',
+                color:'red',
             },
             line: {
                 simplify: true,
@@ -73,34 +68,22 @@ class Plot {
         };
         this.__set_trace(base_trace);
     }
+    /* Sets trace attribute to new trace object */
+    __set_trace(trace={}){ this.trace = trace; }
 
-    __set_trace(trace={}){
-        this.trace = trace;
-    }
-
-    __load_base_config() {
+    /* Sets config to base configuration */
+    __init_config() {
         let base_config = {};
         this.__set_config(base_config);
     }
+    /* Set config class attribute to new config object */
+    __set_config(config={}) { this.config = config }
 
-    __set_config(config={}) {
-        this.config = config
-    }
+    /* Plot the graph using the attributes of this class */
+    plot(debug=false) {
+        console.log('Plot instance calling plot method w/ graph data');
 
-    __get_trace() {
-        return this.trace
-    }
-    __get_target_elem() {
-        console.log("__get_target_elem:", this.target_elem);
-        return this.target_elem;
-    }
-    __get_config() {
-        return this.config;
-    }
-
-    plot() {
-        console.log('Plot instance calling plot method w/ graph data:', this.graph_data);
-        Plotly.newPlot(this.__get_target_elem(), this.__get_trace(), this.__get_layout(), this.__get_config() );
+        Plotly.newPlot(this.target_elem, [this.trace], this.layout, this.config );
     }
 }
 
@@ -112,6 +95,6 @@ fetch('/stats/fetch_plotly_data')
         for(var i=0; i< data['graphs'].length; i++) {
             let graph_data = data['graphs'][i];
             let plot = new Plot(graph_data);
-            plot.plot();
+            plot.plot(debug=true);
         }
     })
