@@ -188,28 +188,19 @@ class Stats(ListView):
         print('Stats.get_context_data() => ', context)
         return context
     
-def __parse_qs(queryset,target_elem, type='scatter'):
-    graph_data = {
-        'x': [ usage['x'] for usage in queryset],
-        'y': [ usage['y'] for usage in queryset],
-        'type': type,
-        'target_elem': target_elem,
-    }
-    return graph_data
+
 
 def config_plotly(request):
-    graphs = []
-    # Define graph data
+    plotly_graphs = []
     
+    # Define querysets here
     daily_usage_qs = (
         Usage.objects
         .exclude(card__owner=None)
         .values(x=TruncDay('date_used'))
         .annotate(y=Count('x'))
         .order_by('-y')
-    
-    ) 
-    print("\n config_plotly daily_usage_qs:", daily_usage_qs )# ==> <Queryset: [{},{}]>
+    )
     
     user_taps_qs = (
         Usage.objects
@@ -217,20 +208,32 @@ def config_plotly(request):
         .values('card__owner_id')
         .annotate(y=Count('card__owner_id'))
         .order_by('-y')[0:3]
-        )
-    clean_user_taps_qs = [
-        { 'x':user_tap['card__owner_id'], 'y': user_tap['y']}
-        for user_tap in user_taps_qs
-        ]
-    print("\n config_plotly user_taps_qs:",  clean_user_taps_qs)# ==> <Queryset: [{},{}]>
-    # Register daily usage to graphs 
-    graphs.append(__parse_qs(daily_usage_qs, target_elem='__plot_design_usage', type='line'))
-    graphs.append(__parse_qs(clean_user_taps_qs, target_elem='__plot_design_usage', type='bar'))
+    )
     
-    print("config_plotly graphs", graphs)
+    # Clean querysets here
+    daily_usage_graph = __extract_graph_data(daily_usage_qs, type="line", target_elem="__plot_daily_usage")
+    user_taps_graph = __extract_graph_data(user_taps_qs, type="bar", target_elem="__plot_user_taps")
     
-    plotly_data = {
-        'graphs' : graphs,
+    # Register graphs to plotly graphs list
+    plotly_graphs.append(daily_usage_graph)
+    plotly_graphs.append(user_taps_graph)
+    
+    return JsonResponse(plotly_graphs, safe=False)
+
+# Loop through queryset and extract graph object
+def __extract_graph_data(queryset, target_elem="", type='scatter'):
+    graph_data = {
+        'target_elem' : target_elem,
+        'type' : type,
+        'x_series' : [],
+        'y_series' : [],
     }
-    return JsonResponse(plotly_data, safe=False)
-    
+    # Some querysets may come with dictionaries w/ more than 2 keys
+    for coordinate in queryset:
+        if len(coordinate.keys()) == 2:
+            x_series_key = list(coordinate.keys())[0]
+            y_series_key = list(coordinate.keys())[1]
+            graph_data['x_series'].append(coordinate[x_series_key])
+            graph_data['y_series'].append(coordinate[y_series_key])
+    print('__extract_graph_data:', graph_data)
+    return graph_data 
