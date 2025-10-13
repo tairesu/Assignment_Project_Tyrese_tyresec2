@@ -209,18 +209,17 @@ def config_plotly(request):
         .annotate(y=Count('card__owner_id'))
         .order_by('-y')[0:3]
     )
-    cleaned_user_taps = [
-            {
-                # Use card__owner_id to retrieve Owner instance 
-                'user': Owner.objects.get(pk=item['card__owner_id']).__str__(),
-                # Keep n_card_taps
-                'n_card_taps': item['y']
-            } 
-            for item in user_taps_qs
-        ]
-    
     
     # Clean querysets here
+    cleaned_user_taps = [
+        {
+            # Use card__owner_id to retrieve Owner instance 
+            'user': Owner.objects.get(pk=item['card__owner_id']).__str__(),
+            # Keep n_card_taps
+            'n_card_taps': item['y']
+        } 
+        for item in user_taps_qs
+    ]
     daily_usage_graph = __extract_graph_data(daily_usage_qs, type="line", target_elem="__plot_daily_usage")
     user_taps_graph = __extract_graph_data(cleaned_user_taps, type="bar", target_elem="__plot_user_taps")
     
