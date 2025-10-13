@@ -53,7 +53,7 @@ class Plot {
             var trace = this.traces[i];
             trace['marker'] = {
                 size:15,
-                color:'red',
+                color:'#0091ca',
             };
             trace['line'] = {
                 simplify: true,
