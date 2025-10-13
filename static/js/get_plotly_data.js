@@ -13,10 +13,8 @@ so I made a class to break up the code into readable blocks,
 class Plot {
     constructor(graph_data={}) {
         /* Process data from JSON object into class attributes  */
-        this.x = graph_data['x_series'];
-        this.y = graph_data['y_series'];
+        this.traces = graph_data['traces'];
         this.target_elem = graph_data['target_elem'];
-        this.type = graph_data['type'];
         /* Initialize the default values */
         this.__init_layout();
         this.__init_traces();
@@ -51,25 +49,19 @@ class Plot {
     }
     /* Sets this class' trace attribute to a default trace object */
     __init_traces(){
-        let base_trace = {
-            type: this.type,
-            x: this.x,
-            y: this.y,
-            marker: {
+        for (var i = 0; i < this.traces.length; i++) {
+            var trace = this.traces[i];
+            trace['marker'] = {
                 size:15,
                 color:'red',
-            },
-            line: {
+            };
+            trace['line'] = {
                 simplify: true,
                 width:6,
                 color:'transparent',
-            },
-            
-        };
-        this.__set_trace(base_trace);
+            }
+        }
     }
-    /* Sets trace attribute to new trace object */
-    __set_trace(trace={}){ this.trace = trace; }
 
     /* Sets config to base configuration */
     __init_config() {
@@ -83,7 +75,7 @@ class Plot {
     plot(debug=false) {
         console.log('Plot instance calling plot method w/ graph data');
 
-        Plotly.newPlot(this.target_elem, [this.trace], this.layout, this.config );
+        Plotly.newPlot(this.target_elem, this.traces, this.layout, this.config );
     }
 }
 
