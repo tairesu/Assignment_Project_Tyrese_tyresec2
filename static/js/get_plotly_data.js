@@ -82,9 +82,8 @@ class Plot {
     }
 
     /* Plot the graph using the attributes of this class */
-    plot(debug=false) {
+    plot() {
         console.log('Plot instance calling plot method w/ graph data');
-        
         Plotly.newPlot(this.target_elem, this.data, this.layout, this.config );
     }
 }
@@ -97,6 +96,6 @@ fetch('/stats/fetch_plotly_data')
         for(var i=0; i< data.length; i++) {
             let graph_data = data[i];
             let plot = new Plot(graph_data);
-            plot.plot(debug=true);
+            plot.plot();
         }
     })
