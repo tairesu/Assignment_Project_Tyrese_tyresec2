@@ -13,8 +13,8 @@ so I made a class to break up the code into readable blocks,
 class Plot {
     constructor(graph_data={}) {
         /* Process data from JSON object into class attributes  */
-        this.x = graph_data['x'];
-        this.y = graph_data['y'];
+        this.x = graph_data['x_series'];
+        this.y = graph_data['y_series'];
         this.target_elem = graph_data['target_elem'];
         this.type = graph_data['type'];
         /* Initialize the default values */

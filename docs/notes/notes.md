@@ -434,7 +434,35 @@ Renders app-wide stats to statistics template
 	- I took a guess and imported `TruncDay` and it worked. I substituted TruncMonth with TruncDay, and got this: `<QuerySet [{'n': datetime.datetime(2025, 10, 5, 0, 0, tzinfo=zoneinfo.ZoneInfo(key='UTC')), 'n_taps': 4}, {'n': datetime.datetime(2025, 10, 6, 0, 0, tzinfo=zoneinfo.ZoneInfo(key='UTC')), 'n_taps': 28}, {'n': datetime.datetime(2025, 10, 8, 0, 0, tzinfo=zoneinfo.ZoneInfo(key='UTC')), 'n_taps': 6}]>`. TruncDay formats the datetimes to set hour and minutes to 0. Since my tests were conducted on different days, there were more datetime objects instead of the one I got from TruncMonth. That explains why there were 3 unique objects. `TruncDay` is what I was looking for!!
 
 
+## ~~design_usage~~ => config_plotly()
 
+Function based view that **provides Plotly js with data** to plot multiple graphs. This returns a JsonResponse that follow this structure:
+
+	[ 
+		{ # Graph data object
+			"target_elem": "",
+			"type" : "",
+			"x_series" : [],
+			"y_series" : [], 
+		}, 
+		{...}, {...}
+	]
+
+#### how it works:
+
+1) Request hits 'stats/fetch_plotly_data'
+2) Config plotly gets instantiated
+3) `graphs` is []
+4) Define querysets : <Queryset [{},{}]>
+5) Clean querysets: {x:[], y}
+6) Append to graphs
+7) return graphs json
+
+#### dev notes:
+
+**[Sun Oct 12 2025]**
+
+- I should reconsider the Plotly structure 
 ___
 
 # Forms
@@ -551,7 +579,7 @@ Retrieves JSON data from view and generates charts accordingly
 	3) When json response arrives, return the json version of the response
 	4) With json data (`data`), call plot_design_usage function
 
-- What if I added the leaderboard seed data into the json response data? 
+- What if I added the leaderboard seed data into the json response data too? 
 	- Well my plotly wouldn't look too different. I would have to define my trace obj,  layout obj, element id, and config obj differently. (Thats pretty different). If I executed the graphs via a class instance, i could loop through a json response  effortlessly. 
 	- Imagine a response like this: 
 
@@ -577,7 +605,7 @@ Retrieves JSON data from view and generates charts accordingly
 		- `__set_data()`: loops through traces and appends to self.data
 		- `__set_layout({})`
 
-	- Now that I create a class that will plot the graphs I've run into issues. In views.py config_plotly, I've developed a pipeline that pushes parsed aggregate querysets into a list called graphs. 
+	- Now that I created a class that will plot the graphs I've run into issues. In views.py config_plotly, I've developed a pipeline that pushes parsed aggregate querysets into a list called graphs. 
 		-	In my parse qs function, I need to map the appropriate key value pair from the aggregate queryset into the x key.
 		- When i formulate the queryset, I can rename a column (like annotate). To ensure that __parse_qs grab the right key value pair, I'll get my queryset to have an 'x' field. [^15]
 
