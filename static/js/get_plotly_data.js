@@ -92,8 +92,8 @@ fetch('/stats/fetch_plotly_data')
     .then((data) => { 
         console.log("Data from /stats/fetch_plotly_data: ", data);
         /* Loop through each server provided graph and create new Plot instance*/
-        for(var i=0; i< data['graphs'].length; i++) {
-            let graph_data = data['graphs'][i];
+        for(var i=0; i< data.length; i++) {
+            let graph_data = data[i];
             let plot = new Plot(graph_data);
             plot.plot(debug=true);
         }
