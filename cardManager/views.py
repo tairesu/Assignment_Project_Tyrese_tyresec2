@@ -234,16 +234,20 @@ def config_plotly(request):
 def __extract_graph_data(queryset, target_elem="", type='scatter'):
     graph_data = {
         'target_elem' : target_elem,
-        'type' : type,
-        'x_series' : [],
-        'y_series' : [],
+        'traces' : [
+            {
+                'x' : [],
+                'y' : [],
+                'type' : type,
+            }
+        ],
     }
     # Some querysets may come with dictionaries w/ more than 2 keys
     for coordinate in queryset:
         if len(coordinate.keys()) == 2:
             x_series_key = list(coordinate.keys())[0]
             y_series_key = list(coordinate.keys())[1]
-            graph_data['x_series'].append(coordinate[x_series_key])
-            graph_data['y_series'].append(coordinate[y_series_key])
+            graph_data['traces'][0]['x'].append(coordinate[x_series_key])
+            graph_data['traces'][0]['y'].append(coordinate[y_series_key])
     print('__extract_graph_data:', graph_data)
     return graph_data 
