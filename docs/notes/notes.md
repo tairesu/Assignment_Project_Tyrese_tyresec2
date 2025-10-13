@@ -564,7 +564,27 @@ A playground for displaying data aggregations and visualizations
 ## /css
 ## /js/get_plotly_data.js
 
-Retrieves JSON data from view and generates charts accordingly
+Retrieves JSON graph data from `config_plotly` fbv and plots the data in the DOM accordingly
+
+### class Plot{}
+
+Helps me render Plotly JS graphs.
+
+
+#### Attributes
+
+- traces: list of trace data for Plotly to plot
+- target_elem: The DOM element id housing the chart
+- type: type of graph
+
+#### Methods 
+
+- `plot()`: calls Plotly.newPlot using class attributes
+- `__set_config(new_config={})`: set self.config to be new_config
+- `__set_layout)`: loops through traces and append to this.traces
+- `__init_traces()`: Adds marker and line objects to `this.traces` object
+- `__init_layout())`: Sets `this.layout` object using `__set_layout({})'
+
 
 #### dev_notes:
 
