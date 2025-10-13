@@ -18,12 +18,13 @@ class Plot {
         /* Initialize the default values */
         this.__init_layout();
         this.__init_traces();
+        this.__init_data();
         this.__init_config();
 
     }
     /* Sets this class' layout attribute to a default layout object */
     __init_layout() {
-        this.__set_layout({
+        this.layout = {
             /* I found these two in the official documentation */
             autosize:false,
             automargin: false,
@@ -41,13 +42,9 @@ class Plot {
             },
             width: 300,
             height:200,
-        })
+        }
     }
-
-    __set_layout(layout) {
-        this.layout = layout;
-    }
-    /* Sets this class' trace attribute to a default trace object */
+    /*Sets Plotly level trace variables on each trace in this.traces */
     __init_traces(){
         for (var i = 0; i < this.traces.length; i++) {
             var trace = this.traces[i];
@@ -56,26 +53,36 @@ class Plot {
                 color:'#0091ca',
             };
             trace['line'] = {
-                simplify: true,
                 width:6,
                 color:'transparent',
+            };
+            if (trace['type'] == 'bar')  {
+                let temp_x = trace['x'];
+                trace['x'] = trace['y'];
+                trace['y'] = temp_x;
+                this.layout['margin']['l'] = '80'; 
+                trace['orientation'] = 'h'
             }
+                
         }
     }
-
+    /**
+     * Sets class' data object to default  list of traces
+     * 
+     */
+    __init_data() {
+        this.data = this.traces;
+    }
     /* Sets config to base configuration */
     __init_config() {
-        let base_config = {};
-        this.__set_config(base_config);
+        this.config = {};
     }
-    /* Set config class attribute to new config object */
-    __set_config(config={}) { this.config = config }
 
     /* Plot the graph using the attributes of this class */
     plot(debug=false) {
         console.log('Plot instance calling plot method w/ graph data');
-
-        Plotly.newPlot(this.target_elem, this.traces, this.layout, this.config );
+        
+        Plotly.newPlot(this.target_elem, this.data, this.layout, this.config );
     }
 }
 
