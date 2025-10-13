@@ -75,7 +75,10 @@ class Plot {
     }
     /* Sets config to base configuration */
     __init_config() {
-        this.config = {};
+        this.config = {
+            'scrollZoom': true,
+            'displayModeBar': false,
+        };
     }
 
     /* Plot the graph using the attributes of this class */
