@@ -434,9 +434,27 @@ Renders app-wide stats to statistics template
 	- I took a guess and imported `TruncDay` and it worked. I substituted TruncMonth with TruncDay, and got this: `<QuerySet [{'n': datetime.datetime(2025, 10, 5, 0, 0, tzinfo=zoneinfo.ZoneInfo(key='UTC')), 'n_taps': 4}, {'n': datetime.datetime(2025, 10, 6, 0, 0, tzinfo=zoneinfo.ZoneInfo(key='UTC')), 'n_taps': 28}, {'n': datetime.datetime(2025, 10, 8, 0, 0, tzinfo=zoneinfo.ZoneInfo(key='UTC')), 'n_taps': 6}]>`. TruncDay formats the datetimes to set hour and minutes to 0. Since my tests were conducted on different days, there were more datetime objects instead of the one I got from TruncMonth. That explains why there were 3 unique objects. `TruncDay` is what I was looking for!!
 
 
-## ~~design_usage~~ => config_plotly()
+## config_plotly
+(was ~~design_usage~~)
 
 Function based view that **provides Plotly js with data** to plot multiple graphs. This returns a JsonResponse that follow this structure:
+
+### latest JsonResponse structure
+
+	[ 
+		{ # Graph data object
+			"target_elem": "",
+			"traces" : {
+				"x" : [],
+				"y" : [],
+				"type" : [],
+			}, 
+		}, 
+		{...}, {...}
+	]
+
+
+old version:
 
 	[ 
 		{ # Graph data object
@@ -446,23 +464,36 @@ Function based view that **provides Plotly js with data** to plot multiple graph
 			"y_series" : [], 
 		}, 
 		{...}, {...}
-	]
+	] [config_plotly]
 
 #### how it works:
 
-1) Request hits 'stats/fetch_plotly_data'
-2) Config plotly gets instantiated
-3) `graphs` is []
-4) Define querysets : <Queryset [{},{}]>
-5) Clean querysets: {x:[], y}
-6) Append to graphs
-7) return graphs json
+1. Request hits 'stats/fetch_plotly_data'
+2. Config plotly gets instantiated w/ `graphs` = []
+3. Define querysets
+4. Clean querysets (if needed)
+5. Format querysets into graph data object
+6. Append graph data object to `graphs`
+7. return JsonResponse of graphs as json
 
 #### dev notes:
 
 **[Sun Oct 12 2025]**
 
-- I should reconsider the Plotly structure 
+- I should reconsider the Plotly structure.  It appears that the trace objects have x_series and y_series. To reduce processing time in JS, I will update the output of my JsonResponse to follow this structure: 
+
+		[ 
+			{ # Graph data object
+				"target_elem": "",
+				"traces" : {
+					"x" : [],
+					"y" : [],
+					"type" : [],
+				}, 
+			}, 
+			{...}, {...}
+		]
+	
 ___
 
 # Forms
@@ -570,7 +601,6 @@ Retrieves JSON graph data from `config_plotly` fbv and plots the data in the DOM
 
 Helps me render Plotly JS graphs.
 
-
 #### Attributes
 
 - traces: list of trace data for Plotly to plot
@@ -585,54 +615,46 @@ Helps me render Plotly JS graphs.
 - `__init_traces()`: Adds marker and line objects to `this.traces` object
 - `__init_layout())`: Sets `this.layout` object using `__set_layout({})'
 
-
 #### dev_notes:
 
 **[Sat Oct 11 2025]**
 
--This was fun. I've successfully managed to retrieve aggregated data from my database and graph it using JSONResponse and plotly. I created plot_design_usage to render the graph and define base variables (element id, data, layout, config)
+- This was fun. I've successfully managed to retrieve aggregated data from my database and graph it using JSONResponse and plotly. I created ~~`plot_design_usage()`~~(`now Plot.plot()`) to render the graph and define base variables (element id, data, layout, config)
 
 - I need to expand this setup to enable the creation of model graphs. Lets start at the beginning: 
-	1) JS Fetch Request comes to /stats/fetch_plotly_data
-	2) Python view performs database aggregation, and returns json reponse 
-		``` {x:[],y:[]}```
-	3) When json response arrives, return the json version of the response
-	4) With json data (`data`), call plot_design_usage function
+	1. JS Fetch Request comes to /stats/fetch_plotly_data
+	2. Python view performs database aggregation, and returns json reponse 
+		~~``` {x:[],y:[]}```~~ [See updated JsonResponse](#latest-jsonresponse-structure)
+	3. When json response arrives, return the json version of the response
+	4. With json data (`data`), call plot_design_usage function
 
-- What if I added the leaderboard seed data into the json response data too? 
-	- Well my plotly wouldn't look too different. I would have to define my trace obj,  layout obj, element id, and config obj differently. (Thats pretty different). If I executed the graphs via a class instance, i could loop through a json response  effortlessly. 
-	- Imagine a response like this: 
+	- What if I added the leaderboard seed data into the json response data too? 
+		- Well my plotly wouldn't look too different. I would have to define my trace obj,  layout obj, element id, and config obj differently. (Thats pretty different). If I executed the graphs via a class instance, i could loop through a json response  effortlessly. 
+		- Imagine a response like this: 
 
-	{
-		graphs: [{},{},{}]
-	}
+			{
+				graphs: [{},{},{}]
+			}
 
-	- Each {} containing keys:
-		- `target_elem`
-		- `traces` array 
-		- `layout` obj
-		- `config` obj
-	- Well that would be annoying to config and send in python. Lets be lazy and have python have less to send.  I need x and y, and the target element
 		- Each {} containing keys:
 			- `target_elem`
 			- `traces` array 
 			- `layout` obj
 			- `config` obj
-	- I could loop through this response, and create a hypothetical Plot instance. That Plot instance would have the following methods: 
-		- `plot(**kwargs)`: calls Plotly.newPlot and passes params
-		- `__set_config(new_config={})`: set self.config to be new_config
-		- `__set_traces([])`: loops through traces and append to self.traces
-		- `__set_data()`: loops through traces and appends to self.data
-		- `__set_layout({})`
+		- Well that would be annoying to config and send in python. Lets be lazy and have python have less to send.  I only need Python to create the x and y series, and specify the target HTML element's id
+		- In JS, I could loop through this response, and create a hypothetical Plot instance. That Plot instance would have the following methods: 
+			- `plot(**kwargs)`: calls Plotly.newPlot and passes params
+			- `__set_config(new_config={})`: set self.config to be new_config
+			- `__set_traces([])`: loops through traces and append to self.traces
+			- `__set_data()`: loops through traces and appends to self.data
+			- `__set_layout({})`
 
-	- Now that I created a class that will plot the graphs I've run into issues. In views.py config_plotly, I've developed a pipeline that pushes parsed aggregate querysets into a list called graphs. 
-		-	In my parse qs function, I need to map the appropriate key value pair from the aggregate queryset into the x key.
-		- When i formulate the queryset, I can rename a column (like annotate). To ensure that __parse_qs grab the right key value pair, I'll get my queryset to have an 'x' field. [^15]
+- I liked the direction of that idea. I created a class that will plot the graphs, and I've run into issues. In views.py config_plotly, I've developed a pipeline that pushes parsed aggregate querysets into a list called graphs. 
+	-	In my parse qs function, I need to map the appropriate key value pair from the aggregate queryset into the x key. When i formulate the queryset, I can rename a column (like annotate). To ensure that __parse_qs grab the right key value pair, I'll get my queryset to have an 'x' and 'y' field. [^15]
 
-	- I want to turn the bar graph horizontal for `user_taps_graph`. Plotly enables this by passing a `orientation` key (value = 'h') to the data object that gets passed into Plotly.newPlot[^16]
-	- As of now, this.traces is the data object. I could make a init_data which sets `this.data` = an array of traces, Then pass `this.data` in Plotly.newPlot
+- I want to turn the bar graph horizontal for `user_taps_graph`. Plotly enables this by passing a `orientation` key (value = 'h') to the data object that gets passed into Plotly.newPlot[^16]. As of now, this.traces is the data object. I'll make a init_data which sets `this.data` = an array of traces, then pass `this.data` in Plotly.newPlot
 
-
+___
 
 # Helpful resources
 
@@ -647,7 +669,6 @@ Helps me render Plotly JS graphs.
 [^9]: CBVs subclass SingleObjectMixin! (https://docs.djangoproject.com/en/5.2/ref/class-based-views/mixins-single-object/)
 [^10]: Aggregations? (https://docs.djangoproject.com/en/5.2/topics/db/aggregation/)
 [^11]: Querying in Django (https://docs.djangoproject.com/en/5.2/topics/db/queries/)
-
 [^12]: For-loop counter in template (https://stackoverflow.com/questions/11481499/django-iterate-number-in-for-loop-of-a-template)
 [^13]: Annotating unique Datetime fields (https://forum.djangoproject.com/t/combining-count-and-queryset-datetimes/2799)
 [^14]: Data Visualization using Plotly.js (https://plotly.com/javascript/line-charts/)
