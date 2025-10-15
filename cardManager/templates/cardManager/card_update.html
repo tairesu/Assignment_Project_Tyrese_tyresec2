@@ -3,9 +3,6 @@
 Updating Card
 {% endblock %}
 {% block content %}
-<div class="px-2 mb-4 flex justify-center">
-	<img src="{{ card.design.front_design.url }}" alt="" class="rounded-sm w-[18rem] h-[11.2rem]">
-</div>
 <form action="" method="post" enctype="multipart/form-data">
 	{% csrf_token %}
 	{{ form.as_p }}

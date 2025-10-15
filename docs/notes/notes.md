@@ -498,14 +498,23 @@ ___
 
 # Forms
 
-~~## ProfileForm~~
+Earlier in the development of this application, I purged my forms to focus on understanding how form works in Django. For Assignment 8 I need to come up with 3 Forms:  
 
-#### dev notes:
+- A GET (Search / Fitler)
+- FBV for POST(Create)
+- CBV for POST(CreateView/FormView)
 
-**[Fri Sep 26 2025]**
+I'll keep my search form in stats, make the update card form, and the profile create form.
 
-- I do not need the user_id and date_created to show up, so I'll exclude them from this ModelForm subclass
+## CardForm(forms.ModelForm)
 
+Used for card update, (and create in the future). The only fields that can be updated are alias, show_profile, reroute_url. 
+
+##### dev notes
+
+**[Wed Oct 15 2025]**
+
+- 
 
 ___
 
@@ -586,10 +595,15 @@ A playground for displaying data aggregations and visualizations
 
 #### dev notes:
 
+**[?]**
+
+- I decided to create a feature to search for a customers card incase there's an issue.
+
 **[Sat Oct 11 2025]**
 
 - This was developed a couple of days ago
-- Today I've decided to use plotly js to show a line graph of daily card usage. It seems simple and its all done in javascript [^14]. I'll create Json objects that my javascript will fetch from a url. 
+- Today I've decided to use plotly js to show a line graph of daily card usage. It seems simple and its all done in javascript [^14]. I'll create Json objects that my javascript will fetch from a url.
+
 # Static 
 
 ## /css

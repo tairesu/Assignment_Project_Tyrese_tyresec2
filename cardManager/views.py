@@ -20,6 +20,7 @@ Owner,
 Usage,
 Design
 )
+from .forms import CardForm
 
     # Create and Saves Usage instance, given card field
 def __add_to_usage(request, card):
@@ -58,6 +59,20 @@ class CardDetail(DetailView):
         if card.owner:
             return redirect('card_view', card_token=card.token)
         return super().get(self, request, **kwargs)
+
+
+def card_update(request, card_token):
+	"""
+		FBV for POST to handle card update form
+	"""
+	if request.method == "GET":
+		form = CardForm()
+	elif request.method == "POST":
+		form = CardForm(request.POST)
+
+	# What is form out of curiosity
+	print("\n\ncard_update() form:", form)
+	return render(request, 'cardManager/card_update.html', {'form': form})
 
 
 # Render profile template using the slugs instead of pk

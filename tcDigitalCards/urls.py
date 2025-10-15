@@ -24,6 +24,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('card/<str:card_token>/', views.card_detail, name='card_view'),
     path('card/<str:card_token>/activate/', views.CardDetail.as_view(), name='card_activate_view'),
+    path('card/<str:card_token>/update/', views.card_update, name='card_update_view'),
     path('profile/<str:profile_slug>/', views.ProfileDetail.as_view(), name='profile_view'),
     path('stats/', views.Stats.as_view(), name='stats_view'),
     path('dashboard/', views.UserDashboard.as_view(), name='dashboard_view'),
