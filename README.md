@@ -1,20 +1,12 @@
 # Assignment_Project_Tyrese_tyresec2
 
-Django application for my digital card management system. It enables customers to alter how their digital cards work from the comfort of their home. 
+Django application for my digital card management system. It enables **customers** to alter how their digital cards work from the comfort of their home. 
 
 ##ER Diagram:
+
 ![ER Diagram](https://raw.githubusercontent.com/tairesu/Assignment_Project_Tyrese_tyresec2/refs/heads/main/docs/notes/erDiagram.png)
 
-## Testing:
-
-To test this application, you'll need to install stripe
-
-`(env)$ pip install stripe==5.5.0`
-
-It enables this application to verify if payment is confirmed, and it relies on Stripe webhook to do so. Stripe listens for `checkout.session.completed` event type. When it is found, it'll update the card model by setting the `card.user` to the user id that was placed in checkout session's metadata. 
-
-
-(I will create a test that bypasses this action)
+# Weekly Updates
 
 ## A5 Updates
 
@@ -29,3 +21,15 @@ It enables this application to verify if payment is confirmed, and it relies on 
 - I purged everything that we haven't covered in class: Forms, Login/Logout Views, Stripe, etc
 - I created two aggregations (leaderboard, and design usage) and one filtering functionality (for searching cards)
 
+## A7 Updates 
+
+I used Plotly JS to visualize two of my aggregations from A6. JS fetches the JSON data powering PlotlyJS from the `config_plotly` function-based view's JsonResponse . ([See `config_plotly` JsonResponse](https://raw.githubusercontent.com/tairesu/Assignment_Project_Tyrese_tyresec2/refs/heads/main/docs/assignment_screenshots/config_plotly_json_data.png))
+
+
+ I originally thought I'd visualize more than two aggregation, so I created a JS class called `Plot` that wraps around Plotly's `newPlot()` method and its 4 major parameters: target_elem (str), data (array), layout (obj), config (obj). It enables my application to go from this: 
+
+ ![Plotly JSON seed data](https://raw.githubusercontent.com/tairesu/Assignment_Project_Tyrese_tyresec2/refs/heads/main/docs/assignment_screenshots/config_plotly_json_data.png)
+
+ to this:
+
+ ![Plotly Visuals](https://raw.githubusercontent.com/tairesu/Assignment_Project_Tyrese_tyresec2/refs/heads/main/docs/assignment_screenshots/plotly_visuals.png)
