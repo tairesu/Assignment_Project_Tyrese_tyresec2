@@ -520,9 +520,9 @@ FBV w/ GET POST capabilities for updating cards. (Uses [CardForm](#cardform))
 **[Oct 21 2025]** 
 
 - Now that that's over, I'll remove the design from template form by adding it to CardForm exclude attr
+- I want to validate the CardForm. reroute url must be null when show_profile is true, and it must to be set when show_profile is False. **To validate these form fields I used the clean method in CardForm and raised errors depending on these two fields**[^18]
+- Then I learned in that same section that the form class has a method called add_error where I can get the error msg to appear at a field [^18]
 
-
-___
 
 # Forms
 
@@ -718,3 +718,4 @@ ___
 [^15]: renaming values in django (https://stackoverflow.com/questions/10598940/how-to-rename-items-in-values-in-django)
 [^16]: Horizontal charts in plotly (https://plotly.com/javascript/horizontal-bar-charts/)
 [^17]: Django Forms :cool; (https://docs.djangoproject.com/en/5.2/topics/forms/)
+[^18]: Using Clean and ValidationError to validate form fields(https://docs.djangoproject.com/en/5.2/ref/forms/validation/#cleaning-and-validating-fields-that-depend-on-each-other) 
