@@ -493,7 +493,31 @@ old version:
 			}, 
 			{...}, {...}
 		]
-	
+
+## card_update
+
+FBV w/ GET POST capabilities for updating cards. (Uses [CardForm](#cardform))
+
+#### dev notes:
+
+**[Wed Oct 15 2025]**
+
+- After I created the `form` variable in both GET & POST methods, I attempted to save the `form` in my handling of POST, but got an IntegrityError
+
+	IntegrityError at /card/CDX4DEB/update/
+	NOT NULL constraint failed: cardManager_card.design_id
+
+	- Seems like design is empty. I'll fool around with a query to manually pull the design of the card, and set the value before the form saves. First I'd need to see what can i access with the form..........<researching>...... WOAH what can't I do with forms. Forms class are to HTML <inputs> like Models are to Databases. I can also instantiate a form with data from other sources, saved model instances, and even previous HTML form submissions [^17] 
+
+	- I don't want to mess with my models because a design cannot be null, so I kept looking in the documentation for Django and learned about bound and unbound forms. Unbounds are empty forms that are used in GET handling. Bound forms have data in them on instantiation for validation purposes. With that in mind **I tried ways of attaching data to my form**: 
+
+		1. ~~Adding card.design to form.fields["design"]~~ ==> THE SAME IntegrityError. My print statement printed `form.fields` and this is what i got:  `card_update() cleaned_data: {'alias': <django.forms.fields.CharField object at 0x7efe8cf33ce0>, 'show_profile': <django.forms.fields.BooleanField object at 0x7efe8cf33d10>, 'reroute_url': <django.forms.fields.URLField object at 0x7efe8cf33f80>, 'design': <Design: City View>}` **Looked nothing like the other values in form.fields**
+		2. ~~Adding card design to request.POST~~. The thought behind this came from the article on bound forms. If I instantiate the POST form with design_id, then I may be able to save the form. request.Post print statement =>`card_update() request.POST: `**<QueryDict**: {'csrfmiddlewaretoken': ['h9peGRAHNHkpDftS2cMgDZZeIBT5s0AafIJ0BhFSZVgRBh5qMLmEpZ2a7ponNHL3'], 'alias': ['BBUIUC'], 'show_profile': ['on'], 'reroute_url': ['https://instagram.com']}>`. **All of this failed because request.POST returns a QueryDict and that cannot be changed (good to know): `AttributeError at /card/CDX4DEB/update/ \n This QueryDict instance is immutable`**
+		3. [Oct 21 2025] ~~Removing design_id from CardForm~~ ==> The same integrity error. I thought that having the CardForm ignore the field, my forms.save() would ignore it, but that was not the case.
+		4. [Oct 21 2025] ~~Setting editable to False <Card model>design_id~~ I thought that this would help my form ignore the design id field entirely. It hid the design id field in the admin view and the HTML template
+		5. [Oct 21 2025] **Using CardForm with instance parameter (in POST method)** This allowed me to update the attached card instance (the card retrieved using `card_token`), **instead of creating a whole new instance**. This Integrity error arose because I was inserting a new Card instead of updating one. 
+
+
 ___
 
 # Forms
@@ -506,11 +530,12 @@ Earlier in the development of this application, I purged my forms to focus on un
 
 I'll keep my search form in stats, make the update card form, and the profile create form.
 
-## CardForm(forms.ModelForm)
+## CardForm
 
-Used for card update, (and create in the future). The only fields that can be updated are alias, show_profile, reroute_url. 
+Used to update cards(and create in the future). 
+**The only fields that can be updated are alias, show_profile, reroute_url.**
 
-##### dev notes
+#### dev notes:
 
 **[Wed Oct 15 2025]**
 
@@ -688,3 +713,4 @@ ___
 [^14]: Data Visualization using Plotly.js (https://plotly.com/javascript/line-charts/)
 [^15]: renaming values in django (https://stackoverflow.com/questions/10598940/how-to-rename-items-in-values-in-django)
 [^16]: Horizontal charts in plotly (https://plotly.com/javascript/horizontal-bar-charts/)
+[^17]: Django Forms :cool; (https://docs.djangoproject.com/en/5.2/topics/forms/)
