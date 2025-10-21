@@ -517,6 +517,10 @@ FBV w/ GET POST capabilities for updating cards. (Uses [CardForm](#cardform))
 		4. [Oct 21 2025] ~~Setting editable to False <Card model>design_id~~ I thought that this would help my form ignore the design id field entirely. It hid the design id field in the admin view and the HTML template
 		5. [Oct 21 2025] **Using CardForm with instance parameter (in POST method)** This allowed me to update the attached card instance (the card retrieved using `card_token`), **instead of creating a whole new instance**. This Integrity error arose because I was inserting a new Card instead of updating one. 
 
+**[Oct 21 2025]** 
+
+- Now that that's over, I'll remove the design from template form by adding it to CardForm exclude attr
+
 
 ___
 
