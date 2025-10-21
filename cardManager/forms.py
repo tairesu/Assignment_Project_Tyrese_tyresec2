@@ -13,10 +13,8 @@ class CardForm(forms.ModelForm):
 		is_reroute_set = not (data['reroute_url'] == "")
 		is_profile_set = data['show_profile']
 		if is_profile_set and is_reroute_set:
-			raise ValidationError("Reroute URL not needed if profile is set")
+			self.add_error("reroute_url","Reroute URL not needed if profile is set")
 		elif not is_profile_set and not is_reroute_set:
-			raise ValidationError("Reroute URL needs to be set")
+			self.add_error("reroute_url","Reroute URL needed")
 
 		return data
-
-
