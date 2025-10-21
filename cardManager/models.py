@@ -75,7 +75,7 @@ class Card(models.Model):
 		return reverse('card_view', kwargs={'card_token': self.token})
 
 	def get_update_url(self):
-		return reverse('card_update_view', kwargs={'pk': self.pk})
+		return reverse('card_update_view', kwargs={'card_token': self.token})
 
 
 class Usage(models.Model):
