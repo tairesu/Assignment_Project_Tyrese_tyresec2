@@ -62,6 +62,14 @@ class CardDetail(DetailView):
 		return super().get(self, request, **kwargs)
 
 
+class CardUpdate(UpdateView):
+	model = Card
+	form_class = CardForm
+	slug_field = 'token'
+	slug_url_kwarg = 'card_token'
+	template_name = 'cardManager/card_update.html'
+	success_url = reverse_lazy('dashboard_view')
+
 def card_update(request, card_token):
 	"""
 		FBV for handling card update functionality
