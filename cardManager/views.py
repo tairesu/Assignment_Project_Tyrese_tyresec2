@@ -64,7 +64,7 @@ class CardDetail(DetailView):
 
 def card_update(request, card_token):
 	"""
-		FBV for POST to handle card update form
+		FBV for handling card update functionality
 	"""
 	card = get_object_or_404(Card, token=card_token)
 	if request.method == "GET":
@@ -79,7 +79,7 @@ def card_update(request, card_token):
 
 	# What is form out of curiosity
 	print("\n\ncard_update() form:", form)
-	return render(request, 'cardManager/card_update.html', {'form': form})
+	return render(request, 'cardManager/card_update.html', {'form': form, 'card': card})
 
 
 # Render profile template using the slugs instead of pk
