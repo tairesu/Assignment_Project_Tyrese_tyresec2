@@ -245,55 +245,15 @@ If a card is owned,  pass `card_token` to the card detail view (/card/<str:card_
 
 ~~## CardUpdate(UpdateView)~~
 
-Renders the CardForm to the card_update template. (It reroutes to the dashboard) 
-
-~~## LoginView(auth_views.LoginView)~~
-
-Renders login template
+Renders `CardForm` to the card_update template. (It reroutes to the dashboard) 
 
 #### dev notes:
 
-**[Thu Sep 25 2025]**
+**[Wed Oct 22 2025]**
 
-- I modified the django auth LoginView to use get_success_url() to make the success url dynamic. If `next` parameter gets passed into this view, set the `success url` to the value of `next`
+- I used a class based view with hopes of shortening the code of `card_update()`. That view required the configuration of both GET and POST methods for my purpose, but the UpdateView has these methods built-in. 
+- I had to use the slug updating procedure to help this class identify a unique Card (No longer using pk to discourage url spamming). In the fbv, I had to manually retrieve a card instance, and set it into the form for my purpose. 
 
-**[Sun Sep 28 2025]**
-
-- I added a "I'm new here" button to the  login.html template. I noticed the next parameter when the LoginRequiredMixin redirects to the login url. that next parameter is what tells django to go to a specific page post login
-
-- If a user tries to sign in to claim a card (Goes to login), there'll be a next parameter.... but if they click "I'm new here" on that login page then the next parameter gets lost. I must fix that by holding the next parameter and handing it to the template. I'll use get_context_data in this view like so: 
-
-- 	```
-	class LoginView(auth_views.LoginView):
-		template_name = 'cardManager/login.html'
-		success_url = reverse_lazy('dashboard_view')
-
-		def get_success_url(self):
-			return self.request.GET.get('next') or self.success_url
-
-		#Let's put the next param in the context 
-		def get_context_data(self, **kwargs):
-			context = super().get_context_data(**kwargs)
-			context['nextUrlParam'] = self.request.GET.get('next')
-			return context
-	``` 
-	- I'm going to try 2 solution to this problem .
-		1. I see self.request.GET..... which is already accessible via template
-			- So this works in the template: `{% url 'register_view' %}?next={{request.GET.next}}`
-		2. ~~Just send it in context using get_context_data~~
-
-- I chose option 1 since request is given in the template. Now option 1 may not be the most secure but I'll have to come back. Scratch that, option 2 better in the sense that I can validate the next parameter so people don't brute force their way accross the system. Any next parameter that isn't validated would get tossed (would be ideal in the future). For now we replicate this across the register page 
-
-## UserRegistration(CreateView)
-
-Renders UserForm to the `register.html` template.
-(logs the user in within `form_valid` method)
-
-#### dev notes:
-
-**[?]**
-
-- Like the `LoginView`, I will make the success url dynamic by defining the `get_success_url` method
 
 ## UserDashboard(LoginRequiredMixin, ListView)
 
@@ -336,66 +296,6 @@ A view that renders the cards, that belong to a user, into the `dashboard.html`t
 			return context
 		```
 		- Works perfectly.  I expect their to be more info/metrics on the dashboard later, so I'll keep this code
-
-~~## ProfileUpdate(UpdateView)~~
-
-Renders ProfileForm to `profile_update.html` template. **Success url will dynamically route to the 'profile_view' URL with the proper profile_slug** 
-
-#### dev notes:
-
-**[Fri Sep 26 2025]**
-
-- Adding LoginRequiredMixin class view because people shouldn't have access to editing that person profile. 
-
-- Reroutes to profile_view wasn't working. So I opted to use get_success_url() to have access to self
-
-- Adding get_success_url(self) to redirect to user profile. I opted to use reverse_lazy after trying to include some HttpResponseRedirect method because I knew the name of the URL view ('profile_view'), and what variable it needs in the URL parameter (<str:profile_slug). 
-
-~~## ProfileCreate(CreateView, LoginRequiredMixin): ~~
-
-Renders Profile form to `profile_create.html`
-
-#### dev notes:
-
-**[Fri Sep 26 2025]**
-
-- Adding LoginRequiredMixin class view because people shouldn't have access to creating a profile if they aren't signed in . 
-
-
-~~## LogoutView(auth_views.LogoutView)~~
-
-Logs the user out. Requires post request
-
-#### dev notes:
-
-**[Fri Sep 26 2025]**
-
-- This is beginning to be a pain :sweating:  . My issue is that LogoutView keeps defaulting to /accounts/login. The solution is to change `settings.LOGOUT_REDIRECT_URL`, but I did that. 
-	- I tried:
-		- setting it to '/login'
-		- setting it to '/login/'
-		- setting LogoutView.next_page to '/login/'
-		- putting a redirect in LogoutView.get_success_url
-			- nothing seemed to be printing from here
-		- LoginView
-			- Nothing seemed to be printing from here
-	- It seems like LogoutView never gets called....Lets check the logs:
-		- ```
-	    	[26/Sep/2025 23:11:11] "GET /profile/1/update/ HTTP/1.1" 302 0
-			Not Found: /accounts/login/
-			[26/Sep/2025 23:11:11] "GET /accounts/login/?next=/profile/1/update/ HTTP/1.1" 404 5506```
-	   		~~~
-	- /logout isn't being called here. The system goes from `GET /profile/1/update` to `GET /accounts/login`. Let's check what the default is using `python manage.py shell`
-		- ```
-    		settings.LOGOUT_REDIRECT_URL
-			>>> '/login'
-			# Out of curiosity I checked to see what the logout url was
-			settings.LOGOUT_URL
-			>>> '/accounts/logout/'
-		```
-	- None of these show how accounts/login was requested. It seems like settings.LOGIN_URL could be responsible [^4]
-
-	- **AHA! I needed to update settings.LOGIN_URL** 
 
 
 ## Stats(ListView)
@@ -532,18 +432,25 @@ Earlier in the development of this application, I purged my forms to focus on un
 - FBV for POST(Create)
 - CBV for POST(CreateView/FormView)
 
-I'll keep my search form in stats, make the update card form, and the profile create form.
+I'll keep my search form in stats, and make the card update view two different ways
 
 ## CardForm
 
 Used to update cards(and create in the future). 
+
 **The only fields that can be updated are alias, show_profile, reroute_url.**
+
+**Requires POST/csrf to prevent unwanted form submissions**
+
+**Uses clean() to validate fields that depend on each other** [^18]
+
+**Adds custom errors to the reroute url form field**
 
 #### dev notes:
 
-**[Wed Oct 15 2025]**
+**[Wed Oct 22 2025]**
 
-- 
+- [See card_update()(#card_update) to my struggles of working with Django forms
 
 ___
 
