@@ -63,31 +63,31 @@ Stats
     </table> 
     
 </div>
-    <div class="mb-4 flex flex-row position-relative">
-        <form method="get">
-            {% if query %}
-            <input type="text" class="border-1 border-white rounded p-2" name="query" value="{{ query }}">
-            {% else %}
-            <input type="text" class="border-1 border-white rounded p-2" name="query">
-            {% endif %}
-            <input type="submit" value="Find Card" class="position-absolute">
-        </form>
+<div class="mb-4 flex flex-row position-relative">
+    <form method="get">
+        {% if query %}
+        <input type="text" class="border-1 border-white rounded p-2" name="query" value="{{ query }}">
+        {% else %}
+        <input type="text" class="border-1 border-white rounded p-2" name="query">
+        {% endif %}
+        <input type="submit" value="Find Card" class="position-absolute">
+    </form>
+</div>
+{% if card_results %}
+    <div class="mb-4 flex flex-col text-white">
+        <p class="text-sm">Found {{ card_results|length }} Card(s)</p>
     </div>
-    {% if card_results %}
-        <div class="mb-4 flex flex-col text-white">
-            <p class="text-sm">Found {{ card_results|length }} Card(s)</p>
-        </div>
-            {% for card in card_results %}
-                <div class="flex mb-10">
-                    <img src="{{ card.design.front_design.url }}" class="w-[3rem] h-[1.7rem] rounded-sm">
-                    <p>{{ card }}</p>
-                </div>
-            {% endfor %}
-    {% elif card_results|length == 0 and query %}
-        <div class="mb-4 flex flex-col text-white">
-            <p class="text-sm">No cards found </p>
-        </div>
-    {% endif %}
+        {% for card in card_results %}
+            <div class="flex mb-10">
+                <img src="{{ card.design.front_design.url }}" class="w-[3rem] h-[1.7rem] rounded-sm">
+                <p>{{ card }}</p>
+            </div>
+        {% endfor %}
+{% elif card_results|length == 0 and query %}
+    <div class="mb-4 flex flex-col text-white">
+        <p class="text-sm">No cards found </p>
+    </div>
+{% endif %}
     
     
 		
