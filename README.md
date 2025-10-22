@@ -35,3 +35,11 @@ to this:
 
 Graph 1 represents daily usage. It's aggregration counts the number of uses (in Usage model) grouped by unique day.
 Graph 2 represents a leaderboard which tells which owners used their cards the most. It's aggregation counts the number of uses in (Usage model) grouped by a card's owner (Relation Traversal: card__owner_id)
+
+## A8 Updates 
+
+- I created the `card_update()` fbv, and the `CardUpdate()` cbv.
+- They both use the CardForm form class that I created, but the cbv uses less code. The fbv gave me more control over my application since I handle the request from start to finish. The cbv has alot going on underneath that makes it so that i can use less code, but that's not my code per se (and that comes with disadvantages). 
+- CardForm works with POST requests and the csrf token to prevent cross site requests. I didn't care in my GET function, but this form is used to update data in my database (DANGER!)
+- Set `CardForm` exlude to prevent updating non-permitted fields. 
+- Used `CardForm.clean()` method to validate Card fields that depend on each other (e.g, "reroute_url", "show_profile")
