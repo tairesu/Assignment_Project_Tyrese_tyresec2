@@ -85,8 +85,23 @@ def card_update(request, card_token):
 		form = CardForm(request.POST, instance=card)
 		hide_redirect_div = (card.show_profile or request.POST.get('show_profile')) and "route" not in str(form.errors)
 		if form.is_valid():
-			form.save()
-			return redirect('dashboard_view')
+			initial_alias = card.alias
+			submitted_alias = form.cleaned_data['alias']
+			"""
+			 A8: form.save() was being called when the alias wasn't unique
+			 I'll handle the error gracefully by throwing an error when: 
+				- The inital alias differs from the submitted alias
+				- AND when the submitted alias and card.owner combo exists already  
+			
+			"""
+			alias_has_changed = ( form.fields['alias'].has_changed(card.alias, submitted_alias) ) 
+			alias_in_use = ( Card.objects.filter(alias=submitted_alias, owner=card.owner).exists() )
+			if alias_in_use and alias_has_changed:
+				form.add_error("alias", "A card already has this name")
+			else:
+				form.save()
+				return redirect('dashboard_view')
+			
 
 	
 	return render(request, 'cardManager/card_update.html', {'form': form, 'card': card, 'hide_redirect_div': hide_redirect_div})
