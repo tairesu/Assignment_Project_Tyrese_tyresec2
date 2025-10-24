@@ -16,11 +16,23 @@ Updating Card
 		{% csrf_token %}
 		<div class="flex flex-col gap-3">
 	    	<label for="id_alias" class="text-bold text-lg">Alias</label>
-	    	<input type="text" class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4" placeholder="Enter Alias" id="id_alias" name="alias"/>
+	    	<input 
+	    	type="text" 
+	    	class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4" 
+	    	placeholder="Enter Alias" id="id_alias" 
+	    	name="alias"
+	    	{% if card.alias %} value="{{ card.alias }}" {% endif %}
+	    	/>
     	</div>	
     	<div class="flex flex-col gap-3">
 	    	<label for="id_reroute_url" class="text-bold text-lg">Redirect URL</label>
-	    	<input type="url" class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4" placeholder="Enter Url" id="id_reroute_url" name="reroute_url"/>
+	    	<input 
+	    	type="url" 
+	    	class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4" 
+	    	placeholder="Enter Url" id="id_reroute_url" 
+	    	name="reroute_url" 
+	    	{% if card.reroute_url %} value="{{ card.reroute_url }}" {% endif %}
+	    	/>
     	</div>
     	<div class="flex flex-col gap-3">
 	    	<label for="id_show_profile" class="text-bold text-lg">Show Profile</label>
@@ -34,6 +46,6 @@ Updating Card
 		    	<input type="radio" class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md"  value="False" id="no" name="show_profile" {% if not form.cleaned_data.show_profiile %} checked {% endif %}>
 	    	</div>
     	</div>
-		<input class="bg-[var(--color-main)] rounded-md py-4 mt-9" type="submit" value="Update Card">
+		<input class="bg-[var(--color-main)] rounded-md py-4 mt-9" type="submit" value="Save Changes">
 	</form>
 {% endblock %}
