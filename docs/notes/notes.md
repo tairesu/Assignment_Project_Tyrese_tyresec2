@@ -423,12 +423,37 @@ FBV w/ GET POST capabilities for updating cards. (Uses [CardForm](#cardform))
 - I want to validate the CardForm. reroute url must be null when show_profile is true, and it must to be set when show_profile is False. **To validate these form fields I used the clean method in CardForm and raised errors depending on these two fields**[^18]
 - Then I learned in that same section that the form class has a method called add_error where I can get the error msg to appear at a field [^18]
 
+**[Oct 24 2025] [A8:Forms]**
+
+- The alias field began acting up. I had to capture the submitted alias and check if it was both unique and any different from the initial alias (derived from current card instance's alias). To decide which operator to use, I designed this truth table:
+	
+| alias field changed | alias exists | = |
+|---|---|---|
+| T | T | F |
+| T | F | T |
+| F | T | T |
+| F | F | T |
+
+What happens if the field hasn't changed and is also non-existent?  Let's test it: 
+	- ~~ I hypothesize that for this case to occur, one would have to change the card's alias in the database sometime after that input gets set and before the form submits.~~  
+	-  I attempted to change the card alias in the db while actively sitting on the form. the alias input was set to "Business Card Venture" before the db change.  In admin, I updated this card's alias to "City Event Card". When I finally submitted the form, the alias field changed returned True because card.alias is not what it once was when the page loaded(the value before the db change) ==> ```
+		card_update(): alias_has_changed[City Event Card, Business Card Venture] => True
+		card_update(): alias_in_use[Business Card Venture] => False```
+		
+	- If I brute force the alias_field_changed = False for testing purposes, lets see what happens. => 
+	```
+
+	card_update(): alias_has_changed[AD2, IP8] => False 
+	card_update(): alias_in_use[IP8] => False
+
+	```
+	
 
 # Forms
 
 Earlier in the development of this application, I purged my forms to focus on understanding how form works in Django. For Assignment 8 I need to come up with 3 Forms:  
 
-- A GET (Search / Fitler)
+- A GET (Search / Filter)
 - FBV for POST(Create)
 - CBV for POST(CreateView/FormView)
 

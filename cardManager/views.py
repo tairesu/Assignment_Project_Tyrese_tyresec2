@@ -76,6 +76,7 @@ def card_update(request, card_token):
 		FBV for handling card update functionality
 	"""
 	card = get_object_or_404(Card, token=card_token)
+	initial_alias = card.alias
 	if request.method == "GET":
 		# Populate form with data from card model instance
 		form = CardForm(instance=card)
@@ -85,7 +86,6 @@ def card_update(request, card_token):
 		form = CardForm(request.POST, instance=card)
 		hide_redirect_div = (card.show_profile or request.POST.get('show_profile')) and "route" not in str(form.errors)
 		if form.is_valid():
-			initial_alias = card.alias
 			submitted_alias = form.cleaned_data['alias']
 			"""
 			 A8: form.save() was being called when the alias wasn't unique
@@ -94,7 +94,7 @@ def card_update(request, card_token):
 				- AND when the submitted alias and card.owner combo exists already  
 			
 			"""
-			alias_has_changed = ( form.fields['alias'].has_changed(card.alias, submitted_alias) ) 
+			alias_has_changed = not submitted_alias == initial_alias
 			alias_in_use = ( Card.objects.filter(alias=submitted_alias, owner=card.owner).exists() )
 			if alias_in_use and alias_has_changed:
 				form.add_error("alias", "A card already has this name")
