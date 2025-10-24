@@ -10,6 +10,9 @@
 			--color-bkg:#010a0e;
 			--color-bkg-transparent:#010a0ebb;
 }
+.text-danger, .errorlist li {
+	color: var(--color-danger) !important;
+}
 .bkg-gradient {
 	background:var(--color-bkg);
 }
@@ -63,4 +66,7 @@ input[type="radio"]#yes:before {
 input::placeholder {
 	color: grey;
 	font-style: italic;
+}
+input:invalid {
+	border-color:var(--color-danger)!important;
 }
