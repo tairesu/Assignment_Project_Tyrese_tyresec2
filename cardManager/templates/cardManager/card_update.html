@@ -11,17 +11,19 @@ Updating Card
 </div>
 {% endblock %}
 {% block content %}
-	
 	<form method="post" class="flex flex-col gap-6">
 		{% csrf_token %}
 		<div class="flex flex-col gap-3">
-	    	<label for="id_alias" class="text-bold text-lg">Alias</label>
+	    	<label for="id_alias" class="text-bold text-lg">Card Name</label>
 	    	<input 
 	    	type="text" 
 	    	class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4" 
-	    	placeholder="Enter Alias" id="id_alias" 
-	    	name="alias"
+	    	placeholder="ex: Main Card" 
+	    	id="id_alias" 
+	    	name="alias" 
+	    	maxlength="{{ form.fields.alias.max_length }}" 
 	    	{% if card.alias %} value="{{ card.alias }}" {% endif %}
+	    	required
 	    	/>
     	</div>	
     	<div class="flex flex-col gap-3">
@@ -29,13 +31,15 @@ Updating Card
 	    	<input 
 	    	type="url" 
 	    	class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4" 
-	    	placeholder="Enter Url" id="id_reroute_url" 
-	    	name="reroute_url" 
+	    	placeholder="ex: https://instagram.com" 
+	    	id="id_reroute_url" 
+	    	name="reroute_url"
+	    	maxlength="{{ form.fields.reroute_url.max_length }}"
 	    	{% if card.reroute_url %} value="{{ card.reroute_url }}" {% endif %}
 	    	/>
     	</div>
     	<div class="flex flex-col gap-3">
-	    	<label for="id_show_profile" class="text-bold text-lg">Show Profile</label>
+	    	<label for="id_show_profile" class="text-bold text-lg">Show Profile on Tap</label>
 	    	<div class="flex flex-row gap-3">
 		    	<input type="radio" 
 			    	class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md" 
