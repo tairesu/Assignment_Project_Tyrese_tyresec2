@@ -47,21 +47,9 @@ input[type="radio"] {
   &#no:before { content: "No" }
   &#yes:before { content: "Yes" }
   &:checked {
-	background-color:var(--color-main);
-  	border:3px solid var(--color-main);
-  }
-  &:checked:before {
-  	border:3px solid var(--color-input-bkg);
+	background-color:#155984;
   }
 
-}
-input[type="radio"]#no:before {
-  
-  
-  
-}
-input[type="radio"]#yes:before {
-	
 }
 input::placeholder {
 	color: grey;
