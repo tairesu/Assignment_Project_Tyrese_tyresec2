@@ -9,13 +9,13 @@
 	<div class="flex flex-col gap-4 mb-10">
 		<h2 class="text-xl">My Cards</h2>
 	{% for card in user_cards %}
-		<div class="flex flex-row gap-2">
+		<div class="flex flex-row gap-3">
 			<a href="{{ card.get_absolute_url }}">
 				<img class="w-[8rem] h-[5rem] rounded-sm" src="{{ card.design.front_design.url }}"/>
 			</a>
 			<div>
 				{% if card.alias %}
-					<p>{{ card.alias }}</p>
+					<p class="font-bold">{{ card.alias }}</p>
 					{% else %}
 					<p>{{ card }}</p>
 				{% endif %}
@@ -25,7 +25,7 @@
 					<p class="text-darkgrey">{{ card.reroute_url }}</p>
 				{% else %}
 				{% endif %}
-				<a href="{{ card.get_update_url }}">Edit Card</a>
+				<a href="{{ card.get_update_url }}" class="text-(--color-main)">Edit Card</a>
 			</div>
 			
 		</div>
