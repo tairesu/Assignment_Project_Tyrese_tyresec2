@@ -16,9 +16,6 @@ Updating Card
 		{% csrf_token %}
 		<div class="flex flex-col gap-1">
 	    	<label for="id_alias" class="text-bold text-lg">Card Name</label>
-	    	{% if form.alias.errors %}
-	    		<p class="text-danger text-sm" >{{ form.alias.errors }}</p>
-	    	{% endif %}
 	    	<input 
 		    	type="text" 
 		    	class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4" 
@@ -27,10 +24,14 @@ Updating Card
 		    	name="alias" 
 		    	maxlength="{{ form.fields.alias.max_length }}" 
 		    	{% if card.alias %} value="{{ card.alias }}" {% endif %}
+		    	{% if form.alias.errors %} style="border-color:var(--color-danger)" {% endif %}
 		    	required
 	    	/>
+	    	{% if form.alias.errors %}
+	    		<p class="text-danger text-sm" >{{ form.alias.errors }}</p>
+	    	{% endif %}
     	</div>
-    	<div class="flex flex-col gap-3">
+    	<div class="flex flex-col gap-1">
 	    	<label for="id_show_profile" class="text-bold text-lg">Show Profile on Tap</label>
 	    	<div class="flex flex-row gap-3">
 		    	<input 
@@ -63,7 +64,6 @@ Updating Card
     	</div>
 		<input class="bg-[var(--color-main)] rounded-md py-4 mt-9" type="submit" value="Save Changes">
 	</form>
-{{ hide_redirect_div }}
 {% endblock %}
 {% block extra_scripts %}
 <script src="{% static 'js/forms.js' %}?v={{ tz }}"></script>
