@@ -1,5 +1,8 @@
 from django import forms
-from cardManager.models import Card
+from cardManager.models import (
+	Card,
+	Profile
+)
 from django.core.exceptions import ValidationError
 
 
@@ -18,3 +21,9 @@ class CardForm(forms.ModelForm):
 			self.add_error("reroute_url","Reroute URL needed")
 
 		return data
+
+class ProfileForm(forms.ModelForm):
+	class Meta:
+		model = Profile
+		fields = '__all__'
+

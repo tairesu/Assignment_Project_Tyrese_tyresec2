@@ -15,14 +15,16 @@ from django.db.models.functions import TruncDay
 from django.views.decorators.csrf import csrf_exempt
 from django.forms.models import model_to_dict
 from cardManager.models import (
-Card,
-Profile,
-Owner,
-Usage,
-Design
+	Card,
+	Profile,
+	Owner,
+	Usage,
+	Design,
 )
-from .forms import CardForm
-
+from .forms import (
+	CardForm,
+	ProfileForm,
+)
 	# Create and Saves Usage instance, given card field
 def __add_to_usage(request, card):
 	print('\ninit\'d __add_to_usage')
@@ -114,6 +116,12 @@ class ProfileDetail(DetailView):
 	slug_field = 'profile_slug'
 	slug_url_kwarg = 'profile_slug'
 
+class ProfileUpdate(UpdateView):
+	model = Profile
+	form_class = ProfileForm
+	template_name = 'cardManager/profile_update.html'
+	slug_field = 'profile_slug'
+	slug_url_kwarg = 'profile_slug'
 
 # Renders dashboard template with owner cards
 class UserDashboard(ContextMixin, View):
