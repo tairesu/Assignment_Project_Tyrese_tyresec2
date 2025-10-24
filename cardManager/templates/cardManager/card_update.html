@@ -6,13 +6,13 @@ Updating Card
 {% block hero_header %}
 <div class="flex flex-row justify-center gap-2">
 	<img 
-		class="w-[16rem] h-[10rem] rounded-sm"
+		class="w-[16rem] h-[10rem] rounded-sm md:w-[21rem] h-[13rem]"
 		src="{{ card.design.front_design.url }}"
 	/>
 </div>
 {% endblock %}
 {% block content %}
-	<form method="post" class="flex flex-col gap-6">
+	<form method="post" class="flex m-auto flex-col gap-7 md:w-3/4 lg:w-2/5">
 		{% csrf_token %}
 		<div class="flex flex-col gap-1">
 	    	<label for="id_alias" class="text-bold text-lg">Card Name</label>
