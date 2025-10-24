@@ -44,3 +44,7 @@ input[type="radio"]#yes:before {
 input[type="radio"]:checked {
 	background-color:var(--color-main)
 }
+input::placeholder {
+	color: grey;
+	font-style: italic;
+}
