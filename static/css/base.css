@@ -33,16 +33,32 @@ input[type="radio"] {
   justify-content: center;
   align-items:center;
   color:white;
+
+  &:before {
+  	display:grid;
+	place-content: center;
+	width:100%;
+	height:100%;
+	border-radius:var(--radius-md);
+  }
+  &#no:before { content: "No" }
+  &#yes:before { content: "Yes" }
+  &:checked {
+	background-color:var(--color-main);
+  	border:3px solid var(--color-main);
+  }
+  &:checked:before {
+  	border:3px solid var(--color-input-bkg);
+  }
+
 }
 input[type="radio"]#no:before {
-  content:"No";
+  
+  
   
 }
 input[type="radio"]#yes:before {
-	content: "Yes";
-}
-input[type="radio"]:checked {
-	background-color:var(--color-main)
+	
 }
 input::placeholder {
 	color: grey;
