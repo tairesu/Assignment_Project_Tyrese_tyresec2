@@ -70,6 +70,7 @@ class CardUpdate(UpdateView):
 	template_name = 'cardManager/card_update.html'
 	success_url = reverse_lazy('dashboard_view')
 
+
 def card_update(request, card_token):
 	"""
 		FBV for handling card update functionality
@@ -78,16 +79,17 @@ def card_update(request, card_token):
 	if request.method == "GET":
 		# Populate form with data from card model instance
 		form = CardForm(instance=card)
+		hide_redirect_div = card.show_profile
 	elif request.method == "POST":
 		# Let's update the current card instance with data from forms 		
 		form = CardForm(request.POST, instance=card)
+		hide_redirect_div = (card.show_profile or request.POST.get('show_profile')) and "route" not in str(form.errors)
 		if form.is_valid():
 			form.save()
 			return redirect('dashboard_view')
 
-	# What is form out of curiosity
-	print("\n\ncard_update() form:", form)
-	return render(request, 'cardManager/card_update.html', {'form': form, 'card': card})
+	
+	return render(request, 'cardManager/card_update.html', {'form': form, 'card': card, 'hide_redirect_div': hide_redirect_div})
 
 
 # Render profile template using the slugs instead of pk

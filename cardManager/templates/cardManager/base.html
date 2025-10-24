@@ -9,6 +9,7 @@
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.6.0/css/fontawesome.min.css">
 	<link rel="stylesheet" href="{% static "css/base.css" %}?v={{ tz }}">
 	<link rel="stylesheet" href="{% static "css/cards.css" %}?v={{ tz }}">
+	<link rel="stylesheet" href="{% static "css/forms.css" %}?v={{ tz }}">
 	<link rel="icon" type="image/png" href="{% static "imgs/logo.png" %}">
 	<!-- I'll Eventually find the Tailwind Link
 	-->
@@ -50,11 +51,9 @@
 			
 	</nav>
 	<div class="w-full py-18 px-6">
-		<h1 class="text-center text-4xl">
-			{% block hero_header %}
+		{% block hero_header %}
 
-			{% endblock %}
-		</h1>
+		{% endblock %}
 	</div>
 	<div class="@container px-9">
 		{% block content %}
