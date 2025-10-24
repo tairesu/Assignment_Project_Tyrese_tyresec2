@@ -435,19 +435,20 @@ FBV w/ GET POST capabilities for updating cards. (Uses [CardForm](#cardform))
 | F | F | T |
 
 What happens if the field hasn't changed and is also non-existent?  Let's test it: 
-	- ~~ I hypothesize that for this case to occur, one would have to change the card's alias in the database sometime after that input gets set and before the form submits.~~  
-	-  I attempted to change the card alias in the db while actively sitting on the form. the alias input was set to "Business Card Venture" before the db change.  In admin, I updated this card's alias to "City Event Card". When I finally submitted the form, the alias field changed returned True because card.alias is not what it once was when the page loaded(the value before the db change) ==> ```
-		card_update(): alias_has_changed[City Event Card, Business Card Venture] => True
-		card_update(): alias_in_use[Business Card Venture] => False```
-		
-	- If I brute force the alias_field_changed = False for testing purposes, lets see what happens. => 
+	- ~~I hypothesize that for this case to occur, one would have to change the card's alias in the database sometime after that input gets set and before the form submits.~~  
+	-  I attempted to change the card alias in the db while actively sitting on the form. the alias input was set to "Business Card Venture" before the db change.  In admin, I updated this card's alias to "City Event Card". When I finally submitted the form, the alias field changed returned True because card.alias is not what it once was when the page loaded(the value before the db change) ==> 
+	```
+	card_update(): alias_has_changed[City Event Card, Business Card Venture] => True
+	card_update(): alias_in_use[Business Card Venture] => False
+	```
+	- If I manually force the alias_field_changed = False for testing purposes, lets see what happens. => 
 	```
 
 	card_update(): alias_has_changed[AD2, IP8] => False 
 	card_update(): alias_in_use[IP8] => False
 
 	```
-	
+
 
 # Forms
 
