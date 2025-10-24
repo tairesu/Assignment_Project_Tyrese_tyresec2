@@ -10,9 +10,6 @@
 			--color-bkg:#010a0e;
 			--color-bkg-transparent:#010a0ebb;
 }
-.text-danger, .errorlist li {
-	color: var(--color-danger) !important;
-}
 .bkg-gradient {
 	background:var(--color-bkg);
 }
@@ -23,38 +20,4 @@ table{
 	td:not(:first-child){
 		font-weight:100
 	}
-}
-input[type="radio"] {
-  -webkit-appearance: none;
-  appearance: none;
-  background-color: var(--color-input-bkg);
-  margin: 0;
-  height: 3rem;
-  /*Let make them fill the parent div.flex */
-  flex-grow: 1;
-  display:flex;
-  justify-content: center;
-  align-items:center;
-  color:white;
-
-  &:before {
-  	display:grid;
-	place-content: center;
-	width:100%;
-	height:100%;
-	border-radius:var(--radius-md);
-  }
-  &#no:before { content: "No" }
-  &#yes:before { content: "Yes" }
-  &:checked {
-	background-color:#155984;
-  }
-
-}
-input::placeholder {
-	color: grey;
-	font-style: italic;
-}
-input:invalid {
-	border-color:var(--color-danger)!important;
 }

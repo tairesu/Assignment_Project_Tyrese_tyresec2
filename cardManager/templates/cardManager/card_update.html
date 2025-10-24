@@ -1,4 +1,5 @@
 {% extends 'cardManager/base.html' %}
+{% load static %}
 {% block opener %}
 Updating Card
 {% endblock %}
@@ -13,7 +14,7 @@ Updating Card
 {% block content %}
 	<form method="post" class="flex flex-col gap-6">
 		{% csrf_token %}
-		<div class="flex flex-col gap-3">
+		<div class="flex flex-col gap-1">
 	    	<label for="id_alias" class="text-bold text-lg">Card Name</label>
 	    	{% if form.alias.errors %}
 	    		<p class="text-danger text-sm" >{{ form.alias.errors }}</p>
@@ -28,8 +29,23 @@ Updating Card
 		    	{% if card.alias %} value="{{ card.alias }}" {% endif %}
 		    	required
 	    	/>
-    	</div>	
-    	<div class="flex flex-col gap-1">
+    	</div>
+    	<div class="flex flex-col gap-3">
+	    	<label for="id_show_profile" class="text-bold text-lg">Show Profile on Tap</label>
+	    	<div class="flex flex-row gap-3">
+		    	<input 
+		    		type="radio"
+		    		onclick="toggleRedirectDiv(this.id)" 
+			    	class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md" 
+			    	value="True" 
+			    	id="yes" 
+			    	name="show_profile" 
+			    	{% if hide_redirect_div  or form.cleaned_data.show_profile %} checked {% endif %}
+			    >
+		    	<input type="radio" onclick="toggleRedirectDiv(this.id)" class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md"  value="False" id="no" name="show_profile" {% if not hide_redirect_div and not form.cleaned_data.show_profile %} checked {% endif %}>
+	    	</div>
+    	</div>
+    	<div class="flex flex-col gap-1 dimmable {% if hide_redirect_div %} dim-out {% endif %}" id="redirectDiv">
 	    	<label for="id_reroute_url" class="text-bold text-lg">External Link</label>
 	    	<input 
 		    	type="url" 
@@ -45,21 +61,10 @@ Updating Card
 	    		<p class="text-danger text-sm" >{{ form.reroute_url.errors }}</p>
 	    	{% endif %}
     	</div>
-    	<div class="flex flex-col gap-3">
-	    	<label for="id_show_profile" class="text-bold text-lg">Show Profile on Tap</label>
-	    	<div class="flex flex-row gap-3">
-		    	<input 
-		    		type="radio" 
-			    	class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md" 
-			    	value="True" 
-			    	id="yes" 
-			    	name="show_profile" 
-			    	{% if card.show_profile or form.cleaned_data.show_profile %} checked {% endif %}
-			    >
-		    	<input type="radio" class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md"  value="False" id="no" name="show_profile" {% if not card.show_profile %} checked {% endif %}>
-	    	</div>
-    	</div>
 		<input class="bg-[var(--color-main)] rounded-md py-4 mt-9" type="submit" value="Save Changes">
 	</form>
-
+{{ hide_redirect_div }}
+{% endblock %}
+{% block extra_scripts %}
+<script src="{% static 'js/forms.js' %}?v={{ tz }}"></script>
 {% endblock %}
