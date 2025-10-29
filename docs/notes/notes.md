@@ -478,6 +478,53 @@ Used to update cards(and create in the future).
 
 - [See card_update()(#card_update) to my struggles of working with Django forms
 
+##### A8: Forms ###
+
+**[Fri Oct 24 2025]**
+
+- **I learned that the FormClass has at least 2 ways of retrieving data from the form. There's a `self.cleaned_data` dictionary, and a `self.data` dictionary** You see, the method `is_valid()` checks to see if there are any errors:
+
+```
+"""This comes from Django's source code for *BaseForm*"""
+def is_valid(self):
+     """Return True if the form has no errors, or False otherwise."""
+     return self.is_bound and not self.errors
+``` 
+- `self.errors` stores errors after `clean ` has been called. Before clean gets called, `full_clean()` is called. 
+
+```
+"""This comes from Django's source code for *BaseForm.errors*"""
+	@property
+	def errors(self):
+	  """Return an ErrorDict for the data provided for the form."""
+	  if self._errors is None:
+	      self.full_clean()
+	  return self._errors
+``` 
+- `self.full_clean()`  cleans all the fields, the form, calls some `self._post_clean` method, and appends any issues to self.errors. Each field seems to have their own cleaning method: (Source Code)
+
+```
+def _clean_fields(self):
+  for name, bf in self._bound_items():
+      field = bf.field
+      try:
+          self.cleaned_data[name] = field._clean_bound_field(bf)
+          if hasattr(self, "clean_%s" % name):
+              value = getattr(self, "clean_%s" % name)()
+              self.cleaned_data[name] = value
+      except ValidationError as e:
+          self.add_error(name, e)
+```
+
+- When it came to my form, invalid urls were accepted (e.g., "https.xyz.com89732"). This gave me a KeyError after submission because of how I used `reroute_url` in `data['reroute_url']` after setting `data = super().clean(**kwargs)`. When Django tried to clean the `reroute_url` field, it couldn't because we see that `reroute_url` is NOT a valid key in cleaned data. 
+
+- I found out that django has a built in URLValidator that could be manually called in the view or forms file. Instead of those options, I opted to manually use `clean()` on the `reroute_url` Field to catch if the reroute_url is valid according to the validator like so: 
+
+```
+is_reroute_set = self.fields['reroute_url'].clean(self.data['reroute_url'])
+
+```
+- When I did that, the application rendered the update form template with an error saying "Enter Valid URL". mission accomplished
 ___
 
 # Templates
