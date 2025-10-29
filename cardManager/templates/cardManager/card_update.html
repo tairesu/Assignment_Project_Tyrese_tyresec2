@@ -55,7 +55,8 @@ Updating Card
 		    	id="id_reroute_url" 
 		    	name="reroute_url"
 		    	maxlength="{{ form.fields.reroute_url.max_length }}"
-		    	{% if card.reroute_url %} value="{{ card.reroute_url }}" {% endif %}
+		    	{% if form.data.reroute_url %} value="{{ form.data.reroute_url }}"
+		    	{% elif card.reroute_url %} value="{{ card.reroute_url }}" {% endif %}
 		    	{% if form.reroute_url.errors %} style="border-color:var(--color-danger)" {% endif %}
 	    	/>
 	    	{% if form.reroute_url.errors %}
