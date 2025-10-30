@@ -296,8 +296,10 @@ def __extract_graph_data(queryset, target_elem="", type='scatter'):
 			}
 		],
 	}
+
 	# Some querysets may come with dictionaries w/ more than 2 keys
 	for coordinate in queryset:
+		print(f"coordinate: {coordinate}\n queryset: {queryset}")
 		if len(coordinate.keys()) == 2:
 			x_series_key = list(coordinate.keys())[0]
 			y_series_key = list(coordinate.keys())[1]
@@ -305,3 +307,20 @@ def __extract_graph_data(queryset, target_elem="", type='scatter'):
 			graph_data['traces'][0]['y'].append(coordinate[y_series_key])
 	print('__extract_graph_data:', graph_data)
 	return graph_data 
+
+### IP9: APIs + JSON Endpoints + Server-Side Charts
+
+def daily_usage(request):
+	#Lets get a queryset of card usages grouped by days and count the number of cards used on those days 
+	daily_usage_qs = (
+		Usage
+		.objects
+		.exclude(card__owner=None)
+		.values(unique_day=TruncDay('date_used'))
+		.annotate(n_card_taps=Count('card'))
+		.order_by('-unique_day')
+	)
+	#Now lets make a list of dictionaries with data from the queryset
+	daily_usage_labels = [ day['unique_day'] for day in daily_usage_qs]
+	daily_usage_values = [ day['n_card_taps'] for day in daily_usage_qs]
+	return JsonResponse({"labels":daily_usage_labels, "values": daily_usage_values}, safe=False)
