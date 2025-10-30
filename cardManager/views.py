@@ -1,13 +1,15 @@
 #import stripe
+import urllib.request
+import json
 from datetime import datetime
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from django.contrib.auth import login, views as auth_views
 from django.http import HttpResponse
 from django.http.response import JsonResponse
 # from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
-from django.views.generic import UpdateView, CreateView, ListView, DetailView, RedirectView
+from django.views.generic import UpdateView, CreateView, ListView, DetailView, RedirectView, TemplateView
 from django.views.generic.base import ContextMixin, View
 from django.template import loader
 from django.db.models import Count, Q
@@ -311,16 +313,41 @@ def __extract_graph_data(queryset, target_elem="", type='scatter'):
 ### IP9: APIs + JSON Endpoints + Server-Side Charts
 
 def daily_usage(request):
-	#Lets get a queryset of card usages grouped by days and count the number of cards used on those days 
+	"""
+	GET /api/daily_usage
+	Return unique days and number of card taps for bar graph
+	""" 
+	# Create a queryset
 	daily_usage_qs = (
 		Usage
 		.objects
 		.exclude(card__owner=None)
-		.values(unique_day=TruncDay('date_used'))
+		.values(unique_day=TruncDay('date_used')) # unique days
 		.annotate(n_card_taps=Count('card'))
 		.order_by('-unique_day')
 	)
-	#Now lets make a list of dictionaries with data from the queryset
-	daily_usage_labels = [ day['unique_day'] for day in daily_usage_qs]
-	daily_usage_values = [ day['n_card_taps'] for day in daily_usage_qs]
-	return JsonResponse({"labels":daily_usage_labels, "values": daily_usage_values}, safe=False)
+	# Let's break the queryset into two lists (denotes the x, and y series)
+	unique_days = [ day['unique_day'] for day in daily_usage_qs ]
+	n_card_taps = [ day['n_card_taps'] for day in daily_usage_qs ]
+	# And return as JSON
+	return JsonResponse({"labels": unique_days, "values": n_card_taps}, safe=True)
+
+def daily_usage_png(request):
+	"""
+	Creates a bar graph png using matplotlib and the json data from my daily_usage fbv
+
+	"""
+	# Build the absolute uri that I'll pull the json from
+	api_uri = request.build_absolute_uri(reverse("api_daily_usage_view"))
+	# print(api_uri) ==> http://localhost:8000/api/daily_usage/bar_graph.png
+	# Let's graph the json data from that uri
+	with urllib.request.urlopen(api_uri) as api_json_response:
+		pyth_dict = json.load(api_json_response) # Parse string to python dict
+
+	x_series = pyth_dict['labels']
+	y_series = pyth_dict['values']
+	return HttpResponse(f'<h1>{x_series} {y_series}</h1>')
+
+
+
+
