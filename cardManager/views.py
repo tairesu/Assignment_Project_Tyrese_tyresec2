@@ -1,6 +1,9 @@
 #import stripe
 import urllib.request
 import json
+from io import BytesIO
+import matplotlib
+import matplotlib.pyplot as plt
 from datetime import datetime
 from django.urls import reverse_lazy, reverse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -327,7 +330,7 @@ def daily_usage(request):
 		.order_by('-unique_day')
 	)
 	# Let's break the queryset into two lists (denotes the x, and y series)
-	unique_days = [ day['unique_day'] for day in daily_usage_qs ]
+	unique_days = [ day['unique_day'].strftime("%Y-%m-%d") for day in daily_usage_qs ]
 	n_card_taps = [ day['n_card_taps'] for day in daily_usage_qs ]
 	# And return as JSON
 	return JsonResponse({"labels": unique_days, "values": n_card_taps}, safe=True)
@@ -340,13 +343,27 @@ def daily_usage_png(request):
 	# Build the absolute uri that I'll pull the json from
 	api_uri = request.build_absolute_uri(reverse("api_daily_usage_view"))
 	# print(api_uri) ==> http://localhost:8000/api/daily_usage/bar_graph.png
-	# Let's graph the json data from that uri
+	# Let's grab the json data from that uri
 	with urllib.request.urlopen(api_uri) as api_json_response:
 		pyth_dict = json.load(api_json_response) # Parse string to python dict
 
+	# And start plotting
 	x_series = pyth_dict['labels']
 	y_series = pyth_dict['values']
-	return HttpResponse(f'<h1>{x_series} {y_series}</h1>')
+
+	x = range(len(x_series))
+	fig, ax = plt.subplots(figsize=(6.5, 3.2), dpi=150)
+	ax.bar(x_series, y_series, color="#13294B")
+	ax.set_title("Taps per day")
+	ax.set_ylabel("# Taps")
+	ax.set_xticklabels(x_series, rotation=45, ha="right")
+	fig.tight_layout()
+
+	buf = BytesIO()
+	fig.savefig(buf, format="png")
+	plt.close(fig)
+	buf.seek(0)
+	return HttpResponse(buf.getvalue(), content_type="image/png")
 
 
 
