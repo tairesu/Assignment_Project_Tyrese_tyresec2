@@ -335,6 +335,7 @@ def daily_usage(request):
 	# And return as JSON
 	return JsonResponse({"labels": unique_days, "values": n_card_taps}, safe=True)
 
+
 def daily_usage_png(request):
 	"""
 	Creates a bar graph png using matplotlib and the json data from my daily_usage fbv
@@ -347,10 +348,10 @@ def daily_usage_png(request):
 	with urllib.request.urlopen(api_uri) as api_json_response:
 		pyth_dict = json.load(api_json_response) # Parse string to python dict
 
-	# And start plotting
 	x_series = pyth_dict['labels']
 	y_series = pyth_dict['values']
 
+	# And start plotting
 	x = range(len(x_series))
 	fig, ax = plt.subplots(figsize=(6.5, 3.2), dpi=150)
 	ax.bar(x_series, y_series, color="#13294B")
