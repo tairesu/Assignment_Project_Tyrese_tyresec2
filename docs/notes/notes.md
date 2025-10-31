@@ -450,6 +450,14 @@ What happens if the field hasn't changed and is also non-existent?  Let's test i
 	```
 
 
+## daily_usage
+
+This view is attached to the '*api/daily_usage/*' url path. It's an API that returns a JsonResponse, instead of an HttpResponse, to quickly serve the number of card taps grouped by unique date. I used JsonResponse because I don't need any excess headers, HTML, or anything other than a object composed of a list with some integers and strings. It automatically sets the MIME type to `application/json`
+
+## daily_usage_png
+
+This view is attached to the '*api/daily_usage/bar_graph.png*' url path, and it grabs the Json from [daily_usage](#daily_usage), parses it, and returns a matplotlib bar graph as a .png file. (From there, I can embed the .png into my `img` src)
+
 # Forms
 
 Earlier in the development of this application, I purged my forms to focus on understanding how form works in Django. For Assignment 8 I need to come up with 3 Forms:  
@@ -476,7 +484,7 @@ Used to update cards(and create in the future).
 
 **[Wed Oct 22 2025]**
 
-- [See card_update()(#card_update) to my struggles of working with Django forms
+- [See card_update()(#card_update) to see my struggles of working with Django forms
 
 ##### A8: Forms ###
 
