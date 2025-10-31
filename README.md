@@ -43,3 +43,7 @@ Graph 2 represents a leaderboard which tells which owners used their cards the m
 - CardForm works with POST requests and the csrf token to prevent cross site requests. I didn't care in my GET function, but this form is used to update data in my database (DANGER!)
 - Set `CardForm` exlude to prevent updating non-permitted fields. 
 - Used `CardForm.clean()` method to validate Card fields that depend on each other (e.g, "reroute_url", "show_profile")
+
+## A9 Updates
+
+- I created the `daily_usage` fbv, and  `daily_usage_png` fbv to return the JSON data of card usages grouped by date,  and generate a matplotlib based chart (from the data) respectively. For ease of use, I built `daily_usage` to contain labels (the x values) and value (the y values). 
