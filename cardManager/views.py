@@ -3,6 +3,8 @@ import urllib.request
 import json
 from io import BytesIO
 import matplotlib
+
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from datetime import datetime
 from django.urls import reverse_lazy, reverse
