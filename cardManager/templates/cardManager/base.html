@@ -36,16 +36,22 @@
 				<span>TC Digital</span>
 			{% endif %}
 		</div>
-		<div class="flex gap-2" name="navbar-links">
+		<div class="flex gap-4" name="navbar-links">
 			{% if request.user.is_authenticated %}
-	            {% if request.user.profile %}
+	            {% if user.profile.name %}
 	            	<a href="">
 	            		<button>Edit Profile</button>
 	            	</a>
 	            {% else %}
 	            	<a href=""><button>Create Profile</button></a>
 	            {% endif %}
+	        {% else %}
 	        {% endif %}
+	        <a href="{% url 'dashboard_view' %}">Dashboard</a>
+	        <a href="{% url 'stats_view' %}">Stats</a>
+	        <a href="{% url 'api_daily_usage_view' %}">Api Json</a>
+	        <a href="{% url 'daily_usage_graph_png_view' %}">Api Bar Graph</a>
+
 	    </div>
 	            
 			
