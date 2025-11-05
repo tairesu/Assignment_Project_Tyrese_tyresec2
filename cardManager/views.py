@@ -27,12 +27,20 @@ from cardManager.models import (
 	Owner,
 	Usage,
 	Design,
+	Request
 )
 from .forms import (
 	CardForm,
 	ProfileForm,
 )
-	# Create and Saves Usage instance, given card field
+
+# Home Page fbv
+class HomePage(ListView):
+    model = Design
+    template_name = 'cardManager/home.html'
+        
+        
+# Create and Saves Usage instance, given card field
 def __add_to_usage(request, card):
 	print('\ninit\'d __add_to_usage')
 	new_use = Usage(card=card)

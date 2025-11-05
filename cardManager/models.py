@@ -84,3 +84,13 @@ class Usage(models.Model):
 
 	def __str__(self):
 		return f'{self.date_used} {self.card}'
+
+# A9 
+class Request(models.Model):
+    request_id = models.AutoField(primary_key=True)
+    date_created = models.DateTimeField(default=timezone.now, editable=False)
+    preset_design = models.ForeignKey(Design, related_name="requests", on_delete=models.PROTECT, blank=True)
+    custom_design = models.ImageField(upload_to='userPhotos/customDesigns/', blank=True)
+    custom_design_rear = models.ImageField(upload_to='userPhotos/customDesigns/', blank=True)
+    owner = models.ForeignKey(Owner, related_name="requests", on_delete=models.PROTECT, blank=False)
+    card_qty = models.IntegerField(default=1)
