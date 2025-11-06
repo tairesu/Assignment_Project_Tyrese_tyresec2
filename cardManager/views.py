@@ -1,7 +1,9 @@
 #import stripe
 import urllib.request
 import json
+from django.utils.safestring import mark_safe
 from io import BytesIO
+import requests
 import matplotlib
 
 matplotlib.use('Agg')
@@ -21,6 +23,7 @@ from django.db.models import Count, Q
 from django.db.models.functions import TruncDay
 from django.views.decorators.csrf import csrf_exempt
 from django.forms.models import model_to_dict
+from cardManager.utils import gen_card_token
 from cardManager.models import (
 	Card,
 	Profile,
@@ -402,3 +405,15 @@ class OrderDetail(DetailView):
     model = Request
     template_name = 'cardManager/order_detail.html'
     context_object_name = 'order'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        token = gen_card_token()
+        generated_url = self.request.build_absolute_uri(reverse("homepage_view")) + "card/" + token
+        api_url = f"https://api.qrserver.com/v1/create-qr-code/?size=150x150&format=svg&data={generated_url}"
+        #https://stackoverflow.com/questions/16511337/correct-way-to-try-except-using-python-requests-module
+        qr_svg = requests.get(api_url)
+        if qr_svg.status_code == 200:
+            context["qr_svg"] = mark_safe(qr_svg.text)
+        return context
+	
