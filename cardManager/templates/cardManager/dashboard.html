@@ -8,6 +8,23 @@
 {% block content %}
 	<div class="flex flex-col gap-4 mb-10">
 		<h2 class="text-xl">My Cards</h2>
+		{% for card_request in requested_cards %}
+		<div class="flex flex-row gap-3 opacity-[0.3]">
+				<img 
+					class="w-[8rem] h-[5rem] rounded-sm" 
+					src="
+					{% if card_request.preset_design %}
+						{{ card_request.preset_design.front_design.url }} 
+					{% elif card_request.custom_design %}
+						{{ card_request.custom_design.url }}
+					{% endif %}"/>
+			
+			<div>
+			<p class="font-bold">On it's way to you</p>
+			</div>
+			
+		</div>
+		{% endfor %}
 	{% for card in user_cards %}
 		<div class="flex flex-row gap-3">
 			<a href="{{ card.get_absolute_url }}">
@@ -32,6 +49,7 @@
 		{% empty %}
 		<p>Looks like there aren't any cards here.</p>
 	{% endfor %}
+	
 	</div>
 		<div class="activity flex flex-col">
 			<h2 class="text-xl">Recent Activity</h2>
