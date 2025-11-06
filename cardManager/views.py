@@ -173,6 +173,9 @@ class UserDashboard(ContextMixin, View):
 		context['user_cards'] = owner_cards
 		context['recent_activities'] = recent_activities
 		context['requested_cards'] = owner_requested_cards
+		#A9: Setting up pending orders data  
+		if self.request.user.is_authenticated:
+			context['pending_orders'] = Request.objects.all()
 		return context
 
 
