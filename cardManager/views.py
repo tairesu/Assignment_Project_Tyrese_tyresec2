@@ -32,14 +32,24 @@ from cardManager.models import (
 from .forms import (
 	CardForm,
 	ProfileForm,
+	RequestForm,
 )
 
 # Home Page fbv
 class HomePage(ListView):
     model = Design
     template_name = 'cardManager/home.html'
-        
-        
+    
+
+def order_create(request):
+    if request.method == "POST":
+        form = RequestForm(request.POST)
+        if form.is_valid():
+            form.owner = request.user.pk
+            form.save()
+        else: 
+        	print(form.errors)
+    
 # Create and Saves Usage instance, given card field
 def __add_to_usage(request, card):
 	print('\ninit\'d __add_to_usage')
@@ -376,6 +386,5 @@ def daily_usage_png(request):
 	buf.seek(0)
 	return HttpResponse(buf.getvalue(), content_type="image/png")
 
-
-
-
+        
+        
