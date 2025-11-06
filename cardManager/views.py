@@ -44,8 +44,11 @@ class HomePage(ListView):
 def order_create(request):
     if request.method == "POST":
         form = RequestForm(request.POST)
+        owner = Owner.objects.get(pk=request.user.pk)
         if form.is_valid():
-            form.owner = request.user.pk
+            #https://stackoverflow.com/questions/77784821/how-to-add-value-into-a-form-before-saving-in-django
+            order_instance = form.save(commit=False)
+            order_instance.owner = owner
             form.save()
         else: 
         	print(form.errors)
