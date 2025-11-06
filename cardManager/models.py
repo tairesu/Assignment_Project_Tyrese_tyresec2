@@ -87,10 +87,21 @@ class Usage(models.Model):
 
 # A9 
 class Request(models.Model):
+    status_choices = [
+        ('pending','Pending'),
+        ('printed','Printed'),
+        ('Adhered','Adhered'),
+        ('complete','Complete'),
+    ]
     request_id = models.AutoField(primary_key=True)
     date_created = models.DateTimeField(default=timezone.now, editable=False)
-    preset_design = models.ForeignKey(Design, related_name="requests", on_delete=models.PROTECT, blank=True)
+    preset_design = models.ForeignKey(Design, related_name="requests", on_delete=models.PROTECT,null=True, blank=True)
     custom_design = models.ImageField(upload_to='userPhotos/customDesigns/', blank=True)
     custom_design_rear = models.ImageField(upload_to='userPhotos/customDesigns/', blank=True)
     owner = models.ForeignKey(Owner, related_name="requests", on_delete=models.PROTECT, blank=False)
     card_qty = models.IntegerField(default=1)
+    status = models.CharField(choices=status_choices, default='Pending', max_length=10)
+    
+    
+    def __str__(self):
+        return f"{self.owner} requested {self.card_qty} card(s)" 
