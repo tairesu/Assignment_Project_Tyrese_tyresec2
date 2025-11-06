@@ -1,0 +1,26 @@
+{% extends 'cardManager/base.html' %}
+{% load static  %}
+{% block title %}
+	Order Detail
+{% endblock %}
+{% block content %}
+<h2>
+    {{ order.owner }}'s card
+</h2>
+<div class="flex flex-row items-center justify-center">
+    <img 
+    class="w-[16rem] h-[11rem] rounded-sm" 
+    src="
+    {% if order.preset_design %}
+        {{ order.preset_design.front_design.url }} 
+    {% elif order.custom_design %}
+        {{ order.custom_design.url }}
+    {% endif %}"/>
+	
+</div>
+<a href="">
+    <button id="activateCardBtn" class="bg-[var(--color-main)] w-full text-center py-4 rounded-md mt-8">Convert to Card</button>
+</a>
+{% endblock %}
+{% block extra_scripts %}
+{% endblock %}

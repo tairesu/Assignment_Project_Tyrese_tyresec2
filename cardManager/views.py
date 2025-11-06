@@ -395,5 +395,7 @@ def daily_usage_png(request):
 	buf.seek(0)
 	return HttpResponse(buf.getvalue(), content_type="image/png")
 
-        
-        
+class OrderDetail(DetailView):
+    model = Request
+    template_name = 'cardManager/order_detail.html'
+    context_object_name = 'order'
