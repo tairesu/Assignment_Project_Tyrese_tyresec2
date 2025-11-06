@@ -45,7 +45,7 @@
             Design your Card
         </h2>
         <div class="card flex items-center justify-center mb-10">
-            <img class="object-cover border-white rounded-md border-1 h-[10rem] w-[18rem]" src="{{ design_list.first.front_design.url}}"/>
+            <img id="card" class="object-cover rounded-md h-[11rem] w-[18rem]" src="{{ design_list.first.front_design.url}}"/>
         </div>
         <div class="design_toggle">
 
@@ -56,7 +56,7 @@
         <div class="w-full overflow-x-auto mb-10">
             <div class="flex flex-row gap-2 w-max">
                 {% for design in design_list %}
-                    <button onclick="setDesignChoice(this.src)" >
+                    <button onclick="setDesignChoice(this)" >
                         <img src="{{ design.front_design.url }}" data-id="{{ design.pk }}" class="w-[6rem] h-[3.5rem] object-cover rounded-md" />
                     </button>
                 {% endfor %}
@@ -73,8 +73,8 @@
             </div>
             {% csrf_token %}
             <input type="hidden" name="owner" value=""/>
-            <input type="hidden" name="design" id="design" value=""/>
-            <button class="bg-[var(--color-main)] w-full text-center py-4 rounded-md " type="submit">
+            <input type="hidden" name="design" id="design_choice" value="1"/>
+            <button class="bg-[var(--color-main)] w-full text-center py-4 rounded-md " id="order-btn" type="submit">
                 Order Card
             </button>
 
@@ -83,4 +83,5 @@
     
 {% endblock %}
 {% block extra_scripts %}
+<script src="{% static 'js/updateDesign.js' %}"></script>
 {% endblock %}
