@@ -105,3 +105,7 @@ class Request(models.Model):
     
     def __str__(self):
         return f"{self.owner} requested {self.card_qty} card(s)" 
+    
+    def get_absolute_url(self):
+        return reverse("order_detail_view", kwargs={"pk": self.pk})
+	
