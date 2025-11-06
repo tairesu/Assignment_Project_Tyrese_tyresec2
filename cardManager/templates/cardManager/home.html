@@ -67,12 +67,23 @@
         </h2>
        
         <form action="{% url 'order_card_view' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
             <div class="w-full mb-10">
                 <input type="file" class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4" placeholder="Upload a file" id="id_custom_design" name="custom_design">
         
             </div>
-            {% csrf_token %}
-            <input type="hidden" name="owner" value=""/>
+            <div class="w-full mb-10">
+                <h2 class="mb-5">
+                    How many do you need?
+                </h2>
+                <input type="number" value="1" class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4" min="1" max="500" id="id_card_qty" name="card_qty">
+        
+            </div>
+            <input 
+                type="hidden" 
+                name="owner" 
+                value="{% if request.user %} {{ request.user.pk }} {%endif%}"
+            />
             <input type="hidden" name="design" id="design_choice" value="1"/>
             <button class="bg-[var(--color-main)] w-full text-center py-4 rounded-md " id="order-btn" type="submit">
                 Order Card
