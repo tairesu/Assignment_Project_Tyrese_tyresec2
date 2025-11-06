@@ -1,7 +1,8 @@
 from django import forms
 from cardManager.models import (
 	Card,
-	Profile
+	Profile,
+ 	Request
 )
 from django.core.exceptions import ValidationError
 
@@ -27,4 +28,10 @@ class ProfileForm(forms.ModelForm):
 	class Meta:
 		model = Profile
 		fields = '__all__'
+  
+
+class RequestForm(forms.ModelForm):
+	class Meta:
+		model = Request
+		fields = ['preset_design','custom_design', 'custom_design_rear', 'card_qty']
 

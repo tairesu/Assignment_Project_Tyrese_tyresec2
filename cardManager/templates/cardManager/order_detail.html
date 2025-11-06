@@ -1,0 +1,67 @@
+{% extends 'cardManager/base.html' %}
+{% load static  %}
+{% block title %}
+	Order Detail
+{% endblock %}
+{% block content %}
+<h2>
+    {{ order.owner }}'s card
+</h2>
+<p>Wants {% if order.card_qty == 1 %}a card{% else %} {{ order.card_qty }} cards {%endif%} </p>
+<p>Ordered on {{ order.date_created|date:"M j, Y" }}</p>
+<p></p>
+<div class="flex flex-row items-center justify-center">
+    <img 
+    class="w-[16rem] h-[11rem] rounded-sm" 
+    src="
+    {% if order.preset_design %}
+        {{ order.preset_design.front_design.url }} 
+    {% elif order.custom_design %}
+        {{ order.custom_design.url }}
+    {% endif %}"/>
+	
+</div>
+<a href="">
+    <button id="activateCardBtn" class="bg-[var(--color-main)] w-full text-center py-4 rounded-md mt-8">Convert to Card</button>
+</a>
+<h2>Helpful Links</h2>
+<div class="flex flex-col">
+<a 
+    href="{% if order.preset_design %}
+        {{ order.preset_design.front_design.url }} 
+    {% elif order.custom_design %}
+        {{ order.custom_design.url }}
+    {% endif %}"
+    class="text-[var(--color-main)]"
+    download
+>
+    Download Design Image
+</a>
+{% if qr_svg %}
+<a class="text-[var(--color-main)]" id="qr_anchor" download>Download QR Code</a>
+{% endif %}
+</div>
+{% endblock %}
+{% block extra_scripts %}
+    {% if qr_svg %}
+    <script type="text/javascript">
+    const svgData = "{{ qr_svg|escapejs }}";
+    const qr_anchor = document.querySelector("#qr_anchor");
+
+    qr_anchor.addEventListener('click', () => {
+        /* Create a temporary url for the api's qr code   */
+        let qr = new Blob([svgData], {type: 'image/svg+xml' });
+        let blobUrl = URL.createObjectURL(qr);
+
+        /* Create an invisible anchor pointing to that url  */
+        let temp_anchor = document.createElement("a");
+        temp_anchor.href = blobUrl;
+        temp_anchor.download = "{{ order.owner.first_name|escapejs }}_qr_code.svg";
+        /* And trigger the invisible anchor */
+        temp_anchor.click();
+        /* Remove temporary URL */
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 100);
+    });
+    {% endif %}
+    </script>
+{% endblock %}
