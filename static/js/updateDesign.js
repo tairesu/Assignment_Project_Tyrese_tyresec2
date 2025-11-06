@@ -1,0 +1,10 @@
+const card = document.querySelector('#card');
+const design_input = document.querySelector("input#design_choice");
+
+function setDesignChoice(button_ele) {
+    child_img_id = button_ele.querySelector("img").dataset['id'];
+    child_img_src = button_ele.querySelector("img").src;
+    /* Update Card image */
+    card.src = child_img_src;
+    design_input.value = child_img_id;
+}

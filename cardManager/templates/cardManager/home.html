@@ -1,0 +1,98 @@
+{% extends 'cardManager/base.html' %}
+{% load static  %}
+{% block title %}
+	TC Digital | Digital Cards 
+{% endblock %}
+{% block content %}
+	<section id="hero" class="mb-40">
+        <div>
+            <h2 class="text-5xl">The only business card you'll ever need</h2>
+        </div>
+    </section>
+    <section id="features" class="mb-40">
+        <h2 class="text-2xl mb-10">
+            Features
+        </h2>
+        <div class="w-full flex flex-row overflow-x-auto gap-4">
+           <div class="feature w-60 bg-white rounded-md  lg:w-30">
+            <div class="icon-and-head flex flex-row"></div>
+            <img src="" alt="">
+            <h2 class="text-xl text-black">Infinite Taps</h2>
+            <div>
+                <p class="text-md text-grey"></p>
+            </div>
+           </div>
+           <div class="feature w-60 bg-white rounded-md  lg:w-30">
+            <div class="icon-and-head flex flex-row"></div>
+            <img src="" alt="">
+            <h2 class="text-xl text-black">QR Included</h2>
+            <div>
+                <p class="text-md text-grey"></p>
+            </div>
+           </div>
+           <div class="feature w-60 bg-white rounded-md  lg:w-30">
+            <div class="icon-and-head flex flex-row"></div>
+            <img src="" alt="">
+            <h2 class="text-xl text-black">Taps</h2>
+            <div>
+                <p class="text-md text-grey"></p>
+            </div>
+           </div>
+        </div>
+    </section>
+    <section id="design" class="mb-40">
+        <h2 class="text-2xl mb-10">
+            Design your Card
+        </h2>
+        <div class="card flex items-center justify-center mb-10">
+            <img id="card" class="object-cover rounded-md h-[11rem] w-[18rem]" src="{{ design_list.first.front_design.url}}"/>
+        </div>
+        <div class="design_toggle">
+
+        </div>
+        <h2 class="mb-5">
+            Choose a Preset Design
+        </h2>
+        <div class="w-full overflow-x-auto mb-10">
+            <div class="flex flex-row gap-2 w-max">
+                {% for design in design_list %}
+                    <button onclick="setDesignChoice(this)" >
+                        <img src="{{ design.front_design.url }}" data-id="{{ design.pk }}" class="w-[6rem] h-[3.5rem] object-cover rounded-md" />
+                    </button>
+                {% endfor %}
+            </div>
+        </div>
+        <h2 class="mb-5">
+            Custom Design
+        </h2>
+       
+        <form action="{% url 'order_card_view' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="w-full mb-10">
+                <input type="file" class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4" placeholder="Upload a file" id="id_custom_design" name="custom_design">
+        
+            </div>
+            <div class="w-full mb-10">
+                <h2 class="mb-5">
+                    How many do you need?
+                </h2>
+                <input type="number" value="1" class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4" min="1" max="500" id="id_card_qty" name="card_qty">
+        
+            </div>
+            <input 
+                type="hidden" 
+                name="owner" 
+                value="{% if request.user %} {{ request.user.pk }} {%endif%}"
+            />
+            <input type="hidden" name="preset_design" id="design_choice" value="1"/>
+            <button class="bg-[var(--color-main)] w-full text-center py-4 rounded-md " id="order-btn" type="submit">
+                Order Card
+            </button>
+
+        </form>
+    </section>
+    
+{% endblock %}
+{% block extra_scripts %}
+<script src="{% static 'js/updateDesign.js' %}"></script>
+{% endblock %}

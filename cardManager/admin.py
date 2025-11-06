@@ -4,7 +4,8 @@ from .models import (
 	Card,
 	Owner,
 	Design,
-	Usage
+	Usage,
+ 	Request
 )
 
 
@@ -13,4 +14,5 @@ admin.site.register(Card)
 admin.site.register(Owner)
 admin.site.register(Design)
 admin.site.register(Usage)
+admin.site.register(Request)
 

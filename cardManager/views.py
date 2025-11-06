@@ -1,7 +1,9 @@
 #import stripe
 import urllib.request
 import json
+from django.utils.safestring import mark_safe
 from io import BytesIO
+import requests
 import matplotlib
 
 matplotlib.use('Agg')
@@ -21,18 +23,44 @@ from django.db.models import Count, Q
 from django.db.models.functions import TruncDay
 from django.views.decorators.csrf import csrf_exempt
 from django.forms.models import model_to_dict
+from cardManager.utils import gen_card_token
 from cardManager.models import (
 	Card,
 	Profile,
 	Owner,
 	Usage,
 	Design,
+	Request
 )
 from .forms import (
 	CardForm,
 	ProfileForm,
+	RequestForm,
 )
-	# Create and Saves Usage instance, given card field
+
+# Home Page fbv
+class HomePage(ListView):
+    model = Design
+    template_name = 'cardManager/home.html'
+    
+
+def order_create(request):
+    if request.method == "POST":
+        form = RequestForm(request.POST)
+        owner = Owner.objects.get(pk=request.user.pk)
+        # if owner is set and form is valid, go to dashboard
+        if owner and form.is_valid():
+            #https://stackoverflow.com/questions/77784821/how-to-add-value-into-a-form-before-saving-in-django
+            order_instance = form.save(commit=False)
+            order_instance.owner = owner
+            form.save()
+            return redirect('dashboard_view')
+        elif not owner: 
+            return render(request, 'cardManager/login.html', {'order_form':form})
+        elif not form.is_valid():
+            return render(request, 'cardManager/home.html', {'order_form':form})
+    
+# Create and Saves Usage instance, given card field
 def __add_to_usage(request, card):
 	print('\ninit\'d __add_to_usage')
 	new_use = Usage(card=card)
@@ -143,9 +171,14 @@ class UserDashboard(ContextMixin, View):
 		context = super().get_context_data(**kwargs)
 		owner_id = self.request.user.pk
 		owner_cards = Card.objects.filter(owner_id=owner_id)
+		owner_requested_cards = Request.objects.exclude(status="shipped").filter(owner_id=owner_id)
 		recent_activities = Usage.objects.filter(card__owner=owner_id).order_by('-date_used')[0:5]
 		context['user_cards'] = owner_cards
 		context['recent_activities'] = recent_activities
+		context['requested_cards'] = owner_requested_cards
+		#A9: Setting up pending orders data  
+		if self.request.user.is_authenticated:
+			context['pending_orders'] = Request.objects.all()
 		return context
 
 
@@ -368,6 +401,19 @@ def daily_usage_png(request):
 	buf.seek(0)
 	return HttpResponse(buf.getvalue(), content_type="image/png")
 
-
-
-
+class OrderDetail(DetailView):
+    model = Request
+    template_name = 'cardManager/order_detail.html'
+    context_object_name = 'order'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        token = gen_card_token()
+        generated_url = self.request.build_absolute_uri(reverse("homepage_view")) + "card/" + token
+        api_url = f"https://api.qrserver.com/v1/create-qr-code/?size=150x150&format=svg&data={generated_url}"
+        #https://stackoverflow.com/questions/16511337/correct-way-to-try-except-using-python-requests-module
+        qr_svg = requests.get(api_url)
+        if qr_svg.status_code == 200:
+            context["qr_svg"] = mark_safe(qr_svg.text)
+        return context
+	

@@ -22,6 +22,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+    path('', views.HomePage.as_view(), name='homepage_view'),
     path('', include('cardManager.urls')),
     path('admin/', admin.site.urls),
 ]
