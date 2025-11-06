@@ -45,13 +45,17 @@ def order_create(request):
     if request.method == "POST":
         form = RequestForm(request.POST)
         owner = Owner.objects.get(pk=request.user.pk)
-        if form.is_valid():
+        # if owner is set and form is valid, go to dashboard
+        if owner and form.is_valid():
             #https://stackoverflow.com/questions/77784821/how-to-add-value-into-a-form-before-saving-in-django
             order_instance = form.save(commit=False)
             order_instance.owner = owner
             form.save()
-        else: 
-        	print(form.errors)
+            return redirect('dashboard_view')
+        elif not owner: 
+            return render(request, 'cardManager/login.html', {'order_form':form})
+        elif not form.is_valid():
+            return render(request, 'cardManager/home.html', {'order_form':form})
     
 # Create and Saves Usage instance, given card field
 def __add_to_usage(request, card):
@@ -164,9 +168,11 @@ class UserDashboard(ContextMixin, View):
 		context = super().get_context_data(**kwargs)
 		owner_id = self.request.user.pk
 		owner_cards = Card.objects.filter(owner_id=owner_id)
+		owner_requested_cards = Request.objects.exclude(status="shipped").filter(owner_id=owner_id)
 		recent_activities = Usage.objects.filter(card__owner=owner_id).order_by('-date_used')[0:5]
 		context['user_cards'] = owner_cards
 		context['recent_activities'] = recent_activities
+		context['requested_cards'] = owner_requested_cards
 		return context
 
 
