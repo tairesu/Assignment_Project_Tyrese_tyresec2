@@ -687,6 +687,16 @@ Helps me render Plotly JS graphs.
 
 ___
 
+# A10: External APIs
+
+- For this assignment I picked a [QR Code API](https://goqr.me/api/) to save some time fulfilling card orders.
+- This API returns SVG code of a QR Code that I make downloadable from the order detail view.
+- If an invalid API request is returned, I simply do not display the `Download QR Code` anchor tag.
+- My final implementation of this API is the `Download QR Code` anchor tag that, when clicked, downloads the QR code as an SVG file.
+- In the initial implementation I tried to set the `href` attribute to be the API url, but this opened the QR Code in a new tab. I opted to use Javascript to turn the raw svg code, into a temporary object w/ a temporary url. Then I created an invisible anchor tag, set it's attributes to download from that temporary url, and triggered a click. 
+
+___
+
 # Helpful resources
 
 [^1]: https://stackoverflow.com/questions/5517950/django-media-url-and-media-root
