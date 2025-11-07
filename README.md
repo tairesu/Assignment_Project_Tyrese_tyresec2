@@ -47,3 +47,9 @@ Graph 2 represents a leaderboard which tells which owners used their cards the m
 ## A9 Updates
 
 - I created the `daily_usage` fbv, and  `daily_usage_png` fbv to return the JSON data of card usages grouped by date,  and generate a matplotlib based chart (from the data) respectively. For ease of use, I built `daily_usage` to contain labels (the x values) and value (the y values). 
+
+## A10 External APis
+
+- I used this [QR Code API](https://goqr.me/api/) to create the QR codes that will be adhered to the back of my digital cards. Sending a GET request with the `format` parameter `=svg`, and the `data` parameter to a generated URL (the same as the `card_detail_view` urlpattern) returns the raw svg code for a unique qr code. I made Javascript responsible for handling this raw svg code by building a blob object, a temporary URL for that blob object, and an anchor tag with download capabilities. 
+
+- In the event that the Api response's status code is not 200, my application hides the anchor tag and it's JS dependencies 
