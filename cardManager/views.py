@@ -143,6 +143,11 @@ def card_update(request, card_token):
 	
 	return render(request, 'cardManager/card_update.html', {'form': form, 'card': card, 'hide_redirect_div': hide_redirect_div})
 
+class ProfileCreate(CreateView):
+	model = Profile
+	form_class = ProfileForm
+	template_name = 'cardManager/profile_create.html'
+
 
 # Render profile template using the slugs instead of pk
 class ProfileDetail(DetailView):
