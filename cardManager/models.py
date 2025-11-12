@@ -41,8 +41,11 @@ class Profile(models.Model):
 	def __str__(self):
 		return f"{self.profile_slug}"
 
+	def get_absolute_url(self):
+		return reverse('profile_view', kwargs={'profile_slug': self.profile_slug})
+	
 	def get_update_url(self):
-		return reverse('profile_update_view', kwargs={'pk': self.pk})
+		return reverse('profile_update_view', kwargs={'profile_slug': self.profile_slug})
 
 
 class Design(models.Model):
