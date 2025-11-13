@@ -10,10 +10,11 @@ urlpatterns = [
 	path('profile/slug/<str:profile_slug>/', views.ProfileDetail.as_view(), name='profile_view'),
 	path('profile/slug/<str:profile_slug>/update', views.ProfileUpdate.as_view(), name='profile_update_view'),
 	path('dashboard/', views.UserDashboard.as_view(), name='dashboard_view'),
-	path('reports/', views.Stats.as_view(), name='stats_view'),
 	path('stats/fetch_plotly_data', views.config_plotly),
 	path('api/daily_usage/', views.daily_usage, name='api_daily_usage_view'),
 	path('api/daily_usage/bar_graph.png', views.daily_usage_png, name='daily_usage_graph_png_view'),
 	path('order/create/', views.order_create, name='order_card_view'),
-	path('order/<int:pk>/', views.OrderDetail.as_view(), name='order_detail_view')
+	path('order/<int:pk>/', views.OrderDetail.as_view(), name='order_detail_view'),
+	path('reports/', views.Stats.as_view(), name='stats_view'),
+	path('export/usage.csv', views.export_usage_csv, name='export_usage_csv_view'),
 ]

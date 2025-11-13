@@ -422,3 +422,35 @@ class OrderDetail(DetailView):
             context["qr_svg"] = mark_safe(qr_svg.text)
         return context
 	
+
+# ==========================================================================================================================
+
+import csv
+
+def export_usage_csv(request):
+	"""
+	Generate and download a CSV file of all card uses and their owners
+	"""
+	# Let's generate a unique filename 
+	timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
+	filename = f"usage_{timestamp}.csv"
+
+	# Let's prepare the HttpResponse as CSV
+	response = HttpResponse(content_type="text/csv")
+	# Make this file downloadable
+	response["Content-Disposition"] = f'attachment; filename="{filename}"'
+
+	# Turn the HttpResponse into a "file-like" object for writing
+	writer = csv.writer(response)
+	writer.writerow(["date","card_token","owner_first_name","owner_last_name"])
+
+	usage_rows = (
+		Usage.objects
+		.select_related("card")
+		.values_list("date_used","card__token","card__owner__first_name","card__owner__last_name")
+	) 
+
+	for row in usage_rows:
+		writer.writerow(row)
+
+	return response
