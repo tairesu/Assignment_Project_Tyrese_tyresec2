@@ -60,7 +60,7 @@
 		        </form>
 	        {% else %}
 	        	<a href="{% url 'login_view' %}">Login</a>
-	        	<a href="Login">Create Account</a>
+	        	<a href="{% url 'signup_view' %}">Create Account</a>
 	        {% endif %}
 
 	    </div>
