@@ -37,13 +37,16 @@ from .forms import (
 	ProfileForm,
 	RequestForm,
 )
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 # Home Page fbv
 class HomePage(ListView):
     model = Design
     template_name = 'cardManager/home.html'
     
-
+@login_required(login_url='login_view')
 def order_create(request):
     if request.method == "POST":
         form = RequestForm(request.POST)
@@ -56,7 +59,7 @@ def order_create(request):
             form.save()
             return redirect('dashboard_view')
         elif not owner: 
-            return render(request, 'cardManager/login.html', {'order_form':form})
+            return redirect('login_view')
         elif not form.is_valid():
             return render(request, 'cardManager/home.html', {'order_form':form})
     
@@ -67,8 +70,11 @@ def __add_to_usage(request, card):
 	new_use.save()
 
 
-	# Handles redirects for a scanned card matching card_token 
+# Handles redirects for a scanned card matching card_token 
 def card_detail(request,card_token):
+	"""
+	Redirects the browser based on this card instance's attributes. 
+	"""
 	card = get_object_or_404(Card, token=card_token)
 	is_owned = not (card.owner == None)
 	is_redirecting = not (card.reroute_url == "")
@@ -87,19 +93,25 @@ def card_detail(request,card_token):
 
 
 class CardDetail(DetailView):
+	"""
+	Renders Card instance to card activate HTML template. 
+	"""
 	model = Card
 	slug_field = 'token'
 	slug_url_kwarg = 'card_token'
 	template_name = 'cardManager/activate.html'
 
 	def get(self,request, **kwargs):
+		# Retrieve card instance with given card_token
 		card = self.get_object()
 		if card.owner:
+			# Reroute to card "scanning" view
 			return redirect('card_view', card_token=card.token)
 		return super().get(self, request, **kwargs)
 
 
-class CardUpdate(UpdateView):
+# A11: Updating a card requires a user to be logged in
+class CardUpdate(LoginRequiredMixin,UpdateView):
 	model = Card
 	form_class = CardForm
 	slug_field = 'token'
@@ -108,6 +120,8 @@ class CardUpdate(UpdateView):
 	success_url = reverse_lazy('dashboard_view')
 
 
+# A11: Updating a card requires a user to be logged in
+@login_required(login_url='login_view')
 def card_update(request, card_token):
 	"""
 		FBV for handling card update functionality
@@ -143,7 +157,7 @@ def card_update(request, card_token):
 	
 	return render(request, 'cardManager/card_update.html', {'form': form, 'card': card, 'hide_redirect_div': hide_redirect_div})
 
-class ProfileCreate(CreateView):
+class ProfileCreate(LoginRequiredMixin, CreateView):
 	model = Profile
 	form_class = ProfileForm
 	template_name = 'cardManager/profile_create.html'
@@ -156,7 +170,7 @@ class ProfileDetail(DetailView):
 	slug_field = 'profile_slug'
 	slug_url_kwarg = 'profile_slug'
 
-class ProfileUpdate(UpdateView):
+class ProfileUpdate(LoginRequiredMixin, UpdateView):
 	model = Profile
 	form_class = ProfileForm
 	template_name = 'cardManager/profile_update.html'
@@ -164,7 +178,7 @@ class ProfileUpdate(UpdateView):
 	slug_url_kwarg = 'profile_slug'
 
 # Renders dashboard template with owner cards
-class UserDashboard(ContextMixin, View):
+class UserDashboard(LoginRequiredMixin, ContextMixin, View):
 	template_name = 'cardManager/dashboard.html'
 
 	def get(self, request, **kwargs):
@@ -187,7 +201,7 @@ class UserDashboard(ContextMixin, View):
 		return context
 
 
-class Stats(ListView):
+class Stats(LoginRequiredMixin, ListView):
 	model = Usage
 	template_name = 'cardManager/stats.html'
 
@@ -354,7 +368,7 @@ def __extract_graph_data(queryset, target_elem="", type='scatter'):
 	return graph_data 
 
 ### IP9: APIs + JSON Endpoints + Server-Side Charts
-
+@login_required(login_url='login_view')
 def daily_usage(request):
 	"""
 	GET /api/daily_usage
@@ -375,7 +389,7 @@ def daily_usage(request):
 	# And return as JSON
 	return JsonResponse({"labels": unique_days, "values": n_card_taps}, safe=True)
 
-
+@login_required(login_url='login_view')
 def daily_usage_png(request):
 	"""
 	Creates a bar graph png using matplotlib and the json data from my daily_usage fbv
@@ -406,7 +420,7 @@ def daily_usage_png(request):
 	buf.seek(0)
 	return HttpResponse(buf.getvalue(), content_type="image/png")
 
-class OrderDetail(DetailView):
+class OrderDetail(LoginRequiredMixin, DetailView):
     model = Request
     template_name = 'cardManager/order_detail.html'
     context_object_name = 'order'
@@ -424,9 +438,11 @@ class OrderDetail(DetailView):
 	
 
 # ==========================================================================================================================
+# A11
 
 import csv
 
+@login_required(login_url='login_view')
 def export_usage_csv(request):
 	"""
 	Generate and download a CSV file of all card uses and their owners
@@ -458,7 +474,8 @@ def export_usage_csv(request):
 
 # ====================================================================================
 
-
+# A11
+@login_required(login_url='login_view')
 def export_usage_json(request):
 	# Let's generate a unique filename 
 	timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
