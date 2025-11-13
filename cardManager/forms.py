@@ -5,6 +5,8 @@ from cardManager.models import (
  	Request
 )
 from django.core.exceptions import ValidationError
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 
 class CardForm(forms.ModelForm):
@@ -35,3 +37,16 @@ class RequestForm(forms.ModelForm):
 		model = Request
 		fields = ['preset_design','custom_design', 'custom_design_rear', 'card_qty']
 
+# =====================================================================================================
+# A11 
+# =====================================================================================================
+
+class OwnerSignUpForm(UserCreationForm):
+	"""
+	Form for django User auth table
+	"""
+	email = forms.EmailField(required=True, help_text="We'll use this email to contact you")
+
+	class Meta:
+		model = User
+		fields = ['username','email','password1','password2']
