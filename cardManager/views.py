@@ -444,6 +444,7 @@ def export_usage_csv(request):
 	writer = csv.writer(response)
 	writer.writerow(["date","card_token","owner_first_name","owner_last_name"])
 
+	# Grab tuples instead of dictionaries
 	usage_rows = (
 		Usage.objects
 		.select_related("card")
@@ -452,5 +453,38 @@ def export_usage_csv(request):
 
 	for row in usage_rows:
 		writer.writerow(row)
+
+	return response
+
+# ====================================================================================
+
+
+def export_usage_json(request):
+	# Let's generate a unique filename 
+	timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
+	filename = f"usage_{timestamp}.json"
+
+	# Grab usage rows as a list instead of queryset
+	usage_data = list(
+		Usage.objects
+		.select_related("card")
+		.values(
+			"date_used",
+			"card__token",
+			"card__owner__first_name",
+			"card__owner__last_name"
+		)
+		.order_by("-date_used")
+	) 
+
+	# Grab usage rows as a list instead of queryset
+	json_content = {
+		"total_usage_count" : len(usage_data),
+		"generated_at": datetime.now().isoformat(timespec="seconds"),
+		"usages" : usage_data
+	}
+	# Prep JSONResponse w/ json content 
+	response = JsonResponse(json_content, json_dumps_params={"indent": 2})
+	response["Content-Disposition"] = f'attachment; filename="{filename}"' # Enable auto download
 
 	return response
