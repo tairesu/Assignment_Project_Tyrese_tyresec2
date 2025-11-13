@@ -9,13 +9,13 @@
         {% endif %}
 	<div class="flex flex-col gap-2">
     	<label for="id_firstname" class="text-bold text-lg">Firstname</label>
-    	<p class="error text-[var(--color-danger)] text-sm">{{ form.firstname.errors }}</p>
-    	<input type="text" class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4" placeholder="Enter Firstname" id="id_firstname" name="firstname" required>
+    	<p class="error text-[var(--color-danger)] text-sm">{{ form.first_name.errors }}</p>
+    	<input type="text" class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4" placeholder="Enter Firstname" id="id_firstname" name="first_name" required>
     </div>
     <div class="flex flex-col gap-2">
     	<label for="id_lastname" class="text-bold text-lg">Lastname</label>
-    	<p class="error text-[var(--color-danger)] text-sm">{{ form.lastname.errors }}</p>
-    	<input type="text" class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4" placeholder="Enter Lastname" id="id_lastname" name="lastname" required>
+    	<p class="error text-[var(--color-danger)] text-sm">{{ form.last_name.errors }}</p>
+    	<input type="text" class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4" placeholder="Enter Lastname" id="id_lastname" name="last_name" required>
     </div>
 	<div class="flex flex-col gap-2">
     	<label for="id_username" class="text-bold text-lg">Username</label>
