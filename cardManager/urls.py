@@ -1,5 +1,7 @@
 from django.urls import path, include
 from cardManager import views 
+# A11
+from django.contrib.auth.views import LoginView
 
 urlpatterns = [
 	path('card/<str:card_token>/', views.card_detail, name='card_view'),
@@ -15,7 +17,9 @@ urlpatterns = [
 	path('api/daily_usage/bar_graph.png', views.daily_usage_png, name='daily_usage_graph_png_view'),
 	path('order/create/', views.order_create, name='order_card_view'),
 	path('order/<int:pk>/', views.OrderDetail.as_view(), name='order_detail_view'),
+	# A11
 	path('reports/', views.Stats.as_view(), name='stats_view'),
 	path('export/usage.csv', views.export_usage_csv, name='export_usage_csv_view'),
 	path('export/usage.json', views.export_usage_json, name='export_usage_json_view'),
+	path('login/', LoginView.as_view(template_name='cardManager/login.html'), name='login_view')
 ]
