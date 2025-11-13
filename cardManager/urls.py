@@ -17,4 +17,5 @@ urlpatterns = [
 	path('order/<int:pk>/', views.OrderDetail.as_view(), name='order_detail_view'),
 	path('reports/', views.Stats.as_view(), name='stats_view'),
 	path('export/usage.csv', views.export_usage_csv, name='export_usage_csv_view'),
+	path('export/usage.json', views.export_usage_json, name='export_usage_json_view'),
 ]
