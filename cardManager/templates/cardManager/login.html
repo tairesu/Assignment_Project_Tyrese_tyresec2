@@ -43,6 +43,15 @@ Login
 	    		<p class="text-danger text-sm" >{{ form.password.errors }}</p>
 	    	{% endif %}
     	</div>
+    	<a 
+    		class="text-center text-md text-[var(--color-main)] mt-8"
+    		{% if nextUrlParam %} href="{% url 'signup_view' %}?next={{nextUrlParam}}" 
+    		{% else %} href="{% url 'signup_view' %}"
+    		{% endif %} 
+    	>
+    		I don't have an account
+    	</a>
+		   
 		<input class="bg-[var(--color-main)] rounded-md py-4 mt-9" type="submit" value="Login">
 	</form>
 {% endblock %}
