@@ -1,0 +1,51 @@
+{% extends 'cardManager/base.html' %}
+{% load static %}
+{% block opener %}
+Login
+{% endblock %}
+{% block content %}
+	<form method="post" class="flex m-auto flex-col gap-7 md:w-3/4 lg:w-2/5">
+		{% csrf_token %}
+		{% if form.non_field_errors %}
+			{% for error in form.non_field_errors %}
+				<p class="text-danger text-md" >{{ error }}</p>
+			{% endfor %}
+		{% endif %}
+		<div class="flex flex-col gap-1">
+	    	<label for="id_username" class="text-bold text-lg">Username</label>
+	    	<input 
+		    	type="text" 
+		    	class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4" 
+		    	placeholder="" 
+		    	id="id_username" 
+		    	name="username" 
+		    	maxlength="{{ form.fields.username.max_length }}" 
+		    	{% if form.username.value %} value="{{ form.username.value }}" {% endif %}
+		    	{% if form.non_field_errors %} style="border-color:var(--color-danger)" {% endif %}
+		    	required
+	    	/>
+	    	{% if form.username.errors %}
+	    		<p class="text-danger text-sm" >{{ form.username.errors }}</p>
+	    	{% endif %}
+    	</div>
+    	<div class="flex flex-col gap-1">
+	    	<label for="id_password" class="text-bold text-lg">Password</label>
+	    	<input 
+		    	type="password" 
+		    	class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4" 
+		    	id="id_password" 
+		    	name="password" 
+		    	maxlength="{{ form.fields.password.max_length }}" 
+		    	{% if form.non_field_errors %} style="border-color:var(--color-danger)" {% endif %}
+		    	required
+	    	/>
+	    	{% if form.password.errors %}
+	    		<p class="text-danger text-sm" >{{ form.password.errors }}</p>
+	    	{% endif %}
+    	</div>
+		<input class="bg-[var(--color-main)] rounded-md py-4 mt-9" type="submit" value="Login">
+	</form>
+{% endblock %}
+{% block extra_scripts %}
+<script src="{% static 'js/forms.js' %}?v={{ tz }}"></script>
+{% endblock %}
