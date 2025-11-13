@@ -123,6 +123,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR  / "media"
 
 LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = 'dashboard_view'
 LOGOUT_URL = '/logout/'
 LOGOUT_REDIRECT_URL = 'login_view'
 
