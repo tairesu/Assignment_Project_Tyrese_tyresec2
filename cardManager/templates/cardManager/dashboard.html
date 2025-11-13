@@ -6,26 +6,28 @@
 	User: {{ request.user }}
 {% endblock %}
 {% block content %}
-<div class="flex flex-col gap-4 mb-20">
-	<h2 class="text-xl">Pending Orders</h2>
-	{% for order in pending_orders %}
-		<div class="flex flex-row gap-3">
-			<img class="w-[8rem] h-[5rem] rounded-sm" src="
-			{% if order.preset_design %}
-				{{ order.preset_design.front_design.url }} 
-			{% elif order.custom_design %}
-				{{ order.custom_design.url }}
-			{% endif %}"/>
-			<div>
-				<p class="font-bold">{{ order.owner }}</p>
-				<p class="text-darkgrey"> wants {% if order.card_qty == 1 %}a card{% else %} {{ order.card_qty }} cards {%endif%} </p>
-				<a href="{{ order.get_absolute_url }}" class="text-(--color-main)">View Details</a>
+{% if request.user.is_superuser %}
+	<div class="flex flex-col gap-4 mb-20">
+		<h2 class="text-xl">Pending Orders</h2>
+		{% for order in pending_orders %}
+			<div class="flex flex-row gap-3">
+				<img class="w-[8rem] h-[5rem] rounded-sm" src="
+				{% if order.preset_design %}
+					{{ order.preset_design.front_design.url }} 
+				{% elif order.custom_design %}
+					{{ order.custom_design.url }}
+				{% endif %}"/>
+				<div>
+					<p class="font-bold">{{ order.owner }}</p>
+					<p class="text-darkgrey"> wants {% if order.card_qty == 1 %}a card{% else %} {{ order.card_qty }} cards {%endif%} </p>
+					<a href="{{ order.get_absolute_url }}" class="text-(--color-main)">View Details</a>
+				</div>
 			</div>
-		</div>
-		{% empty %}
-		<p>Looks like there aren't any orders yet.</p>
-	{% endfor %}
-</div>
+			{% empty %}
+			<p>Looks like there aren't any orders yet.</p>
+		{% endfor %}
+	</div>
+{% endif %}
 	<div class="flex flex-col gap-4 mb-20">
 		<h2 class="text-xl">My Cards</h2>
 		{% for card_request in requested_cards %}
