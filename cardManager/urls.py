@@ -1,7 +1,7 @@
 from django.urls import path, include
 from cardManager import views 
 # A11
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 
 urlpatterns = [
 	path('card/<str:card_token>/', views.card_detail, name='card_view'),
@@ -21,5 +21,6 @@ urlpatterns = [
 	path('reports/', views.Stats.as_view(), name='stats_view'),
 	path('export/usage.csv', views.export_usage_csv, name='export_usage_csv_view'),
 	path('export/usage.json', views.export_usage_json, name='export_usage_json_view'),
-	path('login/', LoginView.as_view(template_name='cardManager/login.html'), name='login_view')
+	path('login/', LoginView.as_view(template_name='cardManager/login.html'), name='login_view'),
+	path('logout/', LogoutView.as_view(), name='logout_view'),
 ]

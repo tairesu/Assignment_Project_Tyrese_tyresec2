@@ -54,8 +54,12 @@
 		        <a href="{% url 'stats_view' %}">Reports</a>
 		        <a href="{% url 'api_daily_usage_view' %}">Api Json</a>
 		        <a href="{% url 'daily_usage_graph_png_view' %}">Api Bar Graph</a>
+		        <form action="{% url 'logout_view' %}" method="post">
+		        	{% csrf_token %}
+		        	<input type="submit" value="Logout"/>
+		        </form>
 	        {% else %}
-	        	<a href="Login">Login</a>
+	        	<a href="{% url 'login_view' %}">Login</a>
 	        	<a href="Login">Create Account</a>
 	        {% endif %}
 
