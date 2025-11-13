@@ -1,1 +1,5 @@
+__MACOSX/*
 *.pyc
+__pycache__/
+*.pyo
+*.pyd
