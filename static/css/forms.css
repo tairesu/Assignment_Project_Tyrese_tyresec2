@@ -33,9 +33,7 @@ input::placeholder {
 	color: grey;
 	font-style: italic;
 }
-input:invalid {
-	border-color:var(--color-danger)!important;
-}
+
 form div.dimmable{
   opacity: 1; 
   transition: opacity 0.2s linear;
