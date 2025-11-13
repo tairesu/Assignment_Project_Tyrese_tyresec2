@@ -122,9 +122,9 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR  / "media"
 
-LOGIN_URL = '/login/'
+LOGIN_URL = 'login_view'
 LOGIN_REDIRECT_URL = 'dashboard_view'
-LOGOUT_URL = '/logout/'
+LOGOUT_URL = 'logout_view'
 LOGOUT_REDIRECT_URL = 'login_view'
 
 # Default primary key field type
