@@ -36,6 +36,7 @@ from .forms import (
 	CardForm,
 	ProfileForm,
 	RequestForm,
+	OwnerSignUpForm,
 )
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -368,7 +369,6 @@ def __extract_graph_data(queryset, target_elem="", type='scatter'):
 	return graph_data 
 
 ### IP9: APIs + JSON Endpoints + Server-Side Charts
-@login_required(login_url='login_view')
 def daily_usage(request):
 	"""
 	GET /api/daily_usage
@@ -389,7 +389,6 @@ def daily_usage(request):
 	# And return as JSON
 	return JsonResponse({"labels": unique_days, "values": n_card_taps}, safe=True)
 
-@login_required(login_url='login_view')
 def daily_usage_png(request):
 	"""
 	Creates a bar graph png using matplotlib and the json data from my daily_usage fbv
@@ -400,6 +399,7 @@ def daily_usage_png(request):
 	# print(api_uri) ==> http://localhost:8000/api/daily_usage/bar_graph.png
 	# Let's grab the json data from that uri
 	with urllib.request.urlopen(api_uri) as api_json_response:
+		print(f"url ({api_uri}) api_json_response: {api_json_response}")
 		pyth_dict = json.load(api_json_response) # Parse string to python dict
 
 	x_series = pyth_dict['labels']
@@ -439,6 +439,7 @@ class OrderDetail(LoginRequiredMixin, DetailView):
 
 # ==========================================================================================================================
 # A11
+# =====================================================================================================
 
 import csv
 
@@ -473,8 +474,9 @@ def export_usage_csv(request):
 	return response
 
 # ====================================================================================
-
 # A11
+# =====================================================================================================
+
 @login_required(login_url='login_view')
 def export_usage_json(request):
 	# Let's generate a unique filename 
@@ -505,3 +507,20 @@ def export_usage_json(request):
 	response["Content-Disposition"] = f'attachment; filename="{filename}"' # Enable auto download
 
 	return response
+
+# =====================================================================================================
+# A11 
+# =====================================================================================================
+
+def signup_view(request):
+	if request.method == "POST":
+		form = OwnerSignUpForm(request.POST)
+		if form.is_valid():
+			new_owner = form.save()
+			print(f"POST signup_view() new_owner: {new_owner}")
+			login(request, new_owner)
+			return redirect('dashboard_view')
+	else:
+		form = OwnerSignUpForm()
+	return render(request, 'cardManager/register.html', {'form': form})
+
