@@ -4,26 +4,43 @@
 Stats
 {% endblock %}
 {% block extra_head_scripts %}
-
-<script src="{% static 'js/plotly-3.1.0.min.js' %}">
-    
-</script>
+<script src="{% static 'js/plotly-3.1.0.min.js' %}"></script>
 {% endblock %}
 {% block content %}
-<div class="flex flex-col">
+<div class="flex flex-col hidden">
     <img src="{% url 'daily_usage_graph_png_view' %}" alt="">
 </div>
 <div class="flex flex-col gap-4 mb-10 text-white">
-    <h2 class="text-xl">Daily Usage</h2>
+    <h2 class="text-xl">Taps per Day</h2>
     <div id="__plot_daily_usage" class="flex mt-4">
             
     </div>
-    {% for day in usage_by_day %}
-        <div class="flex gap-2 hidden">
-            <p>+{{ day.n_taps }} Uses</p>
-            <p>{{ day.unique_day|date:"M j, Y" }}</p>
-        </div>
-    {% endfor %}
+        <table class="card-table mt-5">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th class="text-sm">Date</th>
+                    <th class="text-sm"># Taps</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for day in usage_by_day %}
+                <tr>
+                    <td class="text-xl">{{ forloop.counter }}</td>
+                    <td>{{ day.unique_day|date:"M j, Y" }}</td>
+                    <td>{{ day.n_taps }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3">No cards have been tapped yet yet</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table> 
+    <div class="flex flex-row gap-3">
+        <a class="p-3 border-1 border-[var(--color-main)] rounded-sm" href="">Download Usage CSV</a>
+        <a class="p-3 border-1 border-[grey] rounded-sm" href="">Download Usage JSON</a>
+    </div>
 </div>
 <div class="flex flex-row gap-4 mb-10 text-white cards-sm">
         <div class="flex flex-col gap-2 card">
