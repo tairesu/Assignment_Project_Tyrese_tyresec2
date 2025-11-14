@@ -389,6 +389,7 @@ def daily_usage(request):
 	# And return as JSON
 	return JsonResponse({"labels": unique_days, "values": n_card_taps}, safe=True)
 
+@login_required(login_url='login_view')
 def daily_usage_png(request):
 	"""
 	Creates a bar graph png using matplotlib and the json data from my daily_usage fbv
