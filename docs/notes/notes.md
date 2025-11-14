@@ -697,6 +697,40 @@ ___
 
 ___
 
+# A11 Part 1: CSV/JSON Exports
+
+## CSV Export
+- Summary of card taps per day. 
+- I construct a "file-like" object using `csv.writer(response)` & `csv.writer.writerow(list)`. (`response` is a downloadable HTTPResponse w/ `content_type` set to `text/css`. The filename is generated using a datetime stamp)
+- Thanks to `Model.objects.values_list` I select `date_used`, `card__token`, `card__owner__first_name`, `card_owner__last_name` from my Usage model as a list of tuples. Then I loop through the list of tuples and write it into the CSV file.
+
+## JSON Export
+- I created a summary of all card taps per day by querying the Usage model. 
+- I construct a Python dictionary with 3 keys: 
+	1. **total_usage_count**: the total number of card taps in Usage
+	2. **generated_at**: the date of the request
+	3. **usages** : the list of all card taps (4 Columns: Usage Date, Card Token, Card Owner's Firstname, Card Owner's Lastname)
+- I prepped the json response by passing in that Python dictionary, and setting download capabilities like before (`response["Content-Disposition"]`)
+
+
+## A11 Part 2: Authentication & Access Control 
+
+- Authentication protects my application from accidentally/unknowingly granting unauthorized users with C.R.U.D privileges. 
+
+- LoginRequiredMixin and @login_required help me do that by locking down cbv's and fbv's respectively. (Requires a user to login before proceeding to a "locked" view)
+
+- The next query parameter changes the "success url" after a valid login attempt. If it exists, the browser will redirect to the value of this parameter. 
+
+### Login Related Settings:
+
+```
+LOGIN_URL = 'login_view'
+LOGIN_REDIRECT_URL = 'dashboard_view'
+LOGOUT_URL = 'logout_view'
+LOGOUT_REDIRECT_URL = 'login_view'
+```
+
+___
 # Helpful resources
 
 [^1]: https://stackoverflow.com/questions/5517950/django-media-url-and-media-root
