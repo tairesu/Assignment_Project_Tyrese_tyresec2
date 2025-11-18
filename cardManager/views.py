@@ -50,7 +50,7 @@ class HomePage(ListView):
 @login_required(login_url='login_view')
 def order_create(request):
     if request.method == "POST":
-        form = RequestForm(request.POST)
+        form = RequestForm(request.POST, request.FILES)
         owner = Owner.objects.get(pk=request.user.pk)
         # if owner is set and form is valid, go to dashboard
         if owner and form.is_valid():
