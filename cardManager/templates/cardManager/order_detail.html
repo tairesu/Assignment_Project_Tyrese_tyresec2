@@ -14,10 +14,10 @@
     <img 
     class="w-[16rem] h-[11rem] rounded-sm" 
     src="
-    {% if order.preset_design %}
-        {{ order.preset_design.front_design.url }} 
-    {% elif order.custom_design %}
+    {% if order.custom_design %}
         {{ order.custom_design.url }}
+    {% elif order.preset_design %}
+        {{ order.preset_design.front_design.url }} 
     {% endif %}"/>
 	
 </div>
