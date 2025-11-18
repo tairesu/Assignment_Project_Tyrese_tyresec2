@@ -12,5 +12,5 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from .base import *
 
-DEBUG = TRUE
+DEBUG = True
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
