@@ -12,10 +12,10 @@
 		{% for order in pending_orders %}
 			<div class="flex flex-row gap-3">
 				<img class="w-[8rem] h-[5rem] rounded-sm" src="
-				{% if order.preset_design %}
-					{{ order.preset_design.front_design.url }} 
-				{% elif order.custom_design %}
+				{% if order.custom_design %}
 					{{ order.custom_design.url }}
+				{% elif order.preset_design %}
+					{{ order.preset_design.front_design.url }} 
 				{% endif %}"/>
 				<div>
 					<p class="font-bold">{{ order.owner }}</p>
@@ -35,10 +35,11 @@
 				<img 
 					class="w-[8rem] h-[5rem] rounded-sm" 
 					src="
-					{% if card_request.preset_design %}
-						{{ card_request.preset_design.front_design.url }} 
-					{% elif card_request.custom_design %}
+					
+					{% if card_request.custom_design %}
 						{{ card_request.custom_design.url }}
+					{% elif card_request.preset_design %}
+						{{ card_request.preset_design.front_design.url }} 
 					{% endif %}"/>
 			
 			<div>
