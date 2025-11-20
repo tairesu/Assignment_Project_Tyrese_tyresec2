@@ -25,7 +25,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 <body class="min-h-[100vh] bkg-gradient text-white">
-	<nav class="w-[100vw] py-6 px-9 flex justify-between items-center">
+	<nav class="@container w-full py-6 px-9 flex justify-between items-center">
 		<div class="flex gap-2 items-center" name="icon-and-navbar-header">
 			<img src="{% static 'imgs/logo.png' %}" alt="" class="w-[30px] h-[30px] rounded">
 			{% if request.user.is_authenticated %}
@@ -38,7 +38,7 @@
 				</a>
 			{% endif %}
 		</div>
-		<div class="flex gap-4" name="navbar-links">
+		<div class="hidden md:flex  gap-4" name="navbar-links" >
 			{% if request.user.is_authenticated %}
 	            {% if user.profile %}
 	           		<a href="{{ user.profile.get_absolute_url }}">
@@ -72,7 +72,7 @@
 
 		{% endblock %}
 	</div>
-	<div class="@container px-9">
+	<div class="@container px-8">
 		{% block content %}
 
 		{% endblock %}
