@@ -21,3 +21,12 @@ table{
 		font-weight:100
 	}
 }
+img.mini-card{
+	height:5rem;
+	width:8rem;
+	min-width: 125px;
+}
+div.card-order{
+	text-wrap:nowrap;
+	background-color: var(--color-contrast-container);
+}
