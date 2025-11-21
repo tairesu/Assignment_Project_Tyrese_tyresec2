@@ -39,8 +39,15 @@ min-width: 93.75px;
 }
 .card-overlay{
 /* border: 1px solid #bbb; */
+color:transparent;
+transition: background 0.1s linear, color 0.2s ;
 background: var(--color-reflective);
+&:hover {
+	background:rgba(0,0,0,0.6);
+	color:white;
 }
+}
+
 div.card-order{
 text-wrap:nowrap;
 background-color: var(--color-contrast-container);

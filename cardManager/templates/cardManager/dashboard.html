@@ -33,8 +33,18 @@
 		<div class="flex flex-row items-center gap-4 ">
 			<a href="{{ card.get_update_url }}" class="relative md-card can-expand rounded-md w-full h-full bg-[url('{{ card.design.front_design.url }}')]">
 			
-			<div class="card-overlay w-full h-full absolute flex items-center">
-				
+			<div class="d-none md:flex justify-center card-overlay w-full h-full absolute flex-col items-center">
+				{% if card.alias %}
+					<p class="font-bold text-lg">{{ card.alias }}</p>
+					{% else %}
+					<p class="font-bold text-lg">{{ card }}</p>
+				{% endif %}
+				{% if card.show_profile %}
+					<p class="text-darkgrey">Points to your profile</p>
+				{% elif not card.show_profile and card.reroute_url %}
+					<p class="text-darkgrey">{{ card.reroute_url }}</p>
+				{% else %}
+				{% endif %}
 			</div>
 			</a>
 			<div class="md:hidden">
