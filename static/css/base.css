@@ -1,0 +1,40 @@
+:root{
+			--color-main:#0091CA;
+			--color-main-dark:#010a0e;
+			--color-secondary:;
+			--color-secondary-dark:;
+			--color-input-bkg:#081b2b66;
+			--color-danger:red;
+			--color-input-border:#1f719340;
+			--color-contrast-container:#151c3057;
+			--color-bkg:#010a0e;
+			--color-bkg-transparent:#010a0ebb;
+}
+.bkg-gradient {
+	background:var(--color-bkg);
+}
+table{
+	max-width: 450px;
+	table-layout: fixed;
+	border-radius: 0.4rem;
+	td:not(:first-child){
+		font-weight:100
+	}
+}
+.md-card{
+	height:5rem;
+	width:8rem;
+	min-width: 125px;
+
+}
+.mini-card{
+	height:3.75rem;
+	width:6rem;
+	min-width: 93.75px;
+}
+div.card-order{
+	text-wrap:nowrap;
+	background-color: var(--color-contrast-container);
+
+	
+}
