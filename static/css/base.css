@@ -7,6 +7,7 @@
 			--color-danger:red;
 			--color-input-border:#1f719340;
 			--color-contrast-container:#151c3057;
+			--color-contrast-opaque:hsl(214 45% 10% / 1);
 			--color-bkg:#010a0e;
 			--color-bkg-transparent:#010a0ebb;
 }
@@ -36,5 +37,19 @@ div.card-order{
 	text-wrap:nowrap;
 	background-color: var(--color-contrast-container);
 
-	
+}
+div#dropdown-nav{
+	.has-icon{
+		display:flex;
+		align-items: center;
+		gap:calc(var(--spacing) * 2);
+
+		svg{
+			width:20px;
+			height: 20px;
+		}
+		svg path{
+			fill: var(--color-main);
+		}
+	}
 }
