@@ -8,7 +8,7 @@
 {% block content %}
 {% if request.user.is_superuser %}
 	<h2 class="text-xl mb-2">Pending Orders</h2>
-	<div class="w-full flex flex-row gap-4 mb-20 overflow-x-auto scroll-smooth">
+	<div class="w-full grid grid-cols-1 gap-4 mb-20 md:grid-cols-3">
 		{% for order in pending_orders %}
 			<div class="flex flex-row items-center gap-4 rounded-sm p-4 card-order">
 				<img class="mini-card rounded-sm" src="
