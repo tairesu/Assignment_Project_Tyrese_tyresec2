@@ -31,7 +31,11 @@
 	<div id="user-cards" class="flex flex-wrap flex-col gap-6 mb-20 md:m-auto md:grid md:grid-cols-[1fr_1fr_1fr] md:gap-4">
 	{% for card in user_cards %}
 		<div class="flex flex-row items-center gap-4 ">
-			<a href="{{ card.get_update_url }}" class=" md-card can-expand rounded-sm w-full h-full bg-[url('{{ card.design.front_design.url }}')]">
+			<a href="{{ card.get_update_url }}" class="relative md-card can-expand rounded-md w-full h-full bg-[url('{{ card.design.front_design.url }}')]">
+			
+			<div class="card-overlay w-full h-full absolute flex items-center">
+				
+			</div>
 			</a>
 			<div class="md:hidden">
 				{% if card.alias %}
