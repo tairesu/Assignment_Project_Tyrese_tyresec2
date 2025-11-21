@@ -28,7 +28,7 @@
 	</div>
 {% endif %}
 	<h2 class="text-xl mb-6">My Cards</h2>
-	<div id="user-cards" class="flex flex-wrap flex-col gap-6 mb-20 md:m-auto md:w-3/4 md:grid md:grid-cols-[1fr_1fr_1fr] md:gap-10">
+	<div id="user-cards" class="flex flex-wrap flex-col gap-6 mb-20 md:m-auto md:grid md:grid-cols-[1fr_1fr_1fr] md:gap-4">
 	{% for card in user_cards %}
 		<div class="flex flex-row items-center gap-4 ">
 			<a href="{{ card.get_update_url }}" class=" md-card can-expand rounded-sm w-full h-full bg-[url('{{ card.design.front_design.url }}')]">
