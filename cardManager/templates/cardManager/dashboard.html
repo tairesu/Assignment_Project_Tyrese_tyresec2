@@ -28,10 +28,10 @@
 	</div>
 {% endif %}
 	<h2 class="text-xl mb-6">My Cards</h2>
-	<div class="grid gap-6 mb-20 md:m-auto md:w-3/4 md:grid-cols-3 md:grid-flow-col md:gap-20">
+	<div id="user-cards" class="flex flex-wrap flex-col gap-6 mb-20 md:m-auto md:w-3/4 md:grid md:grid-cols-[1fr_1fr_1fr] md:gap-10">
 	{% for card in user_cards %}
-		<div class="grid grid-cols-[1fr_2fr] items-center gap-4 md:flex md:row-span-3">
-			<a href="{{ card.get_update_url }}" class="rounded-sm w-full h-full bg-[url('{{ card.design.front_design.url }}')]">
+		<div class="flex flex-row items-center gap-4 ">
+			<a href="{{ card.get_update_url }}" class=" md-card can-expand rounded-sm w-full h-full bg-[url('{{ card.design.front_design.url }}')]">
 			</a>
 			<div class="md:hidden">
 				{% if card.alias %}
@@ -53,7 +53,7 @@
 	{% endfor %}
 	
 	</div>
-	<h2 class="text-xl mb-6">Arriving Soon</h2>
+	<h2 class="text-xl mb-6 md:mt-20">Arriving Soon</h2>
 	<div class="flex flex-col gap-6 mb-20">
 	{% for card_request in requested_cards %}
 		<div class="flex flex-row items-center gap-4 opacity-[0.3] ">

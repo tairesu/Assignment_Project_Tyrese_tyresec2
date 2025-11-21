@@ -26,6 +26,11 @@ table{
 	height:5rem;
 	width:8rem;
 	min-width: 125px;
+	background-position: center;
+	background-size: cover;
+
+	aspect-ratio: 8/5;
+	
 
 }
 .mini-card{
@@ -62,5 +67,12 @@ div#dropdown-nav{
 #dropdown-trigger.active{
 	path {
 		fill:var(--color-main);
+	}
+}
+@media (width >= 48rem) { 
+	.md-card.can-expand {
+		
+		width:100%;
+		height: auto;
 	}
 }
