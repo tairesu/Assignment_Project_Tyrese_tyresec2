@@ -3,6 +3,7 @@ from django.db import models
 from django.utils import timezone
 from django.urls import reverse
 from django.db.models import UniqueConstraint
+from django.contrib.auth.models import User
 
 
 class Owner(models.Model):
@@ -20,7 +21,7 @@ class Owner(models.Model):
 
 class Profile(models.Model):
 	profile_id = models.AutoField(primary_key=True)
-	owner = models.OneToOneField(Owner, on_delete=models.CASCADE, related_name='profile')
+	owner = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
 	name = models.CharField(max_length=60)
 	bio = models.TextField(blank=True)
 	profile_slug = models.CharField(max_length=25)
@@ -60,7 +61,7 @@ class Design(models.Model):
 class Card(models.Model):
 	card_id = models.AutoField(primary_key=True)
 	token = models.CharField(max_length=7, default=gen_token, blank=False,null=False, unique=True)
-	owner = models.ForeignKey(Owner, on_delete=models.PROTECT, related_name='cards',null=True, blank=True)
+	owner = models.ForeignKey(User, on_delete=models.PROTECT, related_name='cards',null=True, blank=True, default=1)
 	alias = models.CharField(max_length=60, blank=True)
 	show_profile = models.BooleanField(default=False)
 	reroute_url = models.URLField(max_length=200, blank=True)
