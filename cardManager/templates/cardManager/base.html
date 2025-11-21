@@ -50,10 +50,12 @@
 	            {% else %}
 	            	<a href="{% url 'profile_create_view' %}">Create Profile</a>
 	            {% endif %}
-		        <a href="{% url 'dashboard_view' %}">Dashboard</a>
-		        <a href="{% url 'stats_view' %}">Reports</a>
-		        <a href="{% url 'api_daily_usage_view' %}">Api Json</a>
-		        <a href="{% url 'daily_usage_graph_png_view' %}">Api Bar Graph</a>
+				{% if request.user.is_superuser %}
+					<a href="{% url 'dashboard_view' %}">Dashboard</a>
+					<a href="{% url 'stats_view' %}">Reports</a>
+					<a href="{% url 'api_daily_usage_view' %}">Api Json</a>
+					<a href="{% url 'daily_usage_graph_png_view' %}">Api Bar Graph</a>
+				{% endif %}
 		        <form action="{% url 'logout_view' %}" method="post">
 		        	{% csrf_token %}
 		        	<input type="submit" value="Logout"/>
