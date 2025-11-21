@@ -8,7 +8,7 @@
 {% block content %}
 {% if request.user.is_superuser %}
 	<h2 class="text-xl mb-2">Pending Orders</h2>
-	<div class="w-full flex flex-row gap-6 mb-20 overflow-x-auto scroll-smooth">
+	<div class="w-full flex flex-row gap-4 mb-20 overflow-x-auto scroll-smooth">
 		{% for order in pending_orders %}
 			<div class="flex flex-row items-center gap-4 rounded-sm p-4 card-order">
 				<img class="mini-card rounded-sm" src="
@@ -27,12 +27,38 @@
 		{% endfor %}
 	</div>
 {% endif %}
-	<div class="flex flex-col gap-4 mb-20">
-		<h2 class="text-xl">My Cards</h2>
-		{% for card_request in requested_cards %}
-		<div class="flex flex-row gap-3 opacity-[0.3] ">
+	<h2 class="text-xl mb-6">My Cards</h2>
+	<div class="grid gap-6 mb-20 md:m-auto md:w-3/4 md:grid-cols-3 md:grid-flow-col md:gap-20">
+	{% for card in user_cards %}
+		<div class="grid grid-cols-[1fr_2fr] items-center gap-4 md:flex md:row-span-3">
+			<a href="{{ card.get_update_url }}" class="rounded-sm w-full h-full bg-[url('{{ card.design.front_design.url }}')]">
+			</a>
+			<div class="md:hidden">
+				{% if card.alias %}
+					<p class="font-bold text-lg">{{ card.alias }}</p>
+					{% else %}
+					<p class="font-bold text-lg">{{ card }}</p>
+				{% endif %}
+				{% if card.show_profile %}
+					<p class="text-darkgrey">Points to your profile</p>
+				{% elif not card.show_profile and card.reroute_url %}
+					<p class="text-darkgrey">{{ card.reroute_url }}</p>
+				{% else %}
+				{% endif %}
+				<a href="{{ card.get_update_url }}" class="text-(--color-main)">Edit</a>
+			</div>
+		</div>
+		{% empty %}
+		<p>Looks like there aren't any cards here.</p>
+	{% endfor %}
+	
+	</div>
+	<h2 class="text-xl mb-6">Arriving Soon</h2>
+	<div class="flex flex-col gap-6 mb-20">
+	{% for card_request in requested_cards %}
+		<div class="flex flex-row items-center gap-4 opacity-[0.3] ">
 				<img 
-					class="mini-card rounded-sm" 
+					class="md-card rounded-sm" 
 					src="
 					
 					{% if card_request.custom_design %}
@@ -42,35 +68,12 @@
 					{% endif %}"/>
 			
 			<div>
-			<p class="font-bold">On it's way to you</p>
+			<p class="font-bold">On it's way</p>
 			<p class="text-darkgrey">Ordered: {{ card_request.date_created|date:"m/j/y"}}</p>
 			</div>
 			
 		</div>
 		{% endfor %}
-	{% for card in user_cards %}
-		<div class="flex flex-row gap-3">
-			<a href="{{ card.get_absolute_url }}">
-				<img class="w-[8rem] h-[5rem] rounded-sm" src="{{ card.design.front_design.url }}"/>
-			</a>
-			<div>
-				{% if card.alias %}
-					<p class="font-bold">{{ card.alias }}</p>
-					{% else %}
-					<p>{{ card }}</p>
-				{% endif %}
-				{% if card.show_profile %}
-					<p class="text-darkgrey">Points to your profile</p>
-				{% elif not card.show_profile and card.reroute_url %}
-					<p class="text-darkgrey">{{ card.reroute_url }}</p>
-				{% else %}
-				{% endif %}
-				<a href="{{ card.get_update_url }}" class="text-(--color-main)">Edit Card</a>
-			</div>
-		</div>
-		{% empty %}
-		<p>Looks like there aren't any cards here.</p>
-	{% endfor %}
 	
 	</div>
 		<div class="activity flex flex-col">
