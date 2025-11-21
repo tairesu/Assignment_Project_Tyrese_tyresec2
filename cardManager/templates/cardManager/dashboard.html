@@ -6,46 +6,25 @@
 	User: {{ request.user }}
 {% endblock %}
 {% block content %}
-{% if request.user.is_superuser %}
-	<h2 class="text-xl mb-2">Pending Orders</h2>
-	<div class="w-full grid grid-cols-1 gap-4 mb-20 md:grid-cols-3">
-		{% for order in pending_orders %}
-			<div class="flex flex-row items-center gap-4 rounded-sm p-4 card-order">
-				<img class="mini-card rounded-sm" src="
-				{% if order.custom_design %}
-					{{ order.custom_design.url }}
-				{% elif order.preset_design %}
-					{{ order.preset_design.front_design.url }} 
-				{% endif %}"/>
-				<div>
-					<p class="font-bold">{{ order.owner }}</p>
-					<a href="{{ order.get_absolute_url }}" class="text-(--color-main)">View</a>
-				</div>
-			</div>
-			{% empty %}
-			<p>Looks like there aren't any orders yet.</p>
-		{% endfor %}
-	</div>
-{% endif %}
-	<h2 class="text-xl mb-6">My Cards</h2>
+<h2 class="text-xl mb-6">My Cards</h2>
 	<div id="user-cards" class="flex flex-wrap flex-col gap-6 mb-20 md:m-auto md:grid md:grid-cols-[1fr_1fr_1fr] md:gap-4">
 	{% for card in user_cards %}
 		<div class="flex flex-row items-center gap-4 ">
 			<a href="{{ card.get_update_url }}" class="relative md-card can-expand rounded-md w-full h-full bg-[url('{{ card.design.front_design.url }}')]">
 			
-			<div class="d-none md:flex justify-center card-overlay w-full h-full absolute flex-col items-center">
-				{% if card.alias %}
-					<p class="font-bold text-lg">{{ card.alias }}</p>
+				<div class="hidden md:flex justify-center card-overlay w-full h-full absolute flex-col items-center">
+					{% if card.alias %}
+						<p class="font-bold text-lg">{{ card.alias }}</p>
+						{% else %}
+						<p class="font-bold text-lg">{{ card }}</p>
+					{% endif %}
+					{% if card.show_profile %}
+						<p class="text-darkgrey">Points to your profile</p>
+					{% elif not card.show_profile and card.reroute_url %}
+						<p class="text-darkgrey">{{ card.reroute_url }}</p>
 					{% else %}
-					<p class="font-bold text-lg">{{ card }}</p>
-				{% endif %}
-				{% if card.show_profile %}
-					<p class="text-darkgrey">Points to your profile</p>
-				{% elif not card.show_profile and card.reroute_url %}
-					<p class="text-darkgrey">{{ card.reroute_url }}</p>
-				{% else %}
-				{% endif %}
-			</div>
+					{% endif %}
+				</div>
 			</a>
 			<div class="md:hidden">
 				{% if card.alias %}
@@ -67,6 +46,28 @@
 	{% endfor %}
 	
 	</div>
+{% if request.user.is_superuser %}
+	<h2 class="text-xl mb-2">Pending Orders</h2>
+	<div class="w-full grid grid-cols-1 gap-4 mb-20 md:grid-cols-3">
+		{% for order in pending_orders %}
+			<div class="flex flex-row items-center gap-4 rounded-sm p-4 card-order">
+				<img class="mini-card rounded-sm" src="
+				{% if order.custom_design %}
+					{{ order.custom_design.url }}
+				{% elif order.preset_design %}
+					{{ order.preset_design.front_design.url }} 
+				{% endif %}"/>
+				<div>
+					<p class="font-bold">{{ order.owner }}</p>
+					<a href="{{ order.get_absolute_url }}" class="text-(--color-main)">View</a>
+				</div>
+			</div>
+			{% empty %}
+			<p>Looks like there aren't any orders yet.</p>
+		{% endfor %}
+	</div>
+{% endif %}
+	
 	<h2 class="text-xl mb-6 md:mt-20">Arriving Soon</h2>
 	<div class="flex flex-row w-full overflow-x-auto gap-6 mb-20">
 	{% for card_request in requested_cards %}
