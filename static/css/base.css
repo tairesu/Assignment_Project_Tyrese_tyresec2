@@ -53,3 +53,14 @@ div#dropdown-nav{
 		}
 	}
 }
+#dropdown-trigger{
+	path{
+		transition:fill 0.4s ease;
+		fill:grey;
+	}
+}
+#dropdown-trigger.active{
+	path {
+		fill:var(--color-main);
+	}
+}
