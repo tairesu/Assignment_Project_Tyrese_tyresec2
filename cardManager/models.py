@@ -6,19 +6,6 @@ from django.db.models import UniqueConstraint
 from django.contrib.auth.models import User
 
 
-class Owner(models.Model):
-	owner_id = models.AutoField(primary_key=True)
-	first_name = models.CharField(max_length=100, blank=False)
-	last_name = models.CharField(max_length=100, blank=False) 
-	email = models.EmailField(max_length=200, blank=False, unique=True)
-	pword = models.CharField(max_length=128, blank=False)
-	date_created = models.DateTimeField(default=timezone.now, editable=False)
-	last_login = models.DateTimeField(default=timezone.now, editable=False )
-
-	def __str__(self):
-		return f'{self.first_name} {self.last_name}'
-
-
 class Profile(models.Model):
 	profile_id = models.AutoField(primary_key=True)
 	owner = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
@@ -102,7 +89,7 @@ class Request(models.Model):
     preset_design = models.ForeignKey(Design, related_name="requests", on_delete=models.PROTECT,null=True, blank=True)
     custom_design = models.ImageField(upload_to='userPhotos/customDesigns/', blank=True)
     custom_design_rear = models.ImageField(upload_to='userPhotos/customDesigns/', blank=True)
-    owner = models.ForeignKey(Owner, related_name="requests", on_delete=models.PROTECT, blank=False)
+    owner = models.ForeignKey(User, related_name="requests", on_delete=models.PROTECT, blank=False)
     card_qty = models.IntegerField(default=1)
     status = models.CharField(choices=status_choices, default='Pending', max_length=10)
     
