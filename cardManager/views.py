@@ -23,11 +23,11 @@ from django.db.models import Count, Q
 from django.db.models.functions import TruncDay
 from django.views.decorators.csrf import csrf_exempt
 from django.forms.models import model_to_dict
+from django.contrib.auth.models import User
 from cardManager.utils import gen_card_token
 from cardManager.models import (
 	Card,
 	Profile,
-	Owner,
 	Usage,
 	Design,
 	Request
@@ -51,7 +51,7 @@ class HomePage(ListView):
 def order_create(request):
     if request.method == "POST":
         form = RequestForm(request.POST, request.FILES)
-        owner = Owner.objects.get(pk=request.user.pk)
+        owner = User.objects.get(pk=request.user.pk)
         # if owner is set and form is valid, go to dashboard
         if owner and form.is_valid():
             #https://stackoverflow.com/questions/77784821/how-to-add-value-into-a-form-before-saving-in-django
@@ -234,7 +234,7 @@ class Stats(LoginRequiredMixin, ListView):
 		context['n_taps'] = Usage.objects.exclude(card__owner=None).count()
 
 		# Total number of card Owners
-		context['n_users'] = Owner.objects.count()
+		context['n_users'] = User.objects.exclude(is_staff=True).count()
 
 		"""
 		Card taps per owner:
@@ -254,16 +254,16 @@ class Stats(LoginRequiredMixin, ListView):
 			.order_by('-n_card_taps')[0:3]
 		) # ==> <QuerySet [{'card__owner_id': 1, 'n_card_taps': 37},{..}]>
 
-		# Create a list that formats user_taps to include Owner instance (instead of the owner's ID)   
+		# Create a list that formats user_taps to include User instance (instead of the owner's ID)   
 		cleaned_user_taps = [
 			{
-				# Use card__owner_id to retrieve Owner instance 
-				'user': Owner.objects.get(pk=item['card__owner_id']),
+				# Use card__owner_id to retrieve User instance 
+				'user': User.objects.get(pk=item['card__owner_id']),
 				# Keep n_card_taps
 				'n_card_taps': item['n_card_taps']
 			} 
 			for item in user_taps 
-		] # ==> [{'user': <Owner: Tyrese Cook>, 'n_card_taps': 37}, {...}]
+		] # ==> [{'user': <User: Tyrese Cook>, 'n_card_taps': 37}, {...}]
 		context['user_taps'] = cleaned_user_taps
 
 		""" 
@@ -328,8 +328,8 @@ def config_plotly(request):
 	# Clean querysets here
 	cleaned_user_taps = [
 		{
-			# Use card__owner_id to retrieve Owner instance 
-			'user': Owner.objects.get(pk=item['card__owner_id']).__str__(),
+			# Use card__owner_id to retrieve User instance 
+			'user': User.objects.get(pk=item['card__owner_id']).__str__(),
 			# Keep n_card_taps
 			'n_card_taps': item['y']
 		} 
