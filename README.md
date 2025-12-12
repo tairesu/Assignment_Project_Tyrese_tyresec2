@@ -1,95 +1,172 @@
-# Assignment_Project_Tyrese_tyresec2
+# Digital Card Management System
 
-Django application for my digital card management system. It enables **customers** to alter how their digital cards work from the comfort of their home. 
+A Django web application for managing digital business cards. Users can activate cards, update card details, analyze card usage, and export reports.
 
-## ER Diagram:
+## Project Overview
+
+This system enables customers to manage their digital cards from home. It provides authentication, card editing, QR code generation, analytics with PlotlyJS, and CSV/JSON export capabilities.
+
+## Features
+
+### Authentication & User Management
+
+* Signup, login, logout
+* Profile creation and updates
+* Dashboard with protected content
+* Role‑restricted views
+
+### Digital Card Tools
+
+* Activate and claim digital cards
+* Update card information using forms
+* Conditional field validation
+* Search and filter card records
+
+### Analytics & Reporting
+
+* Daily usage analysis
+* Leaderboard of most‑used cards
+* Interactive charts using PlotlyJS
+* CSV and JSON export of usage data
+
+### User Interface
+
+* TailwindCSS integration
+* Template‑based structure
+* Clean layout for reports and dashboards
+
+## ER Diagram
 
 ![ER Diagram](https://raw.githubusercontent.com/tairesu/Assignment_Project_Tyrese_tyresec2/refs/heads/main/docs/notes/erDiagram.png)
 
-# Weekly Updates
+## Tech Stack
 
-## A5 Updates
+| Area         | Technology     |
+| ------------ | -------------- |
+| Backend      | Django         |
+| Frontend     | TailwindCSS    |
+| Charts       | PlotlyJS       |
+| Database     | SQLite         |
+| External API | goQR.me QR API |
 
-- Added tailwind to Base template
-- Began customizing forms
-- Used get_context data in LoginView
-- Switched from dashboard fbv to cbv 
-- Add conditional block to display anchor tag (w/ proper next paremeters) in login.html
+## Installation & Setup
 
-## A6 Updates 
+### 1. Clone the repository
 
-- I purged everything that we haven't covered in class: Forms, Login/Logout Views, Stripe, etc
-- I created two aggregations (leaderboard, and design usage) and one filtering functionality (for searching cards)
+```bash
+git clone https://github.com/tairesu/Assignment_Project_Tyrese_tyresec2.git
+cd Assignment_Project_Tyrese_tyresec2
+```
 
-## A7 Updates 
+### 2. Create & activate virtual environment
 
-I used Plotly JS to visualize two of my aggregations from A6. JS fetches the JSON data powering PlotlyJS from the `config_plotly` function-based view's JsonResponse . (See `config_plotly` JsonResponse below)
+```bash
+python -m venv venv
+```
 
-I originally thought I'd visualize more than two aggregations, so I created a JS class called `Plot` that wraps around Plotly's `newPlot()` method and its 4 major parameters: target_elem (str), data (array), layout (obj), config (obj). It enables my application to go from this: 
+```bash
+# macOS/Linux
+source venv/bin/activate
 
-![Plotly JSON seed data](https://raw.githubusercontent.com/tairesu/Assignment_Project_Tyrese_tyresec2/refs/heads/main/docs/assignment_screenshots/config_plotly_json_data.png)
+# Windows
+venv\Scripts\activate
+```
 
-to this:
+### 3. Install dependencies
 
-![Plotly Visuals](https://raw.githubusercontent.com/tairesu/Assignment_Project_Tyrese_tyresec2/refs/heads/main/docs/assignment_screenshots/plotly_visuals.png)
+```bash
+pip install -r requirements.txt
+```
 
-Graph 1 represents daily usage. It's aggregration counts the number of uses (in Usage model) grouped by unique day.
-Graph 2 represents a leaderboard which tells which owners used their cards the most. It's aggregation counts the number of uses in (Usage model) grouped by a card's owner (Relation Traversal: card__owner_id)
+### 4. Run migrations
 
-## A8 Updates 
+```bash
+python manage.py migrate
+```
 
-- I created the `card_update()` fbv, and the `CardUpdate()` cbv.
-- They both use the CardForm form class that I created, but the cbv uses less code. The fbv gave me more control over my application since I handle the request from start to finish. The cbv has alot going on underneath that makes it so that i can use less code, but that's not my code per se (and that comes with disadvantages). 
-- CardForm works with POST requests and the csrf token to prevent cross site requests. I didn't care in my GET function, but this form is used to update data in my database (DANGER!)
-- Set `CardForm` exlude to prevent updating non-permitted fields. 
-- Used `CardForm.clean()` method to validate Card fields that depend on each other (e.g, "reroute_url", "show_profile")
+### 5. Start the server
 
-## A9 Updates
+```bash
+python manage.py runserver
+```
 
-- I created the `daily_usage` fbv, and  `daily_usage_png` fbv to return the JSON data of card usages grouped by date,  and generate a matplotlib based chart (from the data) respectively. For ease of use, I built `daily_usage` to contain labels (the x values) and value (the y values). 
+## Usage Guide
 
-## A10 External APis
+* Access dashboard after login
+* Edit card details via update form
+* View usage analytics on reports page
+* Download CSV/JSON exports
+* Scan or activate cards using public endpoints
 
-- I used this [QR Code API](https://goqr.me/api/) to create the QR codes that will be adhered to the back of my digital cards. Sending a GET request with the `format` parameter `=svg`, and the `data` parameter to a generated URL (the same as the `card_detail_view` urlpattern) returns the raw svg code for a unique qr code. I made Javascript responsible for handling this raw svg code by building a blob object, a temporary URL for that blob object, and an anchor tag with download capabilities. 
+## Project Structure (Simplified)
 
-- In the event that the Api response's status code is not 200, my application hides the anchor tag and it's JS dependencies 
+```
+/core
+    settings.py
+    urls.py
+    views.py
 
-## A11 CSV/JSON Exports (Part 1)
+/cards
+    models.py
+    views.py
+    templates/cards/
 
-I wanted to track the number of cards that are tapped within my application. To do so, I've created a CSV & JSON export view to summarize data selected from **Usage**. 
+templates/
+    base.html
+    dashboard.html
+    reports.html
+```
 
-### New URLS
+## Development Notes (Condensed)
 
-- **/reports/**: Page with charts and tables 
-- **/export/usage.csv**: Downloads a csv file of total card taps by day
-- **/export/usage.json**: Downloads a JSON file of total card taps by day
+### A5
 
+* TailwindCSS added to base template
+* Form customization
+* LoginView context improvements
+* Dashboard FBV migrated to CBV
+* Conditional login anchors
 
-## A11 Authentication & Access Control (Part 2)
+### A6
 
-My signup process consists of a function based view (`cardManager.views.signup_view`) that renders the `cardManager.forms.OwnerSignUpForm` form to my registration template. If the request method is POST, I save a new non-staff user (by ignoring the `is__x` fields), log the user in, and redirect the browser to the dashboard. If the request method is GET, I send a blank form. The `cardManager.forms.OwnerSignUpForm` includes 6 fields: First & Last names, email, username, password & confirm password. 
+* Removed unused or out‑of‑scope systems
+* Added two aggregations and one filtering feature
 
-### Protected Routes 
+### A7
 
-- Dashboard: this view requires specific user data so protecting this ensures that the user data is provided.
-- Profile Create: Only users should be able to do this
-- Card Update: Only a user can update a card. 
-- Reports: Protected to hide important summaries/aggregrations 
-- Order Detail: Everyone shouldn't know the details of a report. Certain privileges were needed 
-- Exports(CSV & JSON): Protected to hide important summaries/aggregrations 
+* Added PlotlyJS visualizations
+* Backend JSON feeding into frontend JS
+* Created a JS Plot wrapper class
 
-### Public Routes 
+### A8
 
-- Card Activate: This is where customers claim their cards. I'm required a login right after they 
-- Signup
-- Card Scan: I didn't want the people tapping the cards to have to sign in if they aren't users
-- Profile Detail: profiles are visible to the public 
-- daily_usage: I got a JSON Decode error because of how the `daily_usage_png` fbv relies on it. Protecting this view hands an HTTPResponse carrying the login page's HTML,instead of the expected JSONResponse, when an unauthorized user visits.
+* Implemented both FBV and CBV card update flows
+* Added CardForm with validation and field restrictions
 
+### A9
 
-### Credentials for grading
+* Added daily usage JSON endpoint
+* Added matplotlib chart PNG endpoint
 
-username: **mohitg2** 
-password: **graingerlibrary** 
+### A10
 
+* Integrated external QR API
+* Added JS blob download flow for SVG QR codes
 
+### A11 (Exports)
+
+* CSV and JSON usage export functionality
+* Added /reports/, /export/usage.csv, /export/usage.json
+
+### A11 (Authentication)
+
+* Implemented signup process
+* Protected routes: dashboard, profile create, card update, reports, exports
+* Public routes: signup, card activation, card scan, profile detail
+
+## Credentials for Grading
+
+* Username: mohitg2
+* Password: graingerlibrary
+
+*(Remove this section before publishing publicly)*
