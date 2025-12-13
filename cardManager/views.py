@@ -430,6 +430,8 @@ class OrderDetail(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         token = gen_card_token()
         generated_url = self.request.build_absolute_uri(reverse("homepage_view")) + "card/" + token
+        context['generated_url'] = generated_url
+        context['token'] = token
         api_url = f"https://api.qrserver.com/v1/create-qr-code/?size=150x150&format=svg&data={generated_url}"
         #https://stackoverflow.com/questions/16511337/correct-way-to-try-except-using-python-requests-module
         qr_svg = requests.get(api_url)
