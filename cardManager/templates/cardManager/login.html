@@ -3,8 +3,11 @@
 {% block opener %}
 Login
 {% endblock %}
+{% block hero_text %}
+	We missed you!
+{% endblock %}
 {% block content %}
-	<form method="post" class="flex m-auto flex-col gap-7 md:w-3/4 lg:w-2/5">
+	<form method="post" class="flex m-auto flex-col gap-7">
 		{% csrf_token %}
 		{% if form.non_field_errors %}
 			{% for error in form.non_field_errors %}
