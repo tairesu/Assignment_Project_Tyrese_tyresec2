@@ -3,8 +3,8 @@
 {% block title %}
 	Order Detail
 {% endblock %}
-{% block hero_header %}
-<div class="flex flex-row justify-center gap-2 mb-10">
+{% block content %}
+<div class="flex flex-row justify-center gap-2 mb-6">
     <img 
     class="w-[16rem] h-[11rem] rounded-sm" 
     src="
@@ -14,12 +14,9 @@
         {{ order.preset_design.front_design.url }} 
     {% endif %}"/>
 </div>
-{% endblock %}
-
-{% block content %}
 <div class="text-center ">
-    <h2 class="text-5xl">
-        {{ order.owner }}'s wants {% if order.card_qty == 1 %}a card{% else %} {{ order.card_qty }} cards {%endif%}
+    <h2 class="text-3xl mb-3">
+        {{ order.owner }} wants {% if order.card_qty == 1 %}a card{% else %} {{ order.card_qty }} cards {%endif%}
     </h2>
     <p>Ordered on {{ order.date_created|date:"M j, Y" }}</p>
 </div>
