@@ -12,7 +12,7 @@ Updating Card
 </div>
 {% endblock %}
 {% block content %}
-	<form method="post" class="flex m-auto flex-col gap-7 md:w-3/4 lg:w-2/5">
+	<form method="post" class="flex flex-col gap-7">
 		{% csrf_token %}
 		<div class="flex flex-col gap-1">
 	    	<label for="id_alias" class="text-bold text-lg">Card Name</label>
