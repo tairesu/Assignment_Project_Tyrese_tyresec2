@@ -3,8 +3,16 @@
 {% block opener %}
 Updating Card
 {% endblock %}
+
+{% block hero_text %} 
+	{% if card.alias %}
+		Update {{ card.alias }}
+	{% else %}
+		Update your Card
+	{% endif %}
+{% endblock %}
 {% block hero_header %}
-<div class="flex flex-row justify-center gap-2">
+<div class="flex flex-row justify-center gap-2 mb-10">
 	<img 
 		class="w-[16rem] h-[10rem] rounded-sm md:w-[20rem] md:h-[13rem]"
 		src="{{ card.design.front_design.url }}"
