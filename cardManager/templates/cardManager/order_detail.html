@@ -3,14 +3,8 @@
 {% block title %}
 	Order Detail
 {% endblock %}
-{% block content %}
-<h2>
-    {{ order.owner }}'s card
-</h2>
-<p>Wants {% if order.card_qty == 1 %}a card{% else %} {{ order.card_qty }} cards {%endif%} </p>
-<p>Ordered on {{ order.date_created|date:"M j, Y" }}</p>
-<p></p>
-<div class="flex flex-row items-center justify-center">
+{% block hero_header %}
+<div class="flex flex-row justify-center gap-2 mb-10">
     <img 
     class="w-[16rem] h-[11rem] rounded-sm" 
     src="
@@ -19,7 +13,15 @@
     {% elif order.preset_design %}
         {{ order.preset_design.front_design.url }} 
     {% endif %}"/>
-	
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="text-center ">
+    <h2 class="text-5xl">
+        {{ order.owner }}'s wants {% if order.card_qty == 1 %}a card{% else %} {{ order.card_qty }} cards {%endif%}
+    </h2>
+    <p>Ordered on {{ order.date_created|date:"M j, Y" }}</p>
 </div>
 <a href="">
     <button id="activateCardBtn" class="bg-[var(--color-main)] w-full text-center py-4 rounded-md mt-8">Convert to Card</button>
