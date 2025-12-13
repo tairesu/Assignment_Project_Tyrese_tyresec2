@@ -7,15 +7,65 @@ Stats
 <script src="{% static 'js/plotly-3.1.0.min.js' %}"></script>
 {% endblock %}
 {% block content %}
-<div class="flex flex-col hidden">
-    <img src="{% url 'daily_usage_graph_png_view' %}" alt="">
-</div>
-<div class="flex flex-col gap-4 mb-10 text-white">
-    <h2 class="text-xl">Taps per Day</h2>
-    <div id="__plot_daily_usage" class="flex mt-4">
-            
+    <div class="mb-4 flex flex-row position-relative">
+        <form method="get">
+            {% if query %}
+            <input type="text" class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4" name="query" value="{{ query }}">
+            {% else %}
+            <input type="text" class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4" name="query">
+            {% endif %}
+            <input type="submit" value="Find Card" class="position-absolute">
+        </form>
     </div>
-        <table class="card-table mt-5">
+    {% if card_results %}
+        <div class=" flex flex-col text-white">
+            <p class="text-sm">Found {{ card_results|length }} Card(s)</p>
+        </div>
+            {% for card in card_results %}
+                <div class="flex mb-10">
+                    <img src="{{ card.design.front_design.url }}" class="w-[3rem] h-[1.7rem] rounded-sm">
+                    <p>{{ card }}</p>
+                </div>
+            {% endfor %}
+    {% elif card_results|length == 0 and query %}
+        <div class="mb-4 flex flex-col text-white">
+            <p class="text-sm">No cards found </p>
+        </div>
+    {% endif %}
+<div class=" flex flex-col text-white mt-20">
+    <h2 class="text-xl mb-6">Design Usage</h2>
+    <div class="flex gap-4 flex-wrap cards mb-20">
+        {% for design_dict in design_usage %}
+        <div class="flex flex-col justify-center items-center rounded-full w-15 h-15 p-2 relative" style="background:url('{{ design_dict.design.front_design.url }}');background-size:cover">
+            <p class="bg-[var(--color-bkg-transparent)] w-10 h-10 flex rounded-full justify-center items-center text-xl font-bold absolute">{{ design_dict.n_uses }}</p>
+        </div>
+        </tr>
+        {% empty %}
+        <div>
+            <p> No designs yet
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<div class="flex flex-row gap-4 mb-20 text-white cards-sm">
+    <div class="flex flex-col gap-2 card">
+        <h2 class="text-3xl">{{ n_taps }}</h2>
+        <p class="text-lg">Taps</p>
+    </div>
+    <div class="flex flex-col gap-2 text-white card">
+        <h2 class="text-3xl">{{ n_users }}</h2>
+        <p class="text-lg">Owners</p>
+    </div>
+    <div class="flex flex-col gap-2 text-white card">
+        <h2 class="text-3xl">{{ n_cards_claimed }}</h2>
+        <p class="text-lg">Cards Claimed</p>
+    </div>
+</div>
+<div class="grid grid-cols-[1fr_1fr] gap-20">
+    <div class="flex flex-col mb-10 text-white">
+        <h2 class="text-xl mb-6">Taps per Day</h2>
+        <div id="__plot_daily_usage" class="flex mb-6"></div>
+        <table class="card-table mb-6">
             <thead>
                 <tr>
                     <th></th>
@@ -37,26 +87,12 @@ Stats
                 {% endfor %}
             </tbody>
         </table> 
-    <div class="flex flex-row gap-3">
-        <a class="p-3 border-1 border-[var(--color-main)] rounded-sm" href="{% url 'export_usage_csv_view' %}">Download Usage (CSV)</a>
-        <a class="p-3 border-1 border-[grey] rounded-sm" href="{% url 'export_usage_json_view' %}">Download Usage (JSON)</a>
+        <div class="flex flex-row gap-3">
+            <a class="p-3 border-1 border-[var(--color-main)] rounded-sm" href="{% url 'export_usage_csv_view' %}">Download Usage (CSV)</a>
+            <a class="p-3 border-1 border-[grey] rounded-sm" href="{% url 'export_usage_json_view' %}">Download Usage (JSON)</a>
+        </div>
     </div>
-</div>
-<div class="flex flex-row gap-4 mb-10 text-white cards-sm">
-        <div class="flex flex-col gap-2 card">
-            <h2 class="text-2xl">{{ n_taps }}</h2>
-            <p class="text-sm">Taps</p>
-        </div>
-        <div class="flex flex-col gap-2 text-white card">
-            <h2 class="text-2xl">{{ n_users }}</h2>
-            <p class="text-sm">Owners</p>
-        </div>
-        <div class="flex flex-col gap-2 text-white card">
-            <h2 class="text-2xl">{{ n_cards_claimed }}</h2>
-            <p class="text-sm">Cards Claimed</p>
-        </div>
-</div>
-<div class=" flex flex-col text-white mb-10">
+    <div class=" flex flex-col text-white mb-10">
     <h2 class="text-xl">Leaderboard</h2>
     <div id="__plot_user_taps" class="flex mt-4">
     
@@ -83,52 +119,11 @@ Stats
             {% endfor %}
         </tbody>
     </table> 
-    
 </div>
-<div class="mb-4 flex flex-row position-relative">
-    <form method="get">
-        {% if query %}
-        <input type="text" class="border-1 border-white rounded p-2" name="query" value="{{ query }}">
-        {% else %}
-        <input type="text" class="border-1 border-white rounded p-2" name="query">
-        {% endif %}
-        <input type="submit" value="Find Card" class="position-absolute">
-    </form>
 </div>
-{% if card_results %}
-    <div class="mb-4 flex flex-col text-white">
-        <p class="text-sm">Found {{ card_results|length }} Card(s)</p>
-    </div>
-        {% for card in card_results %}
-            <div class="flex mb-10">
-                <img src="{{ card.design.front_design.url }}" class="w-[3rem] h-[1.7rem] rounded-sm">
-                <p>{{ card }}</p>
-            </div>
-        {% endfor %}
-{% elif card_results|length == 0 and query %}
-    <div class="mb-4 flex flex-col text-white">
-        <p class="text-sm">No cards found </p>
-    </div>
-{% endif %}
-    
-    
-		
-		<div class=" flex flex-col text-white">
-			<h2 class="text-xl">Design Usage</h2>
-            <div class="flex gap-4 flex-wrap cards mt-4">
-                {% for design_dict in design_usage %}
-                <div class="flex flex-col justify-center items-center rounded-full w-15 h-15 p-2 relative" style="background:url('{{ design_dict.design.front_design.url }}');background-size:cover">
-                    <p class="bg-[var(--color-bkg-transparent)] w-10 h-10 flex rounded-full justify-center items-center text-xl font-bold absolute">{{ design_dict.n_uses }}</p>
-                </div>
-                </tr>
-                {% empty %}
-                <div>
-                    <p> No designs yet
-                </div>
-                {% endfor %}
-            </div>
-		</div>
-	
+
+
+
 {% endblock %}
 {% block extra_scripts %}
 <script src="{% static 'js/get_plotly_data.js' %}?v={{ tz }}"></script>
