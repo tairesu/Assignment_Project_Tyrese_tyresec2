@@ -70,7 +70,7 @@
 
 	    </div>
 	</nav>
-	<div class="w-full py-8 px-6 relative" >
+	<div class="w-full py-8 px-6 relative " >
 		<!-- Dropdown Nav (hidden on md)-->
 		<div id="dropdown-nav" class=" bg-[var(--color-contrast-opaque)] flex flex-col absolute top-0 gap-2 right-9 p-4 border-1 border-[var(--color-main)] rounded-sm md:hidden" style="display:none">
 			{% if request.user.is_authenticated %}
@@ -127,7 +127,7 @@
             </h2>
         </div>
     </section>
-	<div class="@container md:w-7/8 lg:w-3/4 m-auto px-8">
+	<div class="@container mt-40 md:w-7/8 lg:w-3/4 m-auto px-8">
 		{% block content %}
 
 		{% endblock %}
