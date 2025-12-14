@@ -36,12 +36,13 @@
            </div>
         </div>
     </section>
-    <section id="design" class="my-40 w-full m-auto">
-        <h2 class="text-2xl text-center mb-6 ">
+    <section id="design" class="flex flex-col items-center my-40 w-full m-auto gap-6">
+        <h2 class="text-2xl text-center ">
             Design Yours
         </h2>
-        <div class="card flex items-center justify-center mb-10">
+        <div class=" flex w-max items-center justify-center relative">
             <img id="card" class="object-cover rounded-md h-[11rem] w-[18rem]" src="{{ design_list.first.front_design.url}}"/>
+            <div class="w-full h-full absolute top-0 left-0" style="background:var(--color-reflective)"></div>
         </div>
         <div class="design_toggle">
 
@@ -49,7 +50,7 @@
         <h2 class="mb-5 hidden">
             Choose a Preset Design
         </h2>
-        <div class="w-full overflow-x-auto mb-10">
+        <div class="w-full overflow-x-auto ">
             <div class="flex flex-row gap-2 w-max">
                 {% for design in design_list %}
                     <button onclick="setDesignChoice(this)" >
@@ -58,7 +59,7 @@
                 {% endfor %}
             </div>
         </div>
-        <h2 class="mb-5">
+        <h2 class="mt-5">
             Custom Design
         </h2>
        
