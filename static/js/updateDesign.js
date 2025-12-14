@@ -1,6 +1,15 @@
 const card = document.querySelector('#card');
 const design_input = document.querySelector("input#design_choice");
 
+
+function preselectDesignChoice(design_id){
+    if(design_id != '') {
+
+        let design_btn = $(`button:has(img[data-id=${design_id}])`)[0]
+        design_btn.click();
+    }
+}
+
 function setDesignChoice(button_ele) {
     hideUploadFile();
     child_img_id = button_ele.querySelector("img").dataset['id'];
