@@ -1,3 +1,5 @@
+
+
  .card-circle, table.card-table, .cards-sm .card.flex-col{
     background-color: var(--color-contrast-container);
 }
@@ -59,6 +61,23 @@ Small Cards with <h2> and <p> elements.
     }
 }
 
+
+.flat-spinning-card {
+    animation: spin-card 5s linear;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    transform:rotateX(90deg) rotateZ(0deg) ;
+}
+
+@keyframes spin-card {
+    from{
+        transform:rotateX(90deg) rotateZ(0deg)
+    } 
+    to{
+        transform:rotateX(0deg) rotateZ(360deg);
+    }
+    
+}
 @media screen and (max-width: 530px) {
     .cards-sm{
         flex-direction: column;
