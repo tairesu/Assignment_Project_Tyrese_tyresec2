@@ -61,14 +61,14 @@ Login
     	</div>
     	<a 
     		class="text-center text-md text-[var(--color-main)] mt-8"
-    		{% if nextUrlParam %} href="{% url 'signup_view' %}?next={{nextUrlParam}}" 
+    		{% if request.GET.next %} href="{% url 'signup_view' %}?next={{request.GET.next}}" 
     		{% else %} href="{% url 'signup_view' %}"
     		{% endif %} 
     	>
     		I don't have an account
     	</a>
 		   
-		<input class="bg-[var(--color-main)] rounded-md py-4 mt-9" type="submit" value="Login">
+		<input class="bg-[var(--color-main)] rounded-md py-4 mt-6" type="submit" value="Login">
 	</form>
 {% endblock %}
 {% block extra_scripts %}

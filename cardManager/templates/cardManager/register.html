@@ -56,7 +56,10 @@
 	{% if nextUrlParam %}
     <a href="{% url 'login_view' %}?next={{nextUrlParam}}" class="text-center text-md text-[var(--color-main)] mt-8">I already have an account</a>
     {% else %}
-    <a href="{% url 'login_view' %}" class="text-center text-md text-[var(--color-main)] mt-8">I already have an account</a>
+    <a 
+        {% if request.GET.next %} href="{% url 'login_view' %}?next={{request.GET.next}}"
+        {% else %} href="{% url 'login_view' %}" {% endif %} 
+    class="text-center text-md text-[var(--color-main)] mt-8">I already have an account</a>
     {% endif %}
 	<button class="bg-[var(--color-main)] w-full text-center py-4 rounded-md" type="submit">
     	Sign up
