@@ -26,17 +26,17 @@ from django.forms.models import model_to_dict
 from django.contrib.auth.models import User
 from cardManager.utils import gen_card_token
 from cardManager.models import (
-	Card,
-	Profile,
-	Usage,
-	Design,
-	Request
+    Card,
+    Profile,
+    Usage,
+    Design,
+    Request
 )
 from .forms import (
-	CardForm,
-	ProfileForm,
-	RequestForm,
-	OwnerSignUpForm,
+    CardForm,
+    ProfileForm,
+    RequestForm,
+    OwnerSignUpForm,
 )
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -55,393 +55,399 @@ def order_create(request):
             order_instance = form.save(commit=False)
             order_instance.owner = request.user
             form.save()
+            if 'order_post' in request.session:
+                del request.session['order_post']
             return redirect('dashboard_view')
         elif not request.user.is_authenticated and form.is_valid():
-            request.session['order_form_post'] = request.POST
+            request.session['order_post'] = request.POST
             url = reverse('signup_view')
-            home_url = reverse('homepage_view')
-            return redirect(f"{url}?next={home_url}")
-        
-        elif not form.is_valid():
-            return render(request, 'cardManager/home.html', {'order_form':form})
+            return redirect(f"{url}?next={request.path}")
+    elif request.method == "GET":
+
+        if 'order_post' in request.session:
+            form = RequestForm(request.session.get('order_post'))
+        else: 
+            form = RequestForm()
+        return render(request, 'cardManager/home.html', {'form':form, 'design_list': Design.objects.all()})
+
     
 # Create and Saves Usage instance, given card field
 def __add_to_usage(request, card):
-	print('\ninit\'d __add_to_usage')
-	new_use = Usage(card=card)
-	new_use.save()
+    print('\ninit\'d __add_to_usage')
+    new_use = Usage(card=card)
+    new_use.save()
 
 
 # Handles redirects for a scanned card matching card_token 
 def card_detail(request,card_token):
-	"""
-	Redirects the browser based on this card instance's attributes. 
-	"""
-	card = get_object_or_404(Card, token=card_token)
-	is_owned = not (card.owner == None)
-	is_redirecting = not (card.reroute_url == "")
+    """
+    Redirects the browser based on this card instance's attributes. 
+    """
+    card = get_object_or_404(Card, token=card_token)
+    is_owned = not (card.owner == None)
+    is_redirecting = not (card.reroute_url == "")
 
-	if is_owned:
-		__add_to_usage(request, card) 
-		
-	if is_owned and not card.show_profile and is_redirecting:
-		return redirect(card.reroute_url)
-	elif is_owned and card.show_profile:
-		return redirect('profile_view', profile_slug=card.owner.profile.profile_slug)
-	elif is_owned and not is_redirecting:
-		return redirect('card_update_view',card_token=card_token)
-	elif not is_owned:
-		return redirect('card_activate_view', card_token=card_token)	
+    if is_owned:
+        __add_to_usage(request, card) 
+        
+    if is_owned and not card.show_profile and is_redirecting:
+        return redirect(card.reroute_url)
+    elif is_owned and card.show_profile:
+        return redirect('profile_view', profile_slug=card.owner.profile.profile_slug)
+    elif is_owned and not is_redirecting:
+        return redirect('card_update_view',card_token=card_token)
+    elif not is_owned:
+        return redirect('card_activate_view', card_token=card_token)    
 
 
 class CardActivate(DetailView, LoginRequiredMixin):
-	"""
-	Renders Card instance to card activate HTML template. 
-	"""
-	model = Card
-	slug_field = 'token'
-	slug_url_kwarg = 'card_token'
-	template_name = 'cardManager/activate.html'
+    """
+    Renders Card instance to card activate HTML template. 
+    """
+    model = Card
+    slug_field = 'token'
+    slug_url_kwarg = 'card_token'
+    template_name = 'cardManager/activate.html'
 
-	def get(self,request, **kwargs):
-		# Retrieve card instance with given card_token
-		card = self.get_object()
-		if card.owner:
-			# Reroute to card "scanning" view
-			return redirect('card_view', card_token=card.token)
-		return super().get(self, request, **kwargs)
+    def get(self,request, **kwargs):
+        # Retrieve card instance with given card_token
+        card = self.get_object()
+        if card.owner:
+            # Reroute to card "scanning" view
+            return redirect('card_view', card_token=card.token)
+        return super().get(self, request, **kwargs)
 
-	def post(self, request, **kwargs):
-		card = self.get_object()
-		if request.user.is_authenticated:
-			# Set this card owners user
-			card.owner = request.user
-			card.save()
-			return redirect('card_update_view', card_token=card.token)
-		else:
-			#Pass next parameter to signup view
-			request.session['activating_card_design'] = card.design.front_design.url
-			url = reverse('signup_view')
-			activate_url = reverse('card_activate_view', kwargs={'card_token': card.token})
-			return redirect(f'{url}?next={activate_url}')
+    def post(self, request, **kwargs):
+        card = self.get_object()
+        if request.user.is_authenticated:
+            # Set this card owners user
+            card.owner = request.user
+            card.save()
+            return redirect('card_update_view', card_token=card.token)
+        else:
+            #Pass next parameter to signup view
+            request.session['activating_card_design'] = card.design.front_design.url
+            url = reverse('signup_view')
+            activate_url = reverse('card_activate_view', kwargs={'card_token': card.token})
+            return redirect(f'{url}?next={activate_url}')
 
-		return super().post(self, request, **kwargs)
+        return super().post(self, request, **kwargs)
 
 
 # A11: Updating a card requires a user to be logged in
 class CardUpdate(LoginRequiredMixin,UpdateView):
-	model = Card
-	form_class = CardForm
-	slug_field = 'token'
-	slug_url_kwarg = 'card_token'
-	template_name = 'cardManager/card_update.html'
-	success_url = reverse_lazy('dashboard_view')
+    model = Card
+    form_class = CardForm
+    slug_field = 'token'
+    slug_url_kwarg = 'card_token'
+    template_name = 'cardManager/card_update.html'
+    success_url = reverse_lazy('dashboard_view')
 
 
 # A11: Updating a card requires a user to be logged in
 @login_required(login_url='login_view')
 def card_update(request, card_token):
-	"""
-		FBV for handling card update functionality
-	"""
-	card = get_object_or_404(Card, token=card_token)
-	initial_alias = card.alias
-	if request.method == "GET":
-		# Populate form with data from card model instance
-		form = CardForm(instance=card)
-		hide_redirect_div = card.show_profile
-	elif request.method == "POST":
-		# Let's update the current card instance with data from forms 		
-		form = CardForm(request.POST, instance=card)
-		owner_has_profile =  Profile.objects.filter(owner_id=card.owner.pk).exists()
-		hide_redirect_div = (card.show_profile or request.POST.get('show_profile')) and "route" not in str(form.errors)
-		if form.is_valid():
-			submitted_alias = form.cleaned_data['alias']
-			"""
-			 A8: form.save() was being called when the alias wasn't unique
-			 I'll handle the error gracefully by throwing an error when: 
-				- The inital alias differs from the submitted alias
-				- AND when the submitted alias and card.owner combo exists already  
-			
-			"""
-			alias_has_changed = not submitted_alias == initial_alias
-			alias_in_use = ( Card.objects.filter(alias=submitted_alias, owner=card.owner).exists() )
-			if alias_in_use and alias_has_changed:
-				form.add_error("alias", "A card already has this name")
-			else:
-				
-				if owner_has_profile and request.POST.get('show_profile'):
-					form.save()
-					return redirect('dashboard_view')
-				else:
-					return redirect('profile_create_view')
-			
+    """
+        FBV for handling card update functionality
+    """
+    card = get_object_or_404(Card, token=card_token)
+    initial_alias = card.alias
+    if request.method == "GET":
+        # Populate form with data from card model instance
+        form = CardForm(instance=card)
+        hide_redirect_div = card.show_profile
+    elif request.method == "POST":
+        # Let's update the current card instance with data from forms       
+        form = CardForm(request.POST, instance=card)
+        owner_has_profile =  Profile.objects.filter(owner_id=card.owner.pk).exists()
+        hide_redirect_div = (card.show_profile or request.POST.get('show_profile')) and "route" not in str(form.errors)
+        if form.is_valid():
+            submitted_alias = form.cleaned_data['alias']
+            """
+             A8: form.save() was being called when the alias wasn't unique
+             I'll handle the error gracefully by throwing an error when: 
+                - The inital alias differs from the submitted alias
+                - AND when the submitted alias and card.owner combo exists already  
+            
+            """
+            alias_has_changed = not submitted_alias == initial_alias
+            alias_in_use = ( Card.objects.filter(alias=submitted_alias, owner=card.owner).exists() )
+            if alias_in_use and alias_has_changed:
+                form.add_error("alias", "A card already has this name")
+            else:
+                
+                if owner_has_profile and request.POST.get('show_profile'):
+                    form.save()
+                    return redirect('dashboard_view')
+                else:
+                    return redirect('profile_create_view')
+            
 
-	
-	return render(request, 'cardManager/card_update.html', {'form': form, 'card': card, 'hide_redirect_div': hide_redirect_div})
+    
+    return render(request, 'cardManager/card_update.html', {'form': form, 'card': card, 'hide_redirect_div': hide_redirect_div})
 
 class ProfileCreate(LoginRequiredMixin, CreateView):
-	model = Profile
-	form_class = ProfileForm
-	template_name = 'cardManager/profile_create.html'
+    model = Profile
+    form_class = ProfileForm
+    template_name = 'cardManager/profile_create.html'
 
 
 # Render profile template using the slugs instead of pk
 class ProfileDetail(DetailView):
-	model = Profile
-	template_name = 'cardManager/profile.html'
-	slug_field = 'profile_slug'
-	slug_url_kwarg = 'profile_slug'
+    model = Profile
+    template_name = 'cardManager/profile.html'
+    slug_field = 'profile_slug'
+    slug_url_kwarg = 'profile_slug'
 
 class ProfileUpdate(LoginRequiredMixin, UpdateView):
-	model = Profile
-	form_class = ProfileForm
-	template_name = 'cardManager/profile_update.html'
-	slug_field = 'profile_slug'
-	slug_url_kwarg = 'profile_slug'
+    model = Profile
+    form_class = ProfileForm
+    template_name = 'cardManager/profile_update.html'
+    slug_field = 'profile_slug'
+    slug_url_kwarg = 'profile_slug'
 
 # Renders dashboard template with owner cards
 class UserDashboard(LoginRequiredMixin, ContextMixin, View):
-	template_name = 'cardManager/dashboard.html'
+    template_name = 'cardManager/dashboard.html'
 
-	def get(self, request, **kwargs):
-		context = self.get_context_data(**kwargs)
-		return render(request, self.template_name, context)
+    def get(self, request, **kwargs):
+        context = self.get_context_data(**kwargs)
+        return render(request, self.template_name, context)
 
-	# I need to alter the context that goes to the dashboard template
-	def get_context_data(self, **kwargs):
-		context = super().get_context_data(**kwargs)
-		owner_id = self.request.user.pk
-		owner_cards = Card.objects.filter(owner_id=owner_id)
-		owner_requested_cards = Request.objects.exclude(status="shipped").filter(owner_id=owner_id)
-		recent_activities = Usage.objects.filter(card__owner=owner_id).order_by('-date_used')[0:5]
-		context['user_cards'] = owner_cards
-		context['recent_activities'] = recent_activities
-		context['requested_cards'] = owner_requested_cards
-		#A9: Setting up pending orders data  
-		if self.request.user.is_authenticated:
-			context['pending_orders'] = Request.objects.all()
-		return context
+    # I need to alter the context that goes to the dashboard template
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        owner_id = self.request.user.pk
+        owner_cards = Card.objects.filter(owner_id=owner_id)
+        owner_requested_cards = Request.objects.exclude(status="shipped").filter(owner_id=owner_id)
+        recent_activities = Usage.objects.filter(card__owner=owner_id).order_by('-date_used')[0:5]
+        context['user_cards'] = owner_cards
+        context['recent_activities'] = recent_activities
+        context['requested_cards'] = owner_requested_cards
+        #A9: Setting up pending orders data  
+        if self.request.user.is_authenticated:
+            context['pending_orders'] = Request.objects.all()
+        return context
 
 
 class Stats(LoginRequiredMixin, ListView):
-	model = Usage
-	template_name = 'cardManager/stats.html'
+    model = Usage
+    template_name = 'cardManager/stats.html'
 
-	def get_context_data(self, **kwargs):
-		context = super().get_context_data(**kwargs)
-		query = self.request.GET.get('query')
-		card_results = None
-		if query:
-			card_results = (
-				Card.objects
-				.filter(
-					Q(alias__icontains=query) |
-					Q(token__icontains=query) | 
-					Q(owner__first_name__icontains=query) |
-					Q(owner__last_name__icontains=query) |
-					Q(owner__email__startswith=query) 
-				)
-			)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        query = self.request.GET.get('query')
+        card_results = None
+        if query:
+            card_results = (
+                Card.objects
+                .filter(
+                    Q(alias__icontains=query) |
+                    Q(token__icontains=query) | 
+                    Q(owner__first_name__icontains=query) |
+                    Q(owner__last_name__icontains=query) |
+                    Q(owner__email__startswith=query) 
+                )
+            )
 
-		context['query'] = query
-		context['card_results'] = card_results
+        context['query'] = query
+        context['card_results'] = card_results
 
-		# Narrowed QuerySet containing Card instances that belong to someone 
-		claimed_cards = Card.objects.exclude(owner=None)
-		# Total number of cards that belong to someone
-		context['n_cards_claimed'] = claimed_cards.count()
+        # Narrowed QuerySet containing Card instances that belong to someone 
+        claimed_cards = Card.objects.exclude(owner=None)
+        # Total number of cards that belong to someone
+        context['n_cards_claimed'] = claimed_cards.count()
 
-		# Total number of Usage model records
-		context['n_taps'] = Usage.objects.exclude(card__owner=None).count()
+        # Total number of Usage model records
+        context['n_taps'] = Usage.objects.exclude(card__owner=None).count()
 
-		# Total number of card Owners
-		context['n_users'] = User.objects.exclude(is_staff=True).count()
+        # Total number of card Owners
+        context['n_users'] = User.objects.exclude(is_staff=True).count()
 
-		"""
-		Card taps per owner:
+        """
+        Card taps per owner:
 
-		1) Start with all Usage objects.
-		2) Exclude usages where the related card has no owner.
-		3) Group the remaining usages by the card owner's ID.
-		4) Annotate each group with a new field 'n_card_taps' 
-			representing the number of Usage records (taps)
-			associated with that owner's cards.
-		"""
-		user_taps = (
-			Usage.objects
-			.exclude(card__owner=None)
-			.values('card__owner_id')
-			.annotate(n_card_taps=Count('card'))
-			.order_by('-n_card_taps')[0:3]
-		) # ==> <QuerySet [{'card__owner_id': 1, 'n_card_taps': 37},{..}]>
+        1) Start with all Usage objects.
+        2) Exclude usages where the related card has no owner.
+        3) Group the remaining usages by the card owner's ID.
+        4) Annotate each group with a new field 'n_card_taps' 
+            representing the number of Usage records (taps)
+            associated with that owner's cards.
+        """
+        user_taps = (
+            Usage.objects
+            .exclude(card__owner=None)
+            .values('card__owner_id')
+            .annotate(n_card_taps=Count('card'))
+            .order_by('-n_card_taps')[0:3]
+        ) # ==> <QuerySet [{'card__owner_id': 1, 'n_card_taps': 37},{..}]>
 
-		# Create a list that formats user_taps to include User instance (instead of the owner's ID)   
-		cleaned_user_taps = [
-			{
-				# Use card__owner_id to retrieve User instance 
-				'user': User.objects.get(pk=item['card__owner_id']),
-				# Keep n_card_taps
-				'n_card_taps': item['n_card_taps']
-			} 
-			for item in user_taps 
-		] # ==> [{'user': <User: Tyrese Cook>, 'n_card_taps': 37}, {...}]
-		context['user_taps'] = cleaned_user_taps
+        # Create a list that formats user_taps to include User instance (instead of the owner's ID)   
+        cleaned_user_taps = [
+            {
+                # Use card__owner_id to retrieve User instance 
+                'user': User.objects.get(pk=item['card__owner_id']),
+                # Keep n_card_taps
+                'n_card_taps': item['n_card_taps']
+            } 
+            for item in user_taps 
+        ] # ==> [{'user': <User: Tyrese Cook>, 'n_card_taps': 37}, {...}]
+        context['user_taps'] = cleaned_user_taps
 
-		""" 
-		uses per design
+        """ 
+        uses per design
 
-		1) Start with claimed Card objects
-		2) Group the remaining cards by the card design_id
-		3) Annotate each unique design with a new field 'n_uses'
-			which counts the nuber of Card records
-			associated with a unique design
-		4) Order data by n_uses
-		"""
-		design_usage = (
-			claimed_cards.values('design_id')
-			.annotate(n_uses=Count('design'))
-			.order_by('-n_uses') # ==> <QuerySet [{'design_id':1, 'n_uses': 2]>
-		)
-			# Create a list that formats design_usage to include Design instances (instead of design_ids)
-		cleaned_design_usage = [
-			{
-				# Use design_id to retrieve Design instance
-				'design':Design.objects.get(pk=item['design_id']),
-				# Keep the n_uses 
-				'n_uses':item['n_uses']
-			} 
-			for item in design_usage 
-		] # ==> [{'design': <Design: Abstract>, 'n_uses': 2},{...}]
-		context['design_usage'] = cleaned_design_usage
-		usage_by_day = (
-			Usage.objects
-			.exclude(card__owner=None)
-			.values(unique_day=TruncDay('date_used'))
-			.annotate(n_taps=Count('unique_day'))
-			.order_by('-unique_day')
-		)
-		context['usage_by_day'] = usage_by_day
-		print('Stats.get_context_data() => ', context)
-		return context
-	
+        1) Start with claimed Card objects
+        2) Group the remaining cards by the card design_id
+        3) Annotate each unique design with a new field 'n_uses'
+            which counts the nuber of Card records
+            associated with a unique design
+        4) Order data by n_uses
+        """
+        design_usage = (
+            claimed_cards.values('design_id')
+            .annotate(n_uses=Count('design'))
+            .order_by('-n_uses') # ==> <QuerySet [{'design_id':1, 'n_uses': 2]>
+        )
+            # Create a list that formats design_usage to include Design instances (instead of design_ids)
+        cleaned_design_usage = [
+            {
+                # Use design_id to retrieve Design instance
+                'design':Design.objects.get(pk=item['design_id']),
+                # Keep the n_uses 
+                'n_uses':item['n_uses']
+            } 
+            for item in design_usage 
+        ] # ==> [{'design': <Design: Abstract>, 'n_uses': 2},{...}]
+        context['design_usage'] = cleaned_design_usage
+        usage_by_day = (
+            Usage.objects
+            .exclude(card__owner=None)
+            .values(unique_day=TruncDay('date_used'))
+            .annotate(n_taps=Count('unique_day'))
+            .order_by('-unique_day')
+        )
+        context['usage_by_day'] = usage_by_day
+        print('Stats.get_context_data() => ', context)
+        return context
+    
 
 
 def config_plotly(request):
-	plotly_graphs = []
-	
-	# Define querysets here
-	daily_usage_qs = (
-		Usage.objects
-		.exclude(card__owner=None)
-		.values(x=TruncDay('date_used'))
-		.annotate(y=Count('x'))
-		.order_by('-y')
-	)
-	
-	user_taps_qs = (
-		Usage.objects
-		.exclude(card__owner=None)
-		.values('card__owner_id')
-		.annotate(y=Count('card__owner_id'))
-		.order_by('-y')[0:3]
-	)
-	
-	# Clean querysets here
-	cleaned_user_taps = [
-		{
-			# Use card__owner_id to retrieve User instance 
-			'user': User.objects.get(pk=item['card__owner_id']).__str__(),
-			# Keep n_card_taps
-			'n_card_taps': item['y']
-		} 
-		for item in user_taps_qs
-	]
-	daily_usage_graph = __extract_graph_data(daily_usage_qs, type="line", target_elem="__plot_daily_usage")
-	user_taps_graph = __extract_graph_data(cleaned_user_taps, type="bar", target_elem="__plot_user_taps")
-	
-	# Register graphs to plotly graphs list
-	plotly_graphs.append(daily_usage_graph)
-	plotly_graphs.append(user_taps_graph)
-	
-	return JsonResponse(plotly_graphs, safe=False)
+    plotly_graphs = []
+    
+    # Define querysets here
+    daily_usage_qs = (
+        Usage.objects
+        .exclude(card__owner=None)
+        .values(x=TruncDay('date_used'))
+        .annotate(y=Count('x'))
+        .order_by('-y')
+    )
+    
+    user_taps_qs = (
+        Usage.objects
+        .exclude(card__owner=None)
+        .values('card__owner_id')
+        .annotate(y=Count('card__owner_id'))
+        .order_by('-y')[0:3]
+    )
+    
+    # Clean querysets here
+    cleaned_user_taps = [
+        {
+            # Use card__owner_id to retrieve User instance 
+            'user': User.objects.get(pk=item['card__owner_id']).__str__(),
+            # Keep n_card_taps
+            'n_card_taps': item['y']
+        } 
+        for item in user_taps_qs
+    ]
+    daily_usage_graph = __extract_graph_data(daily_usage_qs, type="line", target_elem="__plot_daily_usage")
+    user_taps_graph = __extract_graph_data(cleaned_user_taps, type="bar", target_elem="__plot_user_taps")
+    
+    # Register graphs to plotly graphs list
+    plotly_graphs.append(daily_usage_graph)
+    plotly_graphs.append(user_taps_graph)
+    
+    return JsonResponse(plotly_graphs, safe=False)
 
 # Loop through given list/queryset  and extract graph object
 def __extract_graph_data(queryset, target_elem="", type='scatter'):
-	graph_data = {
-		'target_elem' : target_elem,
-		'traces' : [
-			{
-				'x' : [],
-				'y' : [],
-				'type' : type,
-			}
-		],
-	}
+    graph_data = {
+        'target_elem' : target_elem,
+        'traces' : [
+            {
+                'x' : [],
+                'y' : [],
+                'type' : type,
+            }
+        ],
+    }
 
-	# Some querysets may come with dictionaries w/ more than 2 keys
-	for coordinate in queryset:
-		print(f"coordinate: {coordinate}\n queryset: {queryset}")
-		if len(coordinate.keys()) == 2:
-			x_series_key = list(coordinate.keys())[0]
-			y_series_key = list(coordinate.keys())[1]
-			graph_data['traces'][0]['x'].append(coordinate[x_series_key])
-			graph_data['traces'][0]['y'].append(coordinate[y_series_key])
-	print('__extract_graph_data:', graph_data)
-	return graph_data 
+    # Some querysets may come with dictionaries w/ more than 2 keys
+    for coordinate in queryset:
+        print(f"coordinate: {coordinate}\n queryset: {queryset}")
+        if len(coordinate.keys()) == 2:
+            x_series_key = list(coordinate.keys())[0]
+            y_series_key = list(coordinate.keys())[1]
+            graph_data['traces'][0]['x'].append(coordinate[x_series_key])
+            graph_data['traces'][0]['y'].append(coordinate[y_series_key])
+    print('__extract_graph_data:', graph_data)
+    return graph_data 
 
 ### IP9: APIs + JSON Endpoints + Server-Side Charts
 def daily_usage(request):
-	"""
-	GET /api/daily_usage
-	Return unique days and number of card taps for bar graph
-	""" 
-	# Create a queryset
-	daily_usage_qs = (
-		Usage
-		.objects
-		.exclude(card__owner=None)
-		.values(unique_day=TruncDay('date_used')) # unique days
-		.annotate(n_card_taps=Count('card'))
-		.order_by('-unique_day')
-	)
-	# Let's break the queryset into two lists (denotes the x, and y series)
-	unique_days = [ day['unique_day'].strftime("%Y-%m-%d") for day in daily_usage_qs ]
-	n_card_taps = [ day['n_card_taps'] for day in daily_usage_qs ]
-	# And return as JSON
-	return JsonResponse({"labels": unique_days, "values": n_card_taps}, safe=True)
+    """
+    GET /api/daily_usage
+    Return unique days and number of card taps for bar graph
+    """ 
+    # Create a queryset
+    daily_usage_qs = (
+        Usage
+        .objects
+        .exclude(card__owner=None)
+        .values(unique_day=TruncDay('date_used')) # unique days
+        .annotate(n_card_taps=Count('card'))
+        .order_by('-unique_day')
+    )
+    # Let's break the queryset into two lists (denotes the x, and y series)
+    unique_days = [ day['unique_day'].strftime("%Y-%m-%d") for day in daily_usage_qs ]
+    n_card_taps = [ day['n_card_taps'] for day in daily_usage_qs ]
+    # And return as JSON
+    return JsonResponse({"labels": unique_days, "values": n_card_taps}, safe=True)
 
 @login_required(login_url='login_view')
 def daily_usage_png(request):
-	"""
-	Creates a bar graph png using matplotlib and the json data from my daily_usage fbv
+    """
+    Creates a bar graph png using matplotlib and the json data from my daily_usage fbv
 
-	"""
-	# Build the absolute uri that I'll pull the json from
-	api_uri = request.build_absolute_uri(reverse("api_daily_usage_view"))
-	# print(api_uri) ==> http://localhost:8000/api/daily_usage/bar_graph.png
-	# Let's grab the json data from that uri
-	with urllib.request.urlopen(api_uri) as api_json_response:
-		print(f"url ({api_uri}) api_json_response: {api_json_response}")
-		pyth_dict = json.load(api_json_response) # Parse string to python dict
+    """
+    # Build the absolute uri that I'll pull the json from
+    api_uri = request.build_absolute_uri(reverse("api_daily_usage_view"))
+    # print(api_uri) ==> http://localhost:8000/api/daily_usage/bar_graph.png
+    # Let's grab the json data from that uri
+    with urllib.request.urlopen(api_uri) as api_json_response:
+        print(f"url ({api_uri}) api_json_response: {api_json_response}")
+        pyth_dict = json.load(api_json_response) # Parse string to python dict
 
-	x_series = pyth_dict['labels']
-	y_series = pyth_dict['values']
+    x_series = pyth_dict['labels']
+    y_series = pyth_dict['values']
 
-	# And start plotting
-	x = range(len(x_series))
-	fig, ax = plt.subplots(figsize=(6.5, 3.2), dpi=150)
-	ax.bar(x_series, y_series, color="#13294B")
-	ax.set_title("Taps per day")
-	ax.set_ylabel("# Taps")
-	ax.set_xticklabels(x_series, rotation=45, ha="right")
-	fig.tight_layout()
+    # And start plotting
+    x = range(len(x_series))
+    fig, ax = plt.subplots(figsize=(6.5, 3.2), dpi=150)
+    ax.bar(x_series, y_series, color="#13294B")
+    ax.set_title("Taps per day")
+    ax.set_ylabel("# Taps")
+    ax.set_xticklabels(x_series, rotation=45, ha="right")
+    fig.tight_layout()
 
-	buf = BytesIO()
-	fig.savefig(buf, format="png")
-	plt.close(fig)
-	buf.seek(0)
-	return HttpResponse(buf.getvalue(), content_type="image/png")
+    buf = BytesIO()
+    fig.savefig(buf, format="png")
+    plt.close(fig)
+    buf.seek(0)
+    return HttpResponse(buf.getvalue(), content_type="image/png")
 
 class OrderDetail(LoginRequiredMixin, DetailView):
     model = Request
@@ -460,7 +466,7 @@ class OrderDetail(LoginRequiredMixin, DetailView):
         if qr_svg.status_code == 200:
             context["qr_svg"] = mark_safe(qr_svg.text)
         return context
-	
+    
 
 # ==========================================================================================================================
 # A11
@@ -470,33 +476,33 @@ import csv
 
 @login_required(login_url='login_view')
 def export_usage_csv(request):
-	"""
-	Generate and download a CSV file of all card uses and their owners
-	"""
-	# Let's generate a unique filename 
-	timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
-	filename = f"usage_{timestamp}.csv"
+    """
+    Generate and download a CSV file of all card uses and their owners
+    """
+    # Let's generate a unique filename 
+    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
+    filename = f"usage_{timestamp}.csv"
 
-	# Let's prepare the HttpResponse as CSV
-	response = HttpResponse(content_type="text/csv")
-	# Make this file downloadable
-	response["Content-Disposition"] = f'attachment; filename="{filename}"'
+    # Let's prepare the HttpResponse as CSV
+    response = HttpResponse(content_type="text/csv")
+    # Make this file downloadable
+    response["Content-Disposition"] = f'attachment; filename="{filename}"'
 
-	# Turn the HttpResponse into a "file-like" object for writing
-	writer = csv.writer(response)
-	writer.writerow(["date","card_token","owner_first_name","owner_last_name"])
+    # Turn the HttpResponse into a "file-like" object for writing
+    writer = csv.writer(response)
+    writer.writerow(["date","card_token","owner_first_name","owner_last_name"])
 
-	# Grab tuples instead of dictionaries
-	usage_rows = (
-		Usage.objects
-		.select_related("card")
-		.values_list("date_used","card__token","card__owner__first_name","card__owner__last_name")
-	) 
+    # Grab tuples instead of dictionaries
+    usage_rows = (
+        Usage.objects
+        .select_related("card")
+        .values_list("date_used","card__token","card__owner__first_name","card__owner__last_name")
+    ) 
 
-	for row in usage_rows:
-		writer.writerow(row)
+    for row in usage_rows:
+        writer.writerow(row)
 
-	return response
+    return response
 
 # ====================================================================================
 # A11
@@ -504,57 +510,57 @@ def export_usage_csv(request):
 
 @login_required(login_url='login_view')
 def export_usage_json(request):
-	# Let's generate a unique filename 
-	timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
-	filename = f"usage_{timestamp}.json"
+    # Let's generate a unique filename 
+    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
+    filename = f"usage_{timestamp}.json"
 
-	# Grab usage rows as a list instead of queryset
-	usage_data = list(
-		Usage.objects
-		.select_related("card")
-		.values(
-			"date_used",
-			"card__token",
-			"card__owner__first_name",
-			"card__owner__last_name"
-		)
-		.order_by("-date_used")
-	) 
+    # Grab usage rows as a list instead of queryset
+    usage_data = list(
+        Usage.objects
+        .select_related("card")
+        .values(
+            "date_used",
+            "card__token",
+            "card__owner__first_name",
+            "card__owner__last_name"
+        )
+        .order_by("-date_used")
+    ) 
 
-	# Grab usage rows as a list instead of queryset
-	json_content = {
-		"total_usage_count" : len(usage_data),
-		"generated_at": datetime.now().isoformat(timespec="seconds"),
-		"usages" : usage_data
-	}
-	# Prep JSONResponse w/ json content 
-	response = JsonResponse(json_content, json_dumps_params={"indent": 2})
-	response["Content-Disposition"] = f'attachment; filename="{filename}"' # Enable auto download
+    # Grab usage rows as a list instead of queryset
+    json_content = {
+        "total_usage_count" : len(usage_data),
+        "generated_at": datetime.now().isoformat(timespec="seconds"),
+        "usages" : usage_data
+    }
+    # Prep JSONResponse w/ json content 
+    response = JsonResponse(json_content, json_dumps_params={"indent": 2})
+    response["Content-Disposition"] = f'attachment; filename="{filename}"' # Enable auto download
 
-	return response
+    return response
 
 # =====================================================================================================
 # A11 
 # =====================================================================================================
 
 def signup_view(request):
-	if request.method == "POST":
-		form = OwnerSignUpForm(request.POST)
-		if form.is_valid():
-			new_owner = form.save()
-			print(f"POST signup_view() new_owner: {new_owner}")
-			login(request, new_owner)
-			if request.GET.get('next'):
-				return redirect(f"{request.GET.get('next')}")
-			else:
-				return redirect('dashboard_view')
-	else:
-		form = OwnerSignUpForm()
-	return render(request, 'cardManager/register.html', {'form': form})
+    if request.method == "POST":
+        form = OwnerSignUpForm(request.POST)
+        if form.is_valid():
+            new_owner = form.save()
+            print(f"POST signup_view() new_owner: {new_owner}")
+            login(request, new_owner)
+            if request.GET.get('next'):
+                return redirect(f"{request.GET.get('next')}")
+            else:
+                return redirect('dashboard_view')
+    else:
+        form = OwnerSignUpForm()
+    return render(request, 'cardManager/register.html', {'form': form})
 
 class CustomLoginView(auth_views.LoginView):
-	template_name='cardManager/login.html'
+    template_name='cardManager/login.html'
 
-	def form_valid(self, form):
-		self.request.session.flush()
-		return super().form_valid(form)
+    def form_valid(self, form):
+        self.request.session.pop('activating_card_design', None)
+        return super().form_valid(form)
