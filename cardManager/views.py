@@ -152,6 +152,7 @@ def card_update(request, card_token):
 	elif request.method == "POST":
 		# Let's update the current card instance with data from forms 		
 		form = CardForm(request.POST, instance=card)
+		owner_has_profile =  Profile.objects.filter(owner_id=card.owner.pk).exists()
 		hide_redirect_div = (card.show_profile or request.POST.get('show_profile')) and "route" not in str(form.errors)
 		if form.is_valid():
 			submitted_alias = form.cleaned_data['alias']
@@ -167,8 +168,12 @@ def card_update(request, card_token):
 			if alias_in_use and alias_has_changed:
 				form.add_error("alias", "A card already has this name")
 			else:
-				form.save()
-				return redirect('dashboard_view')
+				
+				if owner_has_profile and request.POST.get('show_profile'):
+					form.save()
+					return redirect('dashboard_view')
+				else:
+					return redirect('profile_create_view')
 			
 
 	
