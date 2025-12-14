@@ -118,7 +118,11 @@ class CardActivate(DetailView, LoginRequiredMixin):
 			card.save()
 			return redirect('dashboard_view')
 		else:
-			pass
+			#Pass next parameter to signup view
+			request.session['activating_card_design'] = card.design.front_design.url
+			url = reverse('signup_view')
+			activate_url = reverse('card_activate_view', kwargs={'card_token': card.token})
+			return redirect(f'{url}?next={activate_url}')
 
 		return super().post(self, request, **kwargs)
 
