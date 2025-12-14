@@ -7,10 +7,12 @@
 Activating card {{ card.token }}
 {% endblock opener %}
 {% block content %}
-	<img src="/media/{{card.design.front_design }}" alt="">
-	<a href="">
-		<button id="activateCardBtn" class="bg-[var(--color-main)] w-full text-center py-4 rounded-md mt-8">Claim this card</button>
-	</a>
+	<img src="/media/{{card.design.front_design }}" class="card" alt="">
+	<form action="" method="post">
+		{% csrf_token %}
+		<button type="submit" id="activateCardBtn" class="bg-[var(--color-main)] w-full text-center py-4 rounded-md mt-8">Claim this card</button>
+		
+	</form>
 {% endblock %}
 {% block extra_scripts %}
 {% endblock %}
