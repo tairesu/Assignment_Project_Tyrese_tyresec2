@@ -6,8 +6,15 @@
 {% block opener %}
 Activating card {{ card.token }}
 {% endblock opener %}
+{% block hero_header %}
+    {% if request.session.activating_card_design %}
+        <div class="card flex items-center justify-center rounded-md ">
+            <img id="card" class=" object-cover w-[15rem] rounded-md aspect-[8/5]" src="{{ card.design.front_design.url }}"/>
+        </div>
+    {% endif %}
+{% endblock %}
+
 {% block content %}
-	<img src="/media/{{card.design.front_design }}" class="card" alt="">
 	<form action="" method="post">
 		{% csrf_token %}
 		<button type="submit" id="activateCardBtn" class="bg-[var(--color-main)] w-full text-center py-4 rounded-md mt-8">Claim this card</button>
