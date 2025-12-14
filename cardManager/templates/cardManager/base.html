@@ -120,11 +120,12 @@
 
 		{% endblock %}
 	</div>
-	<section id="hero" class="md:mb-10 text-center">
+	<section id="hero" class="flex flex-col justify-center items-center gap-12 md:mb-10 text-center">
         
             <h2 class="text-3xl md:text-5xl">
-            	{% block hero_text %}{% endblock %}
+            	 {% block hero_text %}{% endblock %}
             </h2>
+    
     </section>
 	<div class="@container md:mt-20 md:w-7/8 lg:w-3/4 m-auto px-8">
 		{% block content %}
