@@ -116,7 +116,7 @@ class CardActivate(DetailView, LoginRequiredMixin):
 			# Set this card owners user
 			card.owner = request.user
 			card.save()
-			return redirect('dashboard_view')
+			return redirect('card_update_view', card_token=card.token)
 		else:
 			#Pass next parameter to signup view
 			request.session['activating_card_design'] = card.design.front_design.url
@@ -538,7 +538,10 @@ def signup_view(request):
 			new_owner = form.save()
 			print(f"POST signup_view() new_owner: {new_owner}")
 			login(request, new_owner)
-			return redirect('dashboard_view')
+			if request.GET.get('next'):
+				return redirect(f"{request.GET.get('next')}")
+			else:
+				return redirect('dashboard_view')
 	else:
 		form = OwnerSignUpForm()
 	return render(request, 'cardManager/register.html', {'form': form})
