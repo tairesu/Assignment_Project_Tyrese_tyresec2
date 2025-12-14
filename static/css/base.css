@@ -32,6 +32,22 @@ background-position: center;
 background-size: cover;
 aspect-ratio: 8/5;
 }
+.card{
+
+	aspect-ratio: 8/5;
+	position: relative;
+	
+}
+.card:after {
+		content:" ";
+		display: block;
+		position: absolute;
+		top:0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: var(--color-reflective);
+}
 .mini-card{
 height:3.75rem;
 width:6rem;

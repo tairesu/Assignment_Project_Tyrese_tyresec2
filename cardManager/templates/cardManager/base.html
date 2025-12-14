@@ -116,11 +116,13 @@
 					</div>
 				{% endif %}
 		</div>
-		{% block hero_header %}
-
-		{% endblock %}
+		
 	</div>
+	
 	<section id="hero" class=" px-8 flex flex-col justify-center items-center gap-12 md:mb-10 text-center">
+	{% block hero_header %}
+
+	{% endblock %}
             <h2 class="text-3xl md:text-5xl">
             	{% block hero_text %}{% endblock %}
             </h2>
