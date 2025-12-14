@@ -12,7 +12,7 @@ from datetime import datetime
 from django.urls import reverse_lazy, reverse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
-from django.contrib.auth import login, views as auth_views
+from django.contrib.auth import  login, views as auth_views
 from django.http import HttpResponse
 from django.http.response import JsonResponse
 # from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
@@ -88,7 +88,7 @@ def card_detail(request,card_token):
 	elif is_owned and card.show_profile:
 		return redirect('profile_view', profile_slug=card.owner.profile.profile_slug)
 	elif is_owned and not is_redirecting:
-		return redirect('card_update_view',pk=card.pk)
+		return redirect('card_update_view',card_token=card_token)
 	elif not is_owned:
 		return redirect('card_activate_view', card_token=card_token)	
 
@@ -543,3 +543,9 @@ def signup_view(request):
 		form = OwnerSignUpForm()
 	return render(request, 'cardManager/register.html', {'form': form})
 
+class CustomLoginView(auth_views.LoginView):
+	template_name='cardManager/login.html'
+
+	def form_valid(self, form):
+		self.request.session.flush()
+		return super().form_valid(form)
