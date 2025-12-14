@@ -47,20 +47,21 @@ class HomePage(ListView):
     model = Design
     template_name = 'cardManager/home.html'
     
-@login_required(login_url='login_view')
 def order_create(request):
     if request.method == "POST":
         form = RequestForm(request.POST, request.FILES)
-        owner = User.objects.get(pk=request.user.pk)
-        # if owner is set and form is valid, go to dashboard
-        if owner and form.is_valid():
+        if request.user.is_authenticated and form.is_valid():
             #https://stackoverflow.com/questions/77784821/how-to-add-value-into-a-form-before-saving-in-django
             order_instance = form.save(commit=False)
-            order_instance.owner = owner
+            order_instance.owner = request.user
             form.save()
             return redirect('dashboard_view')
-        elif not owner: 
-            return redirect('login_view')
+        elif not request.user.is_authenticated and form.is_valid():
+            request.session['order_form_post'] = request.POST
+            url = reverse('signup_view')
+            home_url = reverse('homepage_view')
+            return redirect(f"{url}?next={home_url}")
+        
         elif not form.is_valid():
             return render(request, 'cardManager/home.html', {'order_form':form})
     
