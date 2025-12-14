@@ -93,7 +93,7 @@ def card_detail(request,card_token):
 		return redirect('card_activate_view', card_token=card_token)	
 
 
-class CardDetail(DetailView):
+class CardActivate(DetailView, LoginRequiredMixin):
 	"""
 	Renders Card instance to card activate HTML template. 
 	"""
@@ -109,6 +109,18 @@ class CardDetail(DetailView):
 			# Reroute to card "scanning" view
 			return redirect('card_view', card_token=card.token)
 		return super().get(self, request, **kwargs)
+
+	def post(self, request, **kwargs):
+		card = self.get_object()
+		if request.user.is_authenticated:
+			# Set this card owners user
+			card.owner = request.user
+			card.save()
+			return redirect('dashboard_view')
+		else:
+			pass
+
+		return super().post(self, request, **kwargs)
 
 
 # A11: Updating a card requires a user to be logged in
