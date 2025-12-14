@@ -102,7 +102,13 @@ div#dropdown-nav {
         fill: grey;
     }
 }
-
+#uploadFile{
+	transition: opacity 0.7s ease;
+	opacity: 1;
+	&.no-show{
+		opacity: 0;
+	}
+}
 #dropdown-trigger.active {
     path {
         fill: var(--color-main);
