@@ -4,7 +4,20 @@
 Login
 {% endblock %}
 {% block hero_text %}
-	We missed you!
+    {% if request.session.activating_card_design %}
+    Login to claim this card
+    {% else %}
+    We missed you
+    {% endif %}
+{% endblock %}
+{% block hero_header %}
+    {% if request.session.activating_card_design %}
+        <div class="card flex items-center justify-center rounded-md ">
+            <img id="card" class=" object-cover w-[12rem] rounded-md aspect-[8/5]" src="{{ request.session.activating_card_design }}"/>
+        </div>
+    {% endif %}
+    
+    
 {% endblock %}
 {% block content %}
 	<form method="post" class="flex m-auto flex-col gap-7 mt-20">

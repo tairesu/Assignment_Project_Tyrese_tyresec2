@@ -1,9 +1,22 @@
 {% extends 'cardManager/base.html' %}
 {% block hero_text %}
-    Sign Up
+    {% if request.session.activating_card_design %}
+    Sign up to claim this card
+    {% else %}
+    Sign Up 
+    {% endif %}
+{% endblock %}
+{% block hero_header %}
+    {% if request.session.activating_card_design %}
+        <div class="card flex items-center justify-center rounded-md ">
+            <img id="card" class=" object-cover w-[12rem] rounded-md aspect-[8/5]" src="{{ request.session.activating_card_design }}"/>
+        </div>
+    {% endif %}
+    
+    
 {% endblock %}
 {% block content %}
-<form  method="post" class="flex m-auto flex-col gap-7">
+<form method="post" class="flex m-auto flex-col gap-7 mt-18">
 	{% csrf_token %}
     {% if form.non_field_errors %}
             {% for error in form.non_field_errors %}
