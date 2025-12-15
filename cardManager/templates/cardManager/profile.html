@@ -10,17 +10,19 @@
 	<link rel="stylesheet" href="{% static 'css/profile.css' %}?v={{ tz }}"/>
 {% endblock %}
 {% block content %}
-	<div class="m-auto flex flex-col text-lg text-center justify-content">
+	<div class="m-auto flex flex-col text-lg text-center justify-content" style="margin-top: calc(var(--spacing) * -32);">
 		{% if profile.banner_photo %}
 		<div class="w-full relative">
-			<img  src="{{ profile.banner_photo.url }}" alt="">
+			<img  src="{{ profile.banner_photo.url }}" alt="" style="max-height: 325px;
+		    width: 100%;
+		    object-fit: cover;">
 			<div id="banner_overlay" class="overlay absolute h-full w-full top-0 left-0">
 				
 			</div>
 		</div>
 		{% endif %}
 		{% if profile.profile_photo %}
-			<img src="{{ profile.profile_photo.url }}" class="border-4 border-black self-center z-[999] mt-[-3rem] rounded-full object-cover w-[7rem] h-[7rem] lg:w-[15rem] lg:h-[15rem] lg:mt-[-7.5rem] shadow-2xl mb-6" alt="">
+			<img src="{{ profile.profile_photo.url }}" class="border-4 border-black self-center z-[999] mt-[-3rem] rounded-full object-cover w-[7rem] h-[7rem] lg:w-[15rem] lg:h-[15rem] lg:mt-[-7.5rem] shadow-2xl mb-6" alt="" >
 		{% endif %}
 		{% if profile.name %}
 			<h2 class="mb-3 font-bold text-3xl md:text-5xl ">{{ profile.name }}</h2>
