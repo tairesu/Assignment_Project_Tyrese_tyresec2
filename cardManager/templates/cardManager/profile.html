@@ -12,8 +12,8 @@
 {% block content %}
 	<div class="m-auto flex flex-col text-lg text-center justify-content">
 		{% if profile.banner_photo %}
-		<div class="w-full relative">
-			<img  src="{{ profile.banner_photo.url }}" alt="" style="margin-top: calc(var(--spacing) * -32);max-height: 325px;
+		<div class="w-full relative" style="margin-top: calc(var(--spacing) * -32);">
+			<img  src="{{ profile.banner_photo.url }}" alt="" style="max-height: 325px;
 		    width: 100%;
 		    object-fit: cover;">
 			<div id="banner_overlay" class="overlay absolute h-full w-full top-0 left-0">
