@@ -25,6 +25,17 @@ class CardForm(forms.ModelForm):
 
 		return data
 
+class AdminCardForm(forms.ModelForm):
+	class Meta:
+		model = Card
+		fields = ['token','owner','design']
+
+	def clean_token(self, **kwargs):
+		token = self.cleaned_data.get('token')
+		if token:
+			return token.strip()
+		return token
+
 
 class ProfileForm(forms.ModelForm):
 	class Meta:
