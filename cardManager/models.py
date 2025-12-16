@@ -48,7 +48,7 @@ class Design(models.Model):
 
 class Card(models.Model):
 	card_id = models.AutoField(primary_key=True)
-	token = models.CharField(max_length=7, default=gen_token, blank=False,null=False, unique=True)
+	token = models.CharField(max_length=20, blank=False,null=False, unique=True)
 	owner = models.ForeignKey(User, on_delete=models.PROTECT, related_name='cards',null=True, blank=True, default=1)
 	alias = models.CharField(max_length=60, blank=True)
 	show_profile = models.BooleanField(default=False)
