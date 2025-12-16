@@ -1,0 +1,25 @@
+    {% extends 'cardManager/base.html' %}
+    {% load static %}
+    {% block title %}
+    Registering your Card | TC Digital
+    {% endblock %}
+    {% block opener %}
+    Registering card
+    {% endblock opener %}
+    {% block hero_header %}
+    <div class="card flex items-center justify-center rounded-md ">
+        <img id="card" class=" object-cover w-[15rem] rounded-md aspect-[8/5]" src="{{ card.design.front_design.url }}" />
+    </div>
+    {% endblock %}
+    {% block hero_text %}
+    Registering Card {{ card.token }}
+    {% endblock %}
+    {% block content %}
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+    	<button type="submit" class="bg-[var(--color-main)] w-full text-center py-4 rounded-md mt-8">Register Card</button>
+    </form>
+    {% endblock %}
+    {% block extra_scripts %}
+    {% endblock %}
