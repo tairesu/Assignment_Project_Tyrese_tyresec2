@@ -5,6 +5,7 @@ from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
 	path('card/<str:card_token>/', views.card_detail, name='card_view'),
+	path('card/<str:card_token>/admin-register/', views.CardCreate.as_view(), name='card_create_view'),
 	path('card/<str:card_token>/activate/', views.CardActivate.as_view(), name='card_activate_view'),
 	path('card/<str:card_token>/fbv-update/', views.card_update, name='card_update_view'),
 	path('card/<str:card_token>/class-update/', views.CardUpdate.as_view(), name='card_class_update_view'),
