@@ -34,12 +34,13 @@ from cardManager.models import (
 )
 from .forms import (
     CardForm,
+    AdminCardForm,
     ProfileForm,
     RequestForm,
     OwnerSignUpForm,
 )
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 
 # Home Page fbv
@@ -83,21 +84,28 @@ def card_detail(request,card_token):
     """
     Redirects the browser based on this card instance's attributes. 
     """
-    card = get_object_or_404(Card, token=card_token)
-    is_owned = not (card.owner == None)
-    is_redirecting = not (card.reroute_url == "")
+    card_exists = Card.objects.filter(token=card_token).exists()
+    if card_exists:
+        card = Card.objects.get(token=card_token)
+        is_owned = not (card.owner == None)
+        is_redirecting = not (card.reroute_url == "")
 
-    if is_owned:
-        __add_to_usage(request, card) 
-        
-    if is_owned and not card.show_profile and is_redirecting:
-        return redirect(card.reroute_url)
-    elif is_owned and card.show_profile:
-        return redirect('profile_view', profile_slug=card.owner.profile.profile_slug)
-    elif is_owned and not is_redirecting:
-        return redirect('card_update_view',card_token=card_token)
-    elif not is_owned:
-        return redirect('card_activate_view', card_token=card_token)    
+        if is_owned:
+            __add_to_usage(request, card) 
+            
+        if is_owned and not card.show_profile and is_redirecting:
+            return redirect(card.reroute_url)
+        elif is_owned and card.show_profile:
+            return redirect('profile_view', profile_slug=card.owner.profile.profile_slug)
+        elif is_owned and not is_redirecting:
+            return redirect('card_update_view',card_token=card_token)
+        elif not is_owned:
+            return redirect('card_activate_view', card_token=card_token) 
+    elif not card_exists and request.user.is_authenticated and request.user.is_superuser:
+        return redirect('card_create_view', card_token=card_token)
+    else:
+        return render(request, 'cardManager/404.html')
+
 
 
 class CardActivate(DetailView, LoginRequiredMixin):
@@ -132,6 +140,22 @@ class CardActivate(DetailView, LoginRequiredMixin):
             return redirect(f'{url}?next={activate_url}')
 
         return super().post(self, request, **kwargs)
+
+
+class CardCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    model = Card
+    form_class = AdminCardForm
+    slug_field = 'token'
+    slug_field = 'card_token'
+    template_name = 'cardManager/card_create.html'
+    permission_required = 'auth.add_user'
+    success_url = reverse_lazy('dashboard_view')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['new_token'] = self.kwargs.get('card_token')
+        print(context)
+        return context
 
 
 # A11: Updating a card requires a user to be logged in
