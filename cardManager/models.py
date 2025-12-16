@@ -50,7 +50,7 @@ class Card(models.Model):
 	card_id = models.AutoField(primary_key=True)
 	token = models.CharField(max_length=20, blank=False,null=False, unique=True)
 	owner = models.ForeignKey(User, on_delete=models.PROTECT, related_name='cards',null=True, blank=True, default=1)
-	alias = models.CharField(max_length=60, blank=True)
+	alias = models.CharField(max_length=60, blank=True, null=True)
 	show_profile = models.BooleanField(default=False)
 	reroute_url = models.URLField(max_length=200, blank=True)
 	design = models.ForeignKey(Design, on_delete=models.PROTECT, related_name='cards', null=False, blank=False)
