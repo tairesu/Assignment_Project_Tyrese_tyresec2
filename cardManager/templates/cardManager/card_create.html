@@ -17,7 +17,12 @@
     {% block content %}
     <form action="" method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        <p>Token</p>
+        <input type="text" name="token" id="id_token" value="{{ new_token }}">
+        <input class="hidden" type="text" value="" name="owner">
+        <div class="">
+        	{{ form.design }}
+        </div>
     	<button type="submit" class="bg-[var(--color-main)] w-full text-center py-4 rounded-md mt-8">Register Card</button>
     </form>
     {% endblock %}
