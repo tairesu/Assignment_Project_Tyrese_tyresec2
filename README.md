@@ -6,7 +6,30 @@ A Django web application for managing digital business cards. Users can activate
 
 This system enables customers to manage their digital cards from home. It provides authentication, card editing, QR code generation, analytics with PlotlyJS, and CSV/JSON export capabilities.
 
-## Features
+## Foundational 
+
+- Github
+- UI/UX Planning
+- Models + ORM Basics
+- Views + Templates + URLS
+- User Authentication 
+- Deployment 
+
+## Functional Add-ons (Table 2)
+
+- ORM Queries Data Summaries
+- Static Files (Tailwind,  Vanilla JS & Jquery)
+- Charts / Visuals (PlotlyJS)
+- Forms + Basic Input (CRUD)
+- Simple JSON Endpoints / ApIs
+- Integrate QrCode API
+- Data Presentation & Export
+- User Auth for External Users
+
+## Bonus Features
+
+- Custom form validation
+- Media Files 
 
 ### Authentication & User Management
 
@@ -14,26 +37,6 @@ This system enables customers to manage their digital cards from home. It provid
 * Profile creation and updates
 * Dashboard with protected content
 * Role‑restricted views
-
-### Digital Card Tools
-
-* Activate and claim digital cards
-* Update card information using forms
-* Conditional field validation
-* Search and filter card records
-
-### Analytics & Reporting
-
-* Daily usage analysis
-* Leaderboard of most‑used cards
-* Interactive charts using PlotlyJS
-* CSV and JSON export of usage data
-
-### User Interface
-
-* TailwindCSS integration
-* Template‑based structure
-* Clean layout for reports and dashboards
 
 ## ER Diagram
 
@@ -98,24 +101,6 @@ python manage.py runserver
 * Download CSV/JSON exports
 * Scan or activate cards using public endpoints
 
-## Project Structure (Simplified)
-
-```
-/core
-    settings.py
-    urls.py
-    views.py
-
-/cards
-    models.py
-    views.py
-    templates/cards/
-
-templates/
-    base.html
-    dashboard.html
-    reports.html
-```
 
 ## Development Notes (Condensed)
 
@@ -169,4 +154,5 @@ templates/
 * Username: mohitg2
 * Password: graingerlibrary
 
-*(Remove this section before publishing publicly)*
+* Username: infoadmins
+* Password: uiucinfo
