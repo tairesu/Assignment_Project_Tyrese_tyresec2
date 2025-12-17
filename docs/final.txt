@@ -1,0 +1,9 @@
+The biggest lesson I learned is that there is nothing wrong with taking things one step at a time. 
+It sounds trivial, but taking the time to grasp the concepts by checking documentations and source code (when needed) proved to be more valuable for my coding journey than blindly implementing features that I did not understand. 
+
+This lesson allowed me to overcome the deployment challenges I faced by taking the time to understand the moving components of deployment (ports,sockets, servers, proxies, wsgi configs, settings, etc) 
+
+Future Improvements: 
+- Tracking QR code usage
+- Embedding VCard API / Creating internal api
+ 
