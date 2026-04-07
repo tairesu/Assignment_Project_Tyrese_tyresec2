@@ -1,5 +1,4 @@
 asgiref==3.8.1
-backports.zoneinfo==0.2.1
 certifi==2025.11.12
 charset-normalizer==3.4.4
 contourpy==1.1.1
@@ -10,11 +9,10 @@ idna==3.11
 importlib-resources==6.4.5
 kiwisolver==1.4.7
 matplotlib==3.7.5
-numpy==1.24.4
+numpy==1.26
 packaging==25.0
 pillow==10.4.0
 pyparsing==3.1.4
-python-dateutil==2.9.0.post0
 requests==2.32.4
 six==1.17.0
 sqlparse==0.5.4
