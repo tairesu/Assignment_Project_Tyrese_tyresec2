@@ -41,6 +41,8 @@ class Design(models.Model):
 	design_id = models.AutoField(primary_key=True)
 	name = models.CharField(blank=False, null=False, max_length=50)
 	front_design = models.ImageField(upload_to='cardDesigns/', blank=True)
+	# Apr 7: Designs can be public facing or private
+	is_public = models.BooleanField(default=True)
 
 	def __str__(self):
 		return self.name
