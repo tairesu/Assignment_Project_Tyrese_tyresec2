@@ -82,7 +82,14 @@ class Usage(models.Model):
 	date_used = models.DateTimeField(default=timezone.now, editable=False)
 
 	def __str__(self):
-		return f'{self.date_used} {self.card}'
+		"""
+			Apr 7 26: The boss want to access this model and see
+			"{name/username}'s card was tapped {date}"
+		"""
+		if self.card.owner:
+			return f"{self.card.owner.first_name or self.card.owner.username}'s card was tapped [{self.date_used.strftime('%A, %B %d, %Y')}]"
+		else: 
+			return f"{self.card} was tapped"
 
 # A9 
 class Request(models.Model):
