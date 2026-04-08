@@ -584,6 +584,11 @@ def signup_view(request):
                 return redirect(f"{request.GET.get('next')}")
             else:
                 return redirect('dashboard_view')
+        else:
+            # If signup form is invalid, send it back
+            print(f"\n\tForm:{form}\n fields: {form.fields['first_name'].bound_data}\n")
+            return render(request, 'cardManager/register.html', {'form': form})
+
     else:
         form = OwnerSignUpForm()
     return render(request, 'cardManager/register.html', {'form': form})
