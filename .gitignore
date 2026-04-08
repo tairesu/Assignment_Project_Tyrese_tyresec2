@@ -5,3 +5,7 @@ __pycache__/
 *.pyd
 .DS_Store
 .venv/
+db.*
+data/
+data/db.sqlite3
+data/db.sqlite3.bk
