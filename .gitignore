@@ -9,3 +9,4 @@ db.*
 data/
 data/db.sqlite3
 data/db.sqlite3.bk
+db.sqlite3.bk
