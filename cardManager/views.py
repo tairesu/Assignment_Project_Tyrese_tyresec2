@@ -47,6 +47,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 class HomePage(ListView):
     model = Design
     template_name = 'cardManager/home.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['design_list'] = Design.objects.filter(is_public=True)
+        return context
     
 def order_create(request):
     if request.method == "POST":
@@ -69,7 +74,8 @@ def order_create(request):
             form = RequestForm(request.session.get('order_post'))
         else: 
             form = RequestForm()
-        return render(request, 'cardManager/home.html', {'form':form, 'design_list': Design.objects.all()})
+
+        return render(request, 'cardManager/home.html', {'form':form, 'design_list': Design.objects.filter(is_public=True)})
 
     
 # Create and Saves Usage instance, given card field
