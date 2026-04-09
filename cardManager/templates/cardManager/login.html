@@ -20,7 +20,7 @@ Login
     
 {% endblock %}
 {% block content %}
-	<form method="post" class="flex m-auto flex-col gap-7">
+	<form method="post" class="flex flex-col gap-6" id="loginForm">
 		{% csrf_token %}
 		{% if form.non_field_errors %}
 			{% for error in form.non_field_errors %}
@@ -67,10 +67,11 @@ Login
     	>
     		I don't have an account
     	</a>
-		   
-		<input class="bg-[var(--color-main)] rounded-md py-4 mt-6" type="submit" value="Login">
 	</form>
 {% endblock %}
+{% block action_tray %}
+	<input class="bg-[var(--color-main)] w-full text-center py-6 rounded-md " type="submit" onclick="submitForm(this.name)" name="login" value="Login">
+{% endblock action_tray %}
 {% block extra_scripts %}
 <script src="{% static 'js/forms.js' %}?v={{ tz }}"></script>
 {% endblock %}
