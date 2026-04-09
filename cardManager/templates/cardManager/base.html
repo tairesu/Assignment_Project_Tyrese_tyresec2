@@ -24,8 +24,8 @@
 	</title>
 	<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
-<body class="min-h-[100vh] bkg-gradient text-white">
-	<nav class="@container w-full py-6 px-9 flex justify-between items-center">
+<body class="min-h-[100vh] h-[100dvh] bkg-gradient text-white flex flex-col">
+	<nav class="@container w-full p-6 flex justify-between items-center">
 		<div class="flex gap-2 items-center text-sm" name="icon-and-navbar-header">
 			<img src="{% static 'imgs/logo.png' %}" alt="" class="w-[30px] h-[30px] rounded">
 			{% if request.user.is_authenticated %}
@@ -70,7 +70,7 @@
 
 	    </div>
 	</nav>
-	<div class="w-full py-8 px-6 relative " >
+	<div class="w-full relative" >
 		<!-- Dropdown Nav (hidden on md)-->
 		<div id="dropdown-nav" class="  z-[1999] bg-[var(--color-contrast-opaque)] flex flex-col absolute top-0 gap-2 right-9 p-4 border-1 border-[var(--color-main)] rounded-sm md:hidden" style="display:none">
 			{% if request.user.is_authenticated %}
@@ -118,21 +118,21 @@
 		</div>
 		
 	</div>
+	<main class="h-[100%] flex flex-col justify-between  py-6">
+		<section id="hero" class=" px-6 flex flex-col justify-center items-center text-center">
+			{% block hero_header %}
 	
-	<section id="hero" class=" px-8 flex flex-col justify-center items-center gap-12 md:mb-10 text-center">
-	{% block hero_header %}
-
-	{% endblock %}
-            <h2 class="text-3xl md:text-5xl">
-            	{% block hero_text %}{% endblock %}
-            </h2>
-    
-    </section>
-	<div class="@container mt-18 md:w-7/8 lg:w-3/4 m-auto px-8">
-		{% block content %}
-
-		{% endblock %}
-	</div>
+			{% endblock %}
+			<h2 class="text-3xl md:text-5xl">
+				{% block hero_text %}{% endblock %}
+			</h2>
+		</section>
+		<div class="@container md:w-7/8 lg:w-3/4 px-6">
+			{% block content %}
+	
+			{% endblock %}
+		</div>
+	</main>
 	<script src="{% static 'js/jquery.js' %}?v={{  tz }}"></script>
 	<script src="{% static 'js/dropdownNav.js' %}?v={{  tz }}"></script>
 	{% block extra_scripts %}
