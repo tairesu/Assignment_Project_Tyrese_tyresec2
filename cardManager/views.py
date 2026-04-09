@@ -52,30 +52,35 @@ class HomePage(ListView):
         context = super().get_context_data(**kwargs)
         context['design_list'] = Design.objects.filter(is_public=True)
         return context
-    
+
+
 def order_create(request):
-    if request.method == "POST":
+    if request.method == "GET":
+        form = RequestForm(request.session.get('order_post'))  if 'order_post' in request.session else RequestForm()
+        return render(request, 'cardManager/home.html', {'form':form, 'design_list': Design.objects.filter(is_public=True)})
+
+    elif request.method == "POST":
         form = RequestForm(request.POST, request.FILES)
         if request.user.is_authenticated and form.is_valid():
-            #https://stackoverflow.com/questions/77784821/how-to-add-value-into-a-form-before-saving-in-django
+            # Send authenticated users to the dashboard on form completion
+            # Attach authenticated users to the order https://stackoverflow.com/questions/77784821/how-to-add-value-into-a-form-before-saving-in-django
             order_instance = form.save(commit=False)
             order_instance.owner = request.user
             form.save()
+
+            # Delete any saved post data  
             if 'order_post' in request.session:
                 del request.session['order_post']
+
             return redirect('dashboard_view')
+        
         elif not request.user.is_authenticated and form.is_valid():
+            # Save unauthenticated user's order form data 
             request.session['order_post'] = request.POST
-            url = reverse('signup_view')
-            return redirect(f"{url}?next={request.path}")
-    elif request.method == "GET":
-
-        if 'order_post' in request.session:
-            form = RequestForm(request.session.get('order_post'))
-        else: 
-            form = RequestForm()
-
-        return render(request, 'cardManager/home.html', {'form':form, 'design_list': Design.objects.filter(is_public=True)})
+            return redirect(f"{reverse('signup_view')}?next={request.path}")
+        else:
+            return render(request, 'cardManager/home.html', {'form':form, 'design_list': Design.objects.filter(is_public=True)}) 
+            
 
     
 # Create and Saves Usage instance, given card field
