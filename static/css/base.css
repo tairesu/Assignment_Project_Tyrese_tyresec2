@@ -115,6 +115,9 @@ div#dropdown-nav {
     }
 }
 
+  .bg-\[var\(--color-main\)\] {
+      background: radial-gradient(circle at 0, var(--color-main), #0eadbe 78%);
+  }
 @media (width >=48rem) {
     .md-card.can-expand {
 
