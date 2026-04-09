@@ -8,7 +8,7 @@ Create a Profile
 
 {% block content %}
 	<div class="">
-	<form action="" method="post" enctype="multipart/form-data" class="flex m-auto flex-col gap-7 ">
+	<form action="" method="post" enctype="multipart/form-data" class="flex m-auto flex-col gap-7 " id="createProfileForm">
 	    {% csrf_token %}
 	    <div class="flex flex-col gap-1">
 	    	<label for="id_name" class="text-bold text-lg">Name</label>
@@ -139,9 +139,16 @@ Create a Profile
 			{% endif %}
 	    </div>
 	    <div class="hidden"><input type="text" name="owner" value="{{ request.user.pk }}"></div>
-	    <button class="bg-[var(--color-main)] w-full text-center py-4 rounded-md mt-8" type="submit">
-	    	Create Profile
-	    </button>
+	    
 	</form>
 	</div>
 {% endblock %}
+{% block action_tray %}
+<button class="bg-[var(--color-main)] w-full text-center py-6 rounded-md " name="createProfile" type="submit">
+	Create Profile
+</button>
+{% endblock action_tray %}
+{% load static %}
+{% block extra_scripts %}
+<script src="{% static 'js/forms.js' %}?v={{ tz }}"></script>
+{% endblock extra_scripts %}
