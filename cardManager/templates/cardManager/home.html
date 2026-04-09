@@ -36,7 +36,7 @@
            </div>
         </div>
     </section>
-    <section id="design" class="flex flex-col items-center mb-12 w-full m-auto gap-12">
+    <section id="design" class="flex flex-col items-center  w-full m-auto gap-12">
         
         <div class=" flex w-max items-center justify-center relative">
             <img id="card" class="object-cover rounded-md h-[11rem] w-[18rem]" src="{{ design_list.first.front_design.url}}"/>
@@ -61,7 +61,7 @@
                 </button>
             </div>
         </div>
-        <form action="{% url 'order_card_view' %}" class=" flex flex-col gap-12 w-3/4" method="POST" enctype="multipart/form-data">
+        <form action="{% url 'order_card_view' %}" class=" flex flex-col gap-12 w-3/4" method="POST" id="orderForm" enctype="multipart/form-data">
             {% csrf_token %}
             <div id="uploadFile" class="flex flex-col gap-6 hidden">
                 <h2 class="text-center mb-6">
@@ -108,16 +108,21 @@
                 value="1"{% endif %}
 
             />
-            <button class="bg-[var(--color-main)] w-full text-center py-4 rounded-md " id="order-btn" type="submit">
-                Order Card
-            </button>
+           
 
         </form>
     </section>
-    
 {% endblock %}
+
+{% block action_tray %}
+ <button class="bg-[var(--color-main)] w-full text-center py-6 rounded-md " id="order-btn" type="submit" name="order" onclick="submitForm(this.name)">
+    Order Card
+</button>
+{% endblock action_tray %}
+
 {% block extra_scripts %}
 <script src="{% static 'js/updateDesign.js' %}?v={{ tz }}"></script>
+<script src="{% static 'js/forms.js' %}?v={{ tz }}"></script>
 
 {% if request.session.order_post and request.user.is_authenticated %}
     <script type="text/javascript">
