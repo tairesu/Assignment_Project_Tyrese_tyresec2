@@ -15,10 +15,10 @@ Let's network
 {% block hero_text %}
     Activating Card {{ card.token }}
 {% endblock %}
-{% block content %}
+{% block action_tray %}
 	<form action="" method="post">
 		{% csrf_token %}
-		<button type="submit" id="activateCardBtn" class="bg-[var(--color-main)] w-full text-center py-4 rounded-md ">Claim this card</button>
+		<button type="submit" id="activateCardBtn" class="bg-[var(--color-main)] w-full text-center py-6 rounded-md ">Claim this card</button>
 		
 	</form>
 {% endblock %}
