@@ -6,62 +6,83 @@
 	Hello {{ request.user }}
 {% endblock %}
 {% block content %}
-	<h2 class="text-2xl mt-20 mb-6">Recent Activity</h2>
-	<div class="activity flex flex-col gap-4 mb-20 md:grid md:grid-cols-[1fr_1fr] xl:grid-cols-[1fr_1fr_1fr]">
-		{% for activity in recent_activities%}
-			<div class="flex flex-row items-center gap-2">
-				<div>
-					<img src="{{ activity.card.design.front_design.url }}" class="w-[3rem] h-[1.7rem] rounded-sm">
-				</div>
-				<div class="flex flex-col">
-					{% if activity.card.alias %}
-					<p>{{ activity.card.alias }} was tapped</p>
-					{% else %}
-					<p>{{ activity.card }} was tapped</p>
-				{% endif %}
-					<p class="text-xs">{{ activity.date_used|date:"h:i a m/j/y" }} </p>
-				</div>
-			</div>
-		{% empty %}
-			<p>No recent activity yet</p>
-		{% endfor %}
-	</div>
-	{% if request.user.is_superuser %}
-		<div class="flex flex-row gap-4 items-center mb-6">
-			<h2 class="text-2xl">Pending Orders</h2>
-			<span class="bg-[var(--color-main)] text-bold py-1 px-3 text-center rounded-full ">{{ pending_orders|length }}</span>
-		</div>
-		<div class="w-full grid grid-cols-1 gap-4 mb-20 md:grid-cols-3">
-			{% for order in pending_orders %}
-				<div class="flex flex-row items-center gap-4 rounded-sm p-4 card-order">
-					<img class="mini-card rounded-sm" src="
-					{% if order.custom_design %}
-						{{ order.custom_design.url }}
-					{% elif order.preset_design %}
-						{{ order.preset_design.front_design.url }} 
-					{% endif %}"/>
+<div class="flex flex-col gap-18">
+	<div class="flex flex-col gap-6">
+		<h2 class="text-2xl ">Recent Activity</h2>
+		<div class="activity flex flex-col gap-4  md:grid md:grid-cols-[1fr_1fr] xl:grid-cols-[1fr_1fr_1fr]">
+			{% for activity in recent_activities%}
+				<div class="flex flex-row items-center gap-2">
 					<div>
-						<p class="font-bold">{{ order.owner }}</p>
-						<a href="{{ order.get_absolute_url }}" class="text-(--color-main)">View</a>
+						<img src="{{ activity.card.design.front_design.url }}" class="w-[3rem] h-[1.7rem] rounded-sm">
+					</div>
+					<div class="flex flex-col">
+						{% if activity.card.alias %}
+						<p>{{ activity.card.alias }} was tapped</p>
+						{% else %}
+						<p>{{ activity.card }} was tapped</p>
+					{% endif %}
+						<p class="text-xs">{{ activity.date_used|date:"h:i a m/j/y" }} </p>
 					</div>
 				</div>
-				{% empty %}
-				<p>Looks like there aren't any orders yet.</p>
+			{% empty %}
+				<p>No recent activity yet</p>
 			{% endfor %}
+		</div>
+	</div>
+		
+	{% if request.user.is_superuser %}
+		<div class="flex flex-col gap-6">
+			<div class="flex flex-row gap-4 items-center ">
+				<h2 class="text-2xl">Pending Orders</h2>
+				<span class="bg-[var(--color-main)] text-bold py-1 px-3 text-center rounded-full ">{{ pending_orders|length }}</span>
+			</div>
+			<div class="w-full grid grid-cols-1 gap-4  md:grid-cols-3">
+				{% for order in pending_orders %}
+					<div class="flex flex-row items-center gap-4 rounded-sm p-2 card-order">
+						<img class="mini-card rounded-sm" src="
+						{% if order.custom_design %}
+							{{ order.custom_design.url }}
+						{% elif order.preset_design %}
+							{{ order.preset_design.front_design.url }} 
+						{% endif %}"/>
+						<div>
+							<p class="font-bold">{{ order.owner }}</p>
+							<a href="{{ order.get_absolute_url }}" class="text-(--color-main)">View</a>
+						</div>
+					</div>
+					{% empty %}
+					<p>Looks like there aren't any orders yet.</p>
+				{% endfor %}
+			</div>
 		</div>
 	{% endif %}
 
-	
-	<div class="flex flex-row gap-4 items-center mb-6">
-		<h2 class="text-2xl">My Cards</h2>
-		<span class="bg-[var(--color-main)] text-bold py-1 px-3 text-center rounded-full ">{{ user_cards|length }}</span>
-	</div>
-	<div id="user-cards" class="flex flex-wrap flex-col gap-6 mb-20 md:m-auto md:grid md:grid-cols-[1fr_1fr_1fr] md:gap-4">
-	{% for card in user_cards %}
-		<div class="flex flex-row items-center gap-4 ">
-			<a href="{{ card.get_update_url }}" class="relative md-card can-expand rounded-md w-full h-full bg-[url('{{ card.design.front_design.url }}')]">
-			
-				<div class="hidden md:flex justify-center card-overlay w-full h-full absolute flex-col items-center">
+	<div class="flex flex-col gap-6">
+
+		<div class="flex flex-row gap-4 items-center">
+			<h2 class="text-2xl">My Cards</h2>
+			<span class="bg-[var(--color-main)] text-bold py-1 px-3 text-center rounded-full ">{{ user_cards|length }}</span>
+		</div>
+		<div id="user-cards" class="flex flex-wrap flex-col gap-6  md:m-auto md:grid md:grid-cols-[1fr_1fr_1fr] md:gap-4">
+		{% for card in user_cards %}
+			<div class="flex flex-row items-center gap-4 ">
+				<a href="{{ card.get_update_url }}" class="relative md-card can-expand rounded-md w-full h-full bg-[url('{{ card.design.front_design.url }}')]">
+				
+					<div class="hidden md:flex justify-center card-overlay w-full h-full absolute flex-col items-center">
+						{% if card.alias %}
+							<p class="font-bold text-lg">{{ card.alias }}</p>
+							{% else %}
+							<p class="font-bold text-lg">{{ card }}</p>
+						{% endif %}
+						{% if card.show_profile %}
+							<p class="text-darkgrey">Points to your profile</p>
+						{% elif not card.show_profile and card.reroute_url %}
+							<p class="text-darkgrey">{{ card.reroute_url }}</p>
+						{% else %}
+						{% endif %}
+					</div>
+				</a>
+				<div class="md:hidden">
 					{% if card.alias %}
 						<p class="font-bold text-lg">{{ card.alias }}</p>
 						{% else %}
@@ -73,52 +94,43 @@
 						<p class="text-darkgrey">{{ card.reroute_url }}</p>
 					{% else %}
 					{% endif %}
+					<a href="{{ card.get_update_url }}" class="text-(--color-main)">Edit</a>
 				</div>
-			</a>
-			<div class="md:hidden">
-				{% if card.alias %}
-					<p class="font-bold text-lg">{{ card.alias }}</p>
-					{% else %}
-					<p class="font-bold text-lg">{{ card }}</p>
-				{% endif %}
-				{% if card.show_profile %}
-					<p class="text-darkgrey">Points to your profile</p>
-				{% elif not card.show_profile and card.reroute_url %}
-					<p class="text-darkgrey">{{ card.reroute_url }}</p>
-				{% else %}
-				{% endif %}
-				<a href="{{ card.get_update_url }}" class="text-(--color-main)">Edit</a>
 			</div>
+			{% empty %}
+			<p>Looks like there aren't any cards here.</p>
+		{% endfor %}
 		</div>
-		{% empty %}
-		<p>Looks like there aren't any cards here.</p>
-	{% endfor %}
 	</div>
 	{% if requested_cards %}
-		<div class="flex flex-row gap-4 items-center mb-6 mt-20">
-			<h2 class="text-2xl">Arriving Soon</h2>
-			<span class="bg-[var(--color-main)] text-bold py-1 px-3 text-center rounded-full ">{{ requested_cards|length }}</span>
-		</div>
-		<div class="flex flex-row w-full overflow-x-auto gap-6 mb-20">
-			{% for card_request in requested_cards %}
-				<div class="text-nowrap flex flex-col items-center gap-4 opacity-[0.3] ">
-					<img 
-						class="md-card rounded-sm" 
-						src="
+		<div class="flex flex-col gap-6">
+			<div class="flex flex-row gap-4 items-center ">
+				<h2 class="text-2xl">Arriving Soon</h2>
+				<span class="bg-[var(--color-main)] text-bold py-1 px-3 text-center rounded-full ">{{ requested_cards|length }}</span>
+			</div>
+			<div class="flex flex-row w-full overflow-x-auto gap-4 ">
+				{% for card_request in requested_cards %}
+					<div class="text-nowrap flex flex-col items-center gap-4 opacity-[0.3] ">
+						<img 
+							class="md-card rounded-sm" 
+							src="
+							
+							{% if card_request.custom_design %}
+								{{ card_request.custom_design.url }}
+							{% elif card_request.preset_design %}
+								{{ card_request.preset_design.front_design.url }} 
+							{% endif %}"/>
 						
-						{% if card_request.custom_design %}
-							{{ card_request.custom_design.url }}
-						{% elif card_request.preset_design %}
-							{{ card_request.preset_design.front_design.url }} 
-						{% endif %}"/>
-					
-					<div>
-					<p class="font-bold">On it's way</p>
-					<p class=" text-sm text-[var(--color-grey)]">Ordered: {{ card_request.date_created|date:"m/j/y"}}</p>
+						<div>
+						<p class="font-bold">On it's way</p>
+						<p class=" text-sm text-[var(--color-grey)]">Ordered: {{ card_request.date_created|date:"m/j/y"}}</p>
+						</div>
+						
 					</div>
-					
-				</div>
-			{% endfor %}
+				{% endfor %}
+			</div>
 		</div>
 	{% endif %}
+	
+</div>
 {% endblock %}
