@@ -4,7 +4,7 @@
 	Activating your Card | TC Digital
 {% endblock %}
 {% block opener %}
-Activating card {{ card.token }}
+Let's network
 {% endblock opener %}
 {% block hero_header %}
     <div class="card flex items-center justify-center rounded-md ">
@@ -18,7 +18,7 @@ Activating card {{ card.token }}
 {% block content %}
 	<form action="" method="post">
 		{% csrf_token %}
-		<button type="submit" id="activateCardBtn" class="bg-[var(--color-main)] w-full text-center py-4 rounded-md mt-8">Claim this card</button>
+		<button type="submit" id="activateCardBtn" class="bg-[var(--color-main)] w-full text-center py-4 rounded-md ">Claim this card</button>
 		
 	</form>
 {% endblock %}
