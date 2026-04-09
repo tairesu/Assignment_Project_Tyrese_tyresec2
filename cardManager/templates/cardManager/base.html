@@ -64,6 +64,7 @@
 		        	<input type="submit" value="Logout"/>
 		        </form>
 	        {% else %}
+				<a href="{% url 'homepage_view' %}">Home</a>
 	        	<a href="{% url 'login_view' %}">Login</a>
 	        	<a href="{% url 'signup_view' %}">Create Account</a>
 	        {% endif %}
@@ -98,6 +99,7 @@
 		        	<input type="submit" value="Logout"/>
 		        </form>
 	        {% else %}
+	        	<a href="{% url 'homepage_view' %}" class="has-icon">Home</a>
 	        	<a href="{% url 'login_view' %}" class="has-icon">Login</a>
 	        	<a href="{% url 'signup_view' %}" class="has-icon">Create Account</a>
 	        {% endif %}
