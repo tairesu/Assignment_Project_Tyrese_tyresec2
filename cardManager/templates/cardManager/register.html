@@ -1,26 +1,26 @@
 {% extends 'cardManager/base.html' %}
 {% block hero_text %}
-    {% if request.session.activating_card_design %}
+{% if request.session.activating_card_design %}
     Sign up to claim this card
     {% else %}
     Sign Up 
     {% endif %}
 {% endblock %}
 {% block hero_header %}
-    {% if request.session.activating_card_design %}
+{% if request.session.activating_card_design %}
         <div class="card flex items-center justify-center rounded-md ">
             <img id="card" class=" object-cover w-[12rem] rounded-md aspect-[8/5]" src="{{ request.session.activating_card_design }}"/>
         </div>
     {% endif %}
     
     
-{% endblock %}
+    {% endblock %}
 {% block content %}
-<form method="post" class="flex m-auto flex-col gap-7 ">
-	{% csrf_token %}
+<form method="post" class="flex flex-col gap-6 " id="registerForm">
+    {% csrf_token %}
     {% if form.non_field_errors %}
             {% for error in form.non_field_errors %}
-                <p class="text-danger text-md" >{{ error }}</p>
+            <p class="text-danger text-md" >{{ error }}</p>
             {% endfor %}
         {% endif %}
 	<div class="flex flex-col gap-2">
@@ -62,10 +62,17 @@
         {% else %} href="{% url 'login_view' %}" {% endif %} 
     class="text-center text-md text-[var(--color-main)] mt-8">I already have an account</a>
     {% endif %}
-	<button class="bg-[var(--color-main)] w-full text-center py-4 rounded-md" type="submit">
-    	Sign up
-    </button>
+	
 </form>
 	
 
 {% endblock %}
+{% block action_tray %}
+<button class="bg-[var(--color-main)] w-full text-center py-6 rounded-md " type="submit" onclick="submitForm(this.name)" name="register">
+    	Sign up
+</button>
+{% endblock action_tray %}
+{% load static %}
+{% block extra_scripts %}
+<script src="{% static 'js/forms.js' %}?v={{ tz }}"></script>
+{% endblock extra_scripts %}
