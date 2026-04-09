@@ -17,3 +17,11 @@ function toggleRedirectDiv(radioValue) {
 	}
 	else if (!show_profile) { redirectDiv.classList.remove("dim-out") }
 }
+
+/* Moving the button to action tray block 
+
+*/
+
+let submitForm = (buttonName) => {
+	document.querySelector(`form#${buttonName}Form`) && document.querySelector(`form#${buttonName}Form`).submit()
+}
