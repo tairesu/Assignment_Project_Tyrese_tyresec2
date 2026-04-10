@@ -16,8 +16,24 @@ Let's network
 {% endblock %}
 
 {% block content %}
-	<div class="livenCard flex items-center justify-center rounded-md w-fit">
+	<div class="livenCard flex items-center justify-center rounded-md w-fit relative z-8">
 		<img id="card" class=" object-cover w-[20rem] rounded-md aspect-[8/5]" src="{{ card.design.front_design.url }}"/>
+		<svg
+				class="w-25 h-25 absolute left-auto right-auto rounded fill-[#7d919a] opacity-50 z-5"
+				viewBox="0 0 17.056841 9.6996582"
+				version="1.1"
+				id="svg1"
+				xml:space="preserve"
+				xmlns="http://www.w3.org/2000/svg"
+				xmlns:svg="http://www.w3.org/2000/svg"><defs
+					id="defs1" /><g
+					id="g1"
+					transform="matrix(0.26458333,0,0,0.26458333,58.975847,-135.30633)"><path
+					id="rect68-2"
+					
+					style="fill-opacity:1;stroke:#000000;stroke-width:0;stroke-dasharray:none;stroke-opacity:1"
+					d="m -190.77981,511.39393 32.3457,18.19922 -9.46875,5.40234 -22.84765,-12.85547 -22.65235,12.92578 -9.49804,-5.34375 z m 0.041,13.47265 20.5332,11.55274 -9.24609,5.27539 -11.26172,-6.33399 -11.14258,6.35938 -9.27344,-5.21875 z m 0.041,13.19922 8.84375,4.97656 -8.7832,5.01172 -8.84375,-4.97656 z" /></g>
+			</svg>
 	</div>
 	
 	
@@ -35,7 +51,7 @@ Let's network
 					<span class="rounded-lg flex justify-center items-center text-center w-full h-full p-3 text-[var(--color-secondary)]">1</span></p>
 				<div class="flex flex-col gap-1 justify-center">
 					<p class="m-0  font-bold text-white text-lg">Register</p>
-					<p class="m-0 text-sm text-[var(--color-secondary)]">Sign-up or login to claim this card</p>
+					<p class="m-0 text-sm text-[var(--color-secondary)]">Get started in seconds  </p>
 				</div>
 			</div>
 			<div class=" rounded-lg flex gap-4 bg-[var(--color-input-bkg)]">
@@ -43,7 +59,7 @@ Let's network
 					<span class="rounded-lg flex justify-center items-center text-center w-full h-full text-[var(--color-secondary)]">2</span></p>
 				<div class="flex flex-col gap-1 justify-center">
 					<p class="m-0 font-bold text-lg text-white">Activate</p>
-					<p class="m-0 text-sm text-[var(--color-secondary)]">Configure how your card behaves </p>
+					<p class="m-0 text-sm text-[var(--color-secondary)]">Set up what you want to share  </p>
 				</div>
 			</div>
 			<div class=" rounded-lg flex gap-4 bg-[var(--color-input-bkg)] ">
@@ -51,7 +67,7 @@ Let's network
 					<span class="rounded-lg flex justify-center items-center text-center w-full h-full text-[var(--color-secondary)]">3</span></p>
 				<div class="flex flex-col gap-1 justify-center">
 					<p class="m-0 font-bold text-lg text-white">Tap </p>
-					<p class="m-0 text-sm text-[var(--color-secondary)]">Your card is ready to be tapped </p>
+					<p class="m-0 text-sm text-[var(--color-secondary)]">Tap and share instantly </p>
 				</div>
 			</div>
 		</div>
