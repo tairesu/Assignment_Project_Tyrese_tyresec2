@@ -8,18 +8,19 @@ Let's network
 {% endblock opener %}
 {% block hero_header %}
 <div class="flex flex-col gap-6 items-center">
-	<div class="livenCard flex items-center justify-center rounded-md w-fit">
-		<img id="card" class=" object-cover w-[18rem] rounded-md aspect-[8/5]" src="{{ card.design.front_design.url }}"/>
-	</div>
 	<div class="flex flex-col gap-4 items-center text-center">
 		<h2 class="text-4xl md:text-6xl capitalize font-bold "><span>Network  </span><span class="bg-[var(--color-main)] text-transparent skew-3 italic font-bold" style="background-clip:text;transform:skewX(50deg)">5x faster</span></h2>
 		<p class="text-xl md:text-xl text-[var(--color-secondary)]"><span> Share links, resumes, and profiles instantly — one tap, zero friction.</span></p>
 	</div>
-	
 </div>
 {% endblock %}
 
 {% block content %}
+	<div class="livenCard flex items-center justify-center rounded-md w-fit">
+		<img id="card" class=" object-cover w-[20rem] rounded-md aspect-[8/5]" src="{{ card.design.front_design.url }}"/>
+	</div>
+	
+	
 	<!-- How it works section-->
 	<div class="flex flex-col gap-12 w-full">
 		<!-- header & subtitle-->
