@@ -43,8 +43,10 @@ table {
     position: relative;
 
 }
-
-.card:after {
+.livenCard {
+    position: relative;
+}
+.card:after, .livenCard::after {
     content: " ";
     display: block;
     position: absolute;
@@ -117,9 +119,11 @@ div#dropdown-nav {
         fill: var(--color-main);
     }
 }
-
+.shadow {
+    box-shadow:2px -2px 9px var(--color-input-bkg)
+}
 .bg-\[var\(--color-main\)\] {
-    background: radial-gradient(circle at 0, var(--color-main), #0eadbe 53%, #66d76d);
+    background: radial-gradient(circle at -42px 36px, var(--color-main), #0eadbe 53%, #66d76d 156%);
 }
 
 .instructionNumber {
