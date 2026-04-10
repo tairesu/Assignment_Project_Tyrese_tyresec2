@@ -1,7 +1,7 @@
 :root {
     --color-main: #0091CA;
     --color-main-dark: #010a0e;
-    --color-secondary: ;
+    --color-secondary: #e5ecec;
     --color-secondary-dark: ;
     --color-input-bkg: #0c1d24ed;
     --color-danger: red;
@@ -102,22 +102,32 @@ div#dropdown-nav {
         fill: grey;
     }
 }
-#uploadFile{
-	transition: opacity 0.7s ease;
-	opacity: 1;
-	&.no-show{
-		opacity: 0;
-	}
+
+#uploadFile {
+    transition: opacity 0.7s ease;
+    opacity: 1;
+
+    &.no-show {
+        opacity: 0;
+    }
 }
+
 #dropdown-trigger.active {
     path {
         fill: var(--color-main);
     }
 }
 
-  .bg-\[var\(--color-main\)\] {
-      background: radial-gradient(circle at 0, var(--color-main), #0eadbe 78%);
-  }
+.bg-\[var\(--color-main\)\] {
+    background: radial-gradient(circle at 0, var(--color-main), #0eadbe 53%, #66d76d);
+}
+
+.instructionNumber {
+
+    text-shadow: 3px 1px 5px var(--color-input-bkg);
+
+}
+
 @media (width >=48rem) {
     .md-card.can-expand {
 
