@@ -7,18 +7,60 @@
 Let's network
 {% endblock opener %}
 {% block hero_header %}
-    <div class="card flex items-center justify-center rounded-md ">
-        <img id="card" class=" object-cover w-[15rem] rounded-md aspect-[8/5]" src="{{ card.design.front_design.url }}"/>
-    </div>
+<div class="flex flex-col gap-6">
+	<div class="card flex items-center justify-center rounded-md">
+		<img id="card" class=" object-cover w-[18rem] rounded-md aspect-[8/5]" src="{{ card.design.front_design.url }}"/>
+	</div>
+	<div class="flex flex-col gap-4 items-center text-center">
+		<h2 class="text-4xl md:text-6xl capitalize font-bold "><span>Network  </span><span class="bg-[var(--color-main)] text-transparent skew-3 italic font-bold" style="background-clip:text;transform:skewX(50deg)">5x faster</span></h2>
+		<p class="text-xl md:text-xl text-[var(--color-secondary)]"><span> Share links, resumes, and profiles instantly — one tap, zero friction.</span></p>
+	</div>
+	
+</div>
 {% endblock %}
 
-{% block hero_text %}
-    Activating Card {{ card.token }}
-{% endblock %}
+{% block content %}
+	<!-- How it works section-->
+	<div class="flex flex-col gap-12">
+		<!-- header & subtitle-->
+		<div class="flex flex-col gap-2 items-center">
+			<h6 class="font-bold bg-[var(--color-main)] text-transparent " style="background-clip:text;">How it works</h6>
+			<h2 class="text-2xl font-bold">Three Simple Steps</h2>
+		</div>
+		<!-- instructions-->
+		<div class="flex flex-col gap-6">
+			<div class=" rounded-lg flex gap-4 bg-[var(--color-input-bkg)] ">
+				<p class="text-4xl bg-[var(--color-main)]  text-white  instructionNumber rounded-lg font-bold w-1/5 aspect-square p-1">
+					<span class="rounded-lg flex justify-center items-center text-center w-full h-full p-3 text-[var(--color-secondary)]">1</span></p>
+				<div class="flex flex-col gap-1 justify-center">
+					<p class="m-0  font-bold text-white text-lg">Register</p>
+					<p class="m-0 text-[var(--color-secondary)]">Sign-up or login to claim this card</p>
+				</div>
+			</div>
+			<div class=" rounded-lg flex gap-4 bg-[var(--color-input-bkg)]">
+				<p class="text-4xl bg-[var(--color-main)]  text-white  instructionNumber rounded-lg font-bold w-1/5 aspect-square p-1">
+					<span class="rounded-lg flex justify-center items-center text-center w-full h-full text-[var(--color-secondary)]">2</span></p>
+				<div class="flex flex-col gap-1 justify-center">
+					<p class="m-0 font-bold text-lg text-white">Activate</p>
+					<p class="m-0 text-[var(--color-secondary)]">Configure how your card behaves </p>
+				</div>
+			</div>
+			<div class=" rounded-lg flex gap-4 bg-[var(--color-input-bkg)] ">
+				<p class="text-4xl bg-[var(--color-main)] text-white  instructionNumber rounded-lg font-bold w-1/5 aspect-square p-1">
+					<span class="rounded-lg flex justify-center items-center text-center w-full h-full text-[var(--color-secondary)]">3</span></p>
+				<div class="flex flex-col gap-1 justify-center">
+					<p class="m-0 font-bold text-lg text-white">Tap </p>
+					<p class="m-0 text-[var(--color-secondary)]">Your card is ready to be tapped </p>
+				</div>
+			</div>
+		</div>
+	</div>
+		
+{% endblock content %}
 {% block action_tray %}
 	<form action="" method="post">
 		{% csrf_token %}
-		<button type="submit" id="activateCardBtn" class="bg-[var(--color-main)] w-full text-center py-6 rounded-md ">Claim this card</button>
+		<button type="submit" id="activateCardBtn" class="bg-[var(--color-main)] w-full text-center py-6 rounded-md capitalize font-bold instructionNumber text-lg">Claim this card</button>
 		
 	</form>
 {% endblock %}
