@@ -5,6 +5,8 @@
     --color-secondary-dark: ;
     --color-input-bkg: #0c1d24ed;
     --color-danger: red;
+    --color-green:#66d76d;
+    --color-teal:#0eadbe;
     --color-input-border: #1f719340;
     --color-contrast-container: #151c3057;
     --color-contrast-opaque: hsl(214 45% 10% / 1);
@@ -54,6 +56,7 @@ table {
     left: 0;
     width: 100%;
     height: 100%;
+    z-index: 999;
     background: var(--color-reflective);
 }
 
@@ -123,7 +126,7 @@ div#dropdown-nav {
     box-shadow:2px -2px 9px var(--color-input-bkg)
 }
 .bg-\[var\(--color-main\)\] {
-    background: radial-gradient(circle at -42px 36px, var(--color-main), #0eadbe 53%, #66d76d 156%);
+    background: radial-gradient(circle at -42px 36px, var(--color-main), var(--color-teal) 53%, var(--color-green) 156%);
 }
 
 .instructionNumber {
