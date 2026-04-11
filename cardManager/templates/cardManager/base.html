@@ -136,7 +136,7 @@
 		</div>
 		
 	</div>
-	<main class="h-[100%] flex flex-col @container md:w-7/8 lg:w-3/4 py-12 px-6 gap-18 overflow-y-scroll ">
+	<main class="h-[100%] flex flex-col @container md:w-7/8 lg:w-3/4 py-12 px-6 gap-24 overflow-y-scroll ">
 		<section id="hero" class="flex flex-col justify-center items-center text-center">
 			{% block hero_header %}
 	
@@ -145,10 +145,7 @@
 				{% block hero_text %}{% endblock %}
 			</h2>
 		</section>
-		<section class="flex flex-col gap-18 items-center">
-
-			{% block content %}{% endblock content %}
-		</section>
+		{% block content %}{% endblock content %}
 	</main>
 	<div class="p-6">
 		{% block action_tray %}
