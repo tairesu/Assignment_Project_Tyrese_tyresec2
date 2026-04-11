@@ -1,0 +1,7 @@
+.softSlideUp {
+
+  transition: transform 1s ease, opacity 1s linear;
+  transform: translateY(-8rem);
+  opacity: 1;
+  z-index: 9999;
+}
