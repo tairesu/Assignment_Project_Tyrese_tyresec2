@@ -38,7 +38,8 @@ table {
     background-size: cover;
     aspect-ratio: 8/5;
 }
-
+/* box-shadow on card16px -6.6px 1px #6d47ad,
+15px 1.4px 4px #a53333 */
 .card {
 
     aspect-ratio: 8/5;
