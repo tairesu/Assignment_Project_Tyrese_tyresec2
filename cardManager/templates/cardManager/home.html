@@ -38,7 +38,7 @@
   </div>
 
   <!-- RIGHT -->
-  <div class="flex justify-center">
+  <div class="flex justify-center hidden">
     <!-- Replace with product visual -->
     <div class=" hidden w-[280px] h-[280px] bg-[var(--color-input-bkg)] rounded-2xl flex items-center justify-center">
       <span class="text-[var(--color-secondary)] text-sm">
@@ -50,8 +50,9 @@
 </section>
 {% endblock %}
 {% block content %}
+    <section class="flex flex-col gap-12 items-center">
 
-    <div class="livenCard flex w-max items-center justify-center relative">
+        <div class="livenCard flex w-max items-center justify-center relative">
             <img id="card" class="object-cover rounded-md aspect-[8/5] w-[22rem]" src="{{ design_list.first.front_design.url}}"/>
             <svg
                 class="w-25 h-25 absolute left-auto top-auto bottom-auto right-auto rounded fill-[white]"
@@ -60,11 +61,11 @@
                 xml:space="preserve"
                 xmlns="http://www.w3.org/2000/svg"
                 xmlns:svg="http://www.w3.org/2000/svg"><defs id="cardDefs">
-							<radialGradient id="myGradient" cy="0%" cx="0%" fr="0%" r="1">
-								<stop offset="5%" stop-color="var(--color-main)" />
-								<stop offset="80%" stop-color="var(--color-teal)" />
-							</radialGradient>
-						</defs>
+                            <radialGradient id="myGradient" cy="0%" cx="0%" fr="0%" r="1">
+                                <stop offset="5%" stop-color="var(--color-main)" />
+                                <stop offset="80%" stop-color="var(--color-teal)" />
+                            </radialGradient>
+                        </defs>
                 <g
                 id="g1"
                 transform="matrix(0.26458333,0,0,0.26458333,58.975847,-135.30633)"><path
@@ -80,62 +81,35 @@
                     style="z-index:5;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-dasharray:none;stroke-opacity:1"
                     d="m -190.77981,511.39393 32.3457,18.19922 -9.46875,5.40234 -22.84765,-12.85547 -22.65235,12.92578 -9.49804,-5.34375 z m 0.041,13.47265 20.5332,11.55274 -9.24609,5.27539 -11.26172,-6.33399 -11.14258,6.35938 -9.27344,-5.21875 z m 0.041,13.19922 8.84375,4.97656 -8.7832,5.01172 -8.84375,-4.97656 z" /></g>
             </svg>
-        </div>
-    </div>    
-    <!-- Phone -->
-    <div class="relative opacity-0" id="phone-demo">
+        </div>    
+        <!-- Phone -->
+        <div class="relative opacity-40" id="phone-demo">
 
-        <!-- " Phone Screen's container " -->
-        <div class="absolute top-0 w-full h-full  z-1 p-[5%]">
+            <!-- " Phone Screen's container " -->
+            <div class="absolute top-0 w-full h-full  z-1 p-[5%]">
 
-            <!-- Phone Screen-->
-            <div class="flex flex-col px-2 shadow bg-[var(--color-bkg)] items-center justify-center w-full h-full rounded-[8%]">
-                
-                <!-- How it works section-->
-            <div class="flex flex-col gap-12 w-full">
-                
-                <!-- header & subtitle-->
-                <div class="flex flex-col gap-2 items-center">
-                    <h6 class="font-bold bg-[var(--color-main)] text-transparent " style="background-clip:text;">How it works</h6>
-                    <h2 class="text-2xl font-bold">Tap. Connect. Share.</h2>
+                <!-- Phone Screen-->
+                <div class="flex flex-col px-2 shadow bg-[#0c1d24] items-center justify-center w-full h-full rounded-[8%]">
+
+                    <!-- How it works section-->
+                <div class="flex flex-col gap-12 w-full">
+
+                    <!-- header & subtitle-->
+                    <div class="flex flex-col gap-2 items-center">
+                        <h6 class="font-bold bg-[var(--color-main)] text-transparent " style="background-clip:text;">How it works</h6>
+                        <h2 class="text-2xl font-bold">Tap. Connect. Share.</h2>
+                    </div>
+
                 </div>
-                
-                <!-- instructions-->
-                <div class="grid gap-2 grid-cols-3 ">
-                    <div class=" rounded-lg bg-[var(--color-main)] flex gap-4 bg-[var(--color-input-bkg)] ">
-                        <p class="text-3xl  text-white  instructionNumber rounded-lg font-bold aspect-square p-1">
-                            <span class="rounded-lg flex justify-center items-center text-center w-full h-full p-3 text-[var(--color-secondary)]">1</span></p>
-                        <div class="hidden flex flex-col gap-1 justify-center">
-                            <p class="m-0  font-bold text-white text-lg">Register</p>
-                            <p class="m-0 text-[var(--color-secondary)]">Get started in seconds  </p>
-                        </div>
-                    </div>
-                    <div class=" rounded-lg bg-[var(--color-main)] flex gap-4 bg-[var(--color-input-bkg)]">
-                        <p class="text-3xl  text-white  instructionNumber rounded-lg font-bold aspect-square p-1">
-                            <span class="rounded-lg flex justify-center items-center text-center w-full h-full text-[var(--color-secondary)]">2</span></p>
-                        <div class="hidden flex flex-col gap-1 justify-center">
-                            <p class="m-0 font-bold text-lg text-white">Activate</p>
-                            <p class="m-0 text-[var(--color-secondary)]">Set up what you want to share  </p>
-                        </div>
-                    </div>
-                    <div class=" rounded-lg bg-[var(--color-main)] flex gap-4 bg-[var(--color-input-bkg)] ">
-                        <p class="text-3xl text-white  instructionNumber rounded-lg font-bold aspect-square p-1">
-                            <span class="rounded-lg flex justify-center items-center text-center w-full h-full text-[var(--color-secondary)]">3</span></p>
-                        <div class="hidden flex flex-col gap-1 justify-center">
-                            <p class="m-0 font-bold text-lg text-white">Tap </p>
-                            <p class="m-0 text-[var(--color-secondary)]">Tap and share instantly </p>
-                        </div>
-                    </div>
                 </div>
             </div>
-            </div>
-        </div>
-        <!-- Phone Bezel Image-->
-        <img src="/static/imgs/iPhone13ProMax-Graphite-Portrait.png" class="z-2 relative w-80"/>
+            <!-- Phone Bezel Image-->
+            <img src="/static/imgs/iPhone13ProMax-Graphite-Portrait.png" class="z-2 relative w-80"/>
 
-    </div>
+        </div>
+    </section>
     <!-- Features section-->
-	<div class="flex flex-col gap-12 w-full">
+	<section class="flex flex-col gap-12 w-full">
 		<!-- header & subtitle-->
 		<div class="flex flex-col gap-2 items-center">
 			<h6 class="font-bold bg-[var(--color-main)] text-transparent " style="background-clip:text;">Key Features</h6>
@@ -440,7 +414,82 @@
 				<p class="m-0 text-sm text-center text-[var(--color-secondary)]">Customize your card to match your brand </p>
 			</article>
 		</div>
-	</div>
+	</section>
+
+    <!-- WHAT YOU CAN SHARE -->
+    <section class="flex flex-col gap-6 items-center text-center">
+
+        <!-- header & subtitle-->
+        <div class="flex flex-col gap-2 items-center">
+            <h6 class="font-bold bg-[var(--color-main)] text-transparent capitalize " style="background-clip:text;">What you can share</h6>
+            <h2 class="text-2xl font-bold capitalize">Everything. Instantly.</h2>
+        </div>
+
+        <!-- Sharables -->
+        <div class="flex flex-wrap gap-2 text-sm justify-center ">
+            <p class="text-white flex instructionNumber bg-[var(--color-input-bkg)] rounded-lg font-bold p-2">
+                <span class="rounded-lg flex justify-center items-center text-center w-full h-full text-[var(--color-secondary)]">
+                    Instagrams
+                </span>
+            </p>
+            <p class="text-white flex instructionNumber bg-[var(--color-input-bkg)] rounded-lg font-bold p-2">
+                <span class="rounded-lg flex justify-center items-center text-center w-full h-full text-[var(--color-secondary)]">
+                    Payment Links
+                </span>
+            </p>
+            <p class="text-white flex instructionNumber bg-[var(--color-input-bkg)] rounded-lg font-bold p-2">
+                <span class="rounded-lg flex justify-center items-center text-center w-full h-full text-[var(--color-secondary)]">
+                    LinkTrees
+                </span>
+            </p>
+            <p class="text-white flex instructionNumber bg-[var(--color-input-bkg)] rounded-lg font-bold p-2">
+                <span class="rounded-lg flex justify-center items-center text-center w-full h-full text-[var(--color-secondary)]">
+                    Portfolios
+                </span>
+            </p>
+                <p class="text-white flex instructionNumber bg-[var(--color-input-bkg)] rounded-lg  p-2">
+                <span class="rounded-lg flex justify-center items-center text-center w-full h-full text-[var(--color-secondary)]">
+                    Websites
+                </span>
+            </p>
+            <p class="text-white flex instructionNumber bg-[var(--color-input-bkg)] rounded-lg  p-2">
+                <span class="rounded-lg flex justify-center items-center text-center w-full h-full text-[var(--color-secondary)]">
+                    Phone Numbers
+                </span>
+            </p>
+            <p class="text-white flex instructionNumber bg-[var(--color-input-bkg)] rounded-lg  p-2">
+                <span class="rounded-lg flex justify-center items-center text-center w-full h-full text-[var(--color-secondary)]">
+                    Resumes
+                </span>
+            </p>
+        </div>
+
+
+
+  </section>
+    <section class="grid md:grid-cols-2 gap-10 items-center">
+
+    <div class="flex justify-center">
+      <div class="w-[300px] h-[180px] bg-[var(--color-input-bkg)] rounded-xl flex items-center justify-center">
+        <span class="text-[var(--color-secondary)] text-sm">(card design)</span>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-4 max-w-md">
+      <h2 class="text-2xl font-bold text-white">
+        One Card. Infinite Connections.
+      </h2>
+
+      <p class="text-[var(--color-secondary)]">
+        Carry your entire digital presence in one sleek card. Tap once and instantly connect.
+      </p>
+
+      <a href="#" class="bg-[var(--color-main)] text-black px-6 py-3 rounded-lg font-semibold w-fit">
+        Get Your Card
+      </a>
+    </div>
+
+  </section>
 {% endblock %}
 
 {% block action_tray %}
@@ -517,6 +566,7 @@
 
     </form>
 </section>
+
 
 {% endblock action_tray %}
 
