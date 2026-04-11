@@ -3,6 +3,7 @@
 {% block title %}
 	TC Digital | Digital Cards 
 {% endblock %}
+
 {% block hero_header %} 
 <section class="grid md:grid-cols-2 gap-12 mt-16 items-center">
 
@@ -50,19 +51,6 @@
 {% endblock %}
 {% block content %}
 
-<!-- Phone -->
-<div class="relative">
-
-    <!-- " Phone Screen's container " -->
-    <div class="absolute top-0 w-full h-full  z-1 p-[5%]">
-
-        <!-- Phone Screen-->
-        <div class="bg-[var(--color-main)] w-full h-full rounded-[8%]"></div>
-    </div>
-    <!-- Phone Bezel Image-->
-    <img src="/static/imgs/iPhone13ProMax-Graphite-Portrait.png" class="z-2 relative w-40"/>
-
-</div>
     <div class="livenCard flex w-max items-center justify-center relative">
             <img id="card" class="object-cover rounded-md aspect-[8/5] w-[20rem]" src="{{ design_list.first.front_design.url}}"/>
             <svg
@@ -94,41 +82,55 @@
             </svg>
         </div>
     </div>    
-    <!-- How it works section-->
-	<div class="flex flex-col gap-12 w-full">
-		<!-- header & subtitle-->
-		<div class="flex flex-col gap-2 items-center">
-			<h6 class="font-bold bg-[var(--color-main)] text-transparent " style="background-clip:text;">How it works</h6>
-			<h2 class="text-2xl font-bold">Three Simple Steps</h2>
-		</div>
-		<!-- instructions-->
-		<div class="flex flex-col gap-6">
-			<div class=" rounded-lg flex gap-4 bg-[var(--color-input-bkg)] ">
-				<p class="text-3xl bg-[var(--color-main)]  text-white  instructionNumber rounded-lg font-bold w-1/5 aspect-square p-1">
-					<span class="rounded-lg flex justify-center items-center text-center w-full h-full p-3 text-[var(--color-secondary)]">1</span></p>
-				<div class="flex flex-col gap-1 justify-center">
-					<p class="m-0  font-bold text-white text-lg">Register</p>
-					<p class="m-0 text-[var(--color-secondary)]">Get started in seconds  </p>
-				</div>
-			</div>
-			<div class=" rounded-lg flex gap-4 bg-[var(--color-input-bkg)]">
-				<p class="text-3xl bg-[var(--color-main)]  text-white  instructionNumber rounded-lg font-bold w-1/5 aspect-square p-1">
-					<span class="rounded-lg flex justify-center items-center text-center w-full h-full text-[var(--color-secondary)]">2</span></p>
-				<div class="flex flex-col gap-1 justify-center">
-					<p class="m-0 font-bold text-lg text-white">Activate</p>
-					<p class="m-0 text-[var(--color-secondary)]">Set up what you want to share  </p>
-				</div>
-			</div>
-			<div class=" rounded-lg flex gap-4 bg-[var(--color-input-bkg)] ">
-				<p class="text-3xl bg-[var(--color-main)] text-white  instructionNumber rounded-lg font-bold w-1/5 aspect-square p-1">
-					<span class="rounded-lg flex justify-center items-center text-center w-full h-full text-[var(--color-secondary)]">3</span></p>
-				<div class="flex flex-col gap-1 justify-center">
-					<p class="m-0 font-bold text-lg text-white">Tap </p>
-					<p class="m-0 text-[var(--color-secondary)]">Tap and share instantly </p>
-				</div>
-			</div>
-		</div>
-	</div>
+    <!-- Phone -->
+    <div class="relative opacity-0" id="phone-demo">
+
+        <!-- " Phone Screen's container " -->
+        <div class="absolute top-0 w-full h-full  z-1 p-[5%]">
+
+            <!-- Phone Screen-->
+            <div class="flex flex-col px-2 shadow bg-[var(--color-bkg)] items-center justify-center w-full h-full rounded-[8%]">
+                <!-- How it works section-->
+            <div class="flex flex-col gap-12 w-full">
+                <!-- header & subtitle-->
+                <div class="flex flex-col gap-2 items-center">
+                    <h6 class="font-bold bg-[var(--color-main)] text-transparent " style="background-clip:text;">How it works</h6>
+                    <h2 class="text-2xl font-bold">Three Simple Steps</h2>
+                </div>
+                <!-- instructions-->
+                <div class="flex flex-col gap-6">
+                    <div class=" rounded-lg flex gap-4 bg-[var(--color-input-bkg)] ">
+                        <p class="text-3xl bg-[var(--color-main)]  text-white  instructionNumber rounded-lg font-bold w-1/5 aspect-square p-1">
+                            <span class="rounded-lg flex justify-center items-center text-center w-full h-full p-3 text-[var(--color-secondary)]">1</span></p>
+                        <div class="flex flex-col gap-1 justify-center">
+                            <p class="m-0  font-bold text-white text-lg">Register</p>
+                            <p class="m-0 text-[var(--color-secondary)]">Get started in seconds  </p>
+                        </div>
+                    </div>
+                    <div class=" rounded-lg flex gap-4 bg-[var(--color-input-bkg)]">
+                        <p class="text-3xl bg-[var(--color-main)]  text-white  instructionNumber rounded-lg font-bold w-1/5 aspect-square p-1">
+                            <span class="rounded-lg flex justify-center items-center text-center w-full h-full text-[var(--color-secondary)]">2</span></p>
+                        <div class="flex flex-col gap-1 justify-center">
+                            <p class="m-0 font-bold text-lg text-white">Activate</p>
+                            <p class="m-0 text-[var(--color-secondary)]">Set up what you want to share  </p>
+                        </div>
+                    </div>
+                    <div class=" rounded-lg flex gap-4 bg-[var(--color-input-bkg)] ">
+                        <p class="text-3xl bg-[var(--color-main)] text-white  instructionNumber rounded-lg font-bold w-1/5 aspect-square p-1">
+                            <span class="rounded-lg flex justify-center items-center text-center w-full h-full text-[var(--color-secondary)]">3</span></p>
+                        <div class="flex flex-col gap-1 justify-center">
+                            <p class="m-0 font-bold text-lg text-white">Tap </p>
+                            <p class="m-0 text-[var(--color-secondary)]">Tap and share instantly </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        <!-- Phone Bezel Image-->
+        <img src="/static/imgs/iPhone13ProMax-Graphite-Portrait.png" class="z-2 relative w-80"/>
+
+    </div>
 
 {% endblock %}
 
