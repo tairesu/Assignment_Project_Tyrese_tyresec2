@@ -1,7 +1,48 @@
-.softSlideUp {
-
-  transition: margin 1.5s ease, opacity 1s linear;
-  margin-top:-8rem;
+ .slideTapPhone {
+  transition: opacity 1s ease-in-out;
   opacity: 1;
-  z-index: 9999;
+  z-index: 999;
+  animation: slideTapPhone 3.3s ease-in-out forwards;
+  -webkit-animation: slideTapPhone 2s ease-in-out forwards;
+  -moz-animation: slideTapPhone 3.3s ease-in-out forwards;
+  
+  & #demo-screen {
+    /* Reveal the phone screen 200ms after the tap takes place */
+    animation: revealScreen 0.8s ease-in forwards;
+    animation-delay: 2s;
+  }
+
+}
+
+@keyframes slideTapPhone {
+  0%{
+    transform: translateY(0rem) rotateX(0deg) scale(1);
+    
+  }
+  20%{
+    /* move up */
+    transform: translateY(-10rem) rotateX(0deg) scale(1);
+  }
+  50%{
+    /* downward tilt motion */
+    transform: translateY(-10rem) rotateX(-15deg) scale(0.99);
+  }
+  80%{
+    /* reset back to move up */
+    transform: translateY(-10rem) rotateX(0deg) scale(1);
+  }
+  100%{
+    /* move down a little */
+    transform: translateY(-7rem) rotateX(0deg) scale(1);
+  }
+}
+
+@keyframes revealScreen {
+  0% {
+    background: var(--color-bkg)
+
+  }
+    100% {
+      background: var(--color-teal);
+    }
 }
