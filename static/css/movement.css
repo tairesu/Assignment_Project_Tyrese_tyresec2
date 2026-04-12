@@ -10,7 +10,16 @@
     /* Reveal the phone screen 200ms after the tap takes place */
     animation: revealScreen 0.8s ease-in forwards;
     animation-delay: 2s;
+    
   }
+
+  & #demo-screen-content {
+    /* Reveal the contents of the phone screen demo screen appears */
+    animation: reveal 0.8s ease-in forwards;
+    animation-delay: 2.4s;
+
+  }
+  
 
 }
 
@@ -45,4 +54,9 @@
     100% {
       background: var(--color-teal);
     }
+}
+
+@keyframes reveal {
+  from{ opacity:0}
+  to{opacity:1}
 }
