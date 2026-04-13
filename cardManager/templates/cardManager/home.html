@@ -5,7 +5,7 @@ TC Digital | Digital Cards
 {% endblock %}
 
 {% block hero_header %} 
-<section class="grid md:grid-cols-2 gap-12 mt-16 items-center">
+<section class="grid md:grid-cols-2 gap-12 mt-16 items-center" id="hero">
 	
 	<!-- LEFT -->
 	<div class="flex flex-col gap-6 max-w-xl items-center">
@@ -51,7 +51,9 @@ TC Digital | Digital Cards
 {% endblock %}
 
 {% block content %}
-<section class="flex flex-col gap-12 items-center">
+
+<!--LANDING PAGE CARD DEMO  -->
+<section class="flex flex-col gap-12 items-center" id="demo-section">
 	
 	<div class="livenCard flex w-max items-center justify-center relative">
 		<img id="card" class="object-cover rounded-md aspect-[8/5] w-[22rem]" src="{{ design_list.first.front_design.url}}"/>
@@ -114,7 +116,7 @@ TC Digital | Digital Cards
 </div>
 </section>
 <!-- KEY FEATURES SECTION-->
-<section class="flex flex-col gap-12 w-full">
+<section class="flex flex-col gap-12 w-full" id="features">
 	<!-- Header text group-->
 	<div class="flex flex-col gap-2 items-center">
 		<h6 class="font-bold bg-[var(--color-main)] text-transparent " style="background-clip:text;">Key Features</h6>
@@ -423,7 +425,7 @@ TC Digital | Digital Cards
 </section>
 
 <!-- WHAT YOU CAN SHARE -->
-<section class="flex flex-col gap-6 items-center text-center">
+<section class="flex flex-col gap-6 items-center text-center" id="shareables">
 	
 	<!-- header & subtitle-->
 	<div class="flex flex-col gap-2 items-center">
@@ -474,7 +476,7 @@ TC Digital | Digital Cards
 	
 </section>
 <!-- Card Design Section -->
-<section class="grid md:grid-cols-2 gap-10 items-center">
+<section class="grid md:grid-cols-2 gap-10 items-center" id="card-design">
 	
 	<div class="flex justify-center">
 		<div class="w-[300px] h-[180px] bg-[var(--color-input-bkg)] rounded-xl flex items-center justify-center">
@@ -580,6 +582,7 @@ TC Digital | Digital Cards
 {% block extra_scripts %}
 <script src="{% static 'js/updateDesign.js' %}?v={{ tz }}"></script>
 <script src="{% static 'js/forms.js' %}?v={{ tz }}"></script>
+<script src="{% static 'js/scroll-animations.js' %}?v={{ tz }}"></script>
 
 {% if request.session.order_post and request.user.is_authenticated %}
 <script type="text/javascript">
