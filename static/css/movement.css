@@ -8,8 +8,7 @@
   
   & #demo-screen {
     /* Reveal the phone screen 200ms after the tap takes place */
-    animation: revealScreen 0.8s ease-in forwards;
-    animation-delay: 2s;
+    animation: revealScreen 0.8s ease-in forwards 2s, shrinkShadow 1.55s ease-in-out 1s forwards;
     
   }
 
@@ -23,6 +22,13 @@
 
 
 }
+#phone-demo {
+  transform-origin: left 70%;
+  perspective: 3000px;
+  & #demo-screen {
+    box-shadow:0px -6px 30px var(--color-bkg);
+  }
+}
 /* 
 The phone demo exists in the same section as the card visual. 
 */
@@ -34,11 +40,11 @@ section:has(.slideTapPhone) {
     animation-delay: 1s;
   }
 
-  /* And tilt the card downward when the phone presses it */
+  /* /* And tilt the card downward when the phone presses it 
   & .livenCard {
-    animation: tiltDown 2s ease-in-out ;
-    animation-delay: 1.6s;
-  }
+    animation: tiltDown 1.5s ease-in-out ;
+    animation-delay: 0.8s;
+  } */
 }
 
 
@@ -53,7 +59,8 @@ section:has(.slideTapPhone) {
   }
   50%{
     /* downward tilt motion */
-    transform: translateY(-10rem) rotateX(-15deg) scale(0.99);
+    transform: translateY(-10rem) rotateX(-20deg) scale(0.99);
+    
   }
   80%{
     /* reset back to move up */
@@ -67,12 +74,24 @@ section:has(.slideTapPhone) {
 
 @keyframes revealScreen {
   0% {
-    background: var(--color-bkg)
-
+    background: var(--color-bkg);
   }
-    100% {
+  100% {
       background: var(--color-teal);
     }
+}
+@keyframes shrinkShadow {
+  0% {
+    box-shadow: 0px -6px 30px black;
+  }
+
+  50% {
+    box-shadow: 0px 0px 0 black;
+  }
+
+  100% {
+    box-shadow: 0px -6px 30px black;
+  }
 }
 
 @keyframes reveal {
@@ -82,7 +101,7 @@ section:has(.slideTapPhone) {
 
 @keyframes tiltDown {
   0%{ transform:rotateX(0deg)}
-  50%{ transform:rotateX(-15deg)}
+  50%{ transform:rotateX(-15deg); }
   100%{ transform:rotateX(0deg)}
 }
 
