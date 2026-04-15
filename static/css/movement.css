@@ -34,10 +34,9 @@ The phone demo exists in the same section as the card visual.
 */
 section:has(.slideTapPhone) {
   
-  /* I want to logo svg to light up when the phone presses downward on the card */
+  /* I want the logo svg to light up when the phone presses downward on the card */
   & .livenCard svg {
-    animation: brightenLogo 1s ease-in-out forwards;
-    animation-delay: 1s;
+    animation: brightenLogo 1s ease-in-out forwards 1s;
   }
 
   /* /* And tilt the card downward when the phone presses it 
@@ -77,7 +76,7 @@ section:has(.slideTapPhone) {
     background: var(--color-bkg);
   }
   100% {
-      background: var(--color-teal);
+      background: var(--color-input-bkg-opaque);
     }
 }
 @keyframes shrinkShadow {
