@@ -89,24 +89,22 @@ TC Digital | Digital Cards
 <div class="relative opacity-0" id="phone-demo">
 	
 	<!-- " Phone Screen's container " -->
-	<div class="absolute top-0 w-full h-full  z-1 p-[5%]">
+	<div class="absolute top-0 w-full h-full p-[5%]">
 		
 		<!-- Phone Screen-->
-		<div id="demo-screen" class="flex flex-col px-2 bg-[var(--color-bkg)] items-center justify-center w-full h-full rounded-[8%]">
+		<div id="demo-screen" class="flex flex-col px-2 bg-[var(--color-black)] items-center justify-center w-full h-full rounded-[8%]">
 			<!-- Content within phone Screen-->
-			<div id="demo-screen-content" class="w-full opacity-0">
-				
-				<!-- How it works section-->
-				<div class="flex flex-col gap-12 w-full">
-					
-					<!-- header & subtitle-->
-					<div class="flex flex-col gap-2 items-center">
-						<h6 class="font-bold bg-[var(--color-input-bkg)] text-transparent " style="background-clip:text;">How it works</h6>
-						<h2 class="text-2xl font-bold">Tap. Connect. Share.</h2>
-					<!-- end of header & subtitle-->
-					</div>
-					
+			<div id="demo-screen-content" class="z-5 w-full opacity-0 flex flex-col items-center px-2">
+				<h6 class="font-bold bg-[var(--color-main)] text-transparent capitalize " style="background-clip:text;">It's this simple</h6>
+				<h2 class="text-2xl font-bold">Tap. Connect. Share.</h2>
+				<!-- imgs of what you can  share-->
+				<div class=" mt-12 *:rounded-xl flex w-full pr-2 h-full gap-3 *:shrink-0 overflow-x-auto" id="demo-scroll-x">
+					<img src="{% static 'imgs/ig.png'%}" class="flex flex-col w-3/4 bg-[white] h-80">
+					<img src="{% static 'imgs/linktree.png'%}" class="flex flex-col w-3/4 bg-[white] h-80">
+					<img src="{% static 'imgs/resume.png'%}" class="flex flex-col w-3/4 bg-[white] h-80">
+
 				</div>
+				
 			</div>
 		</div>
 	</div>
