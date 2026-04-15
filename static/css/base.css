@@ -10,6 +10,7 @@
     --color-input-border: #1f719340;
     --color-contrast-container: #151c3057;
     --color-contrast-opaque: hsl(214 45% 10% / 1);
+    --color-input-bkg-opaque: #0c1d24;
     --color-bkg: #010a0e;
     --color-bkg-transparent: #010a0ebb;
     --color-reflective: linear-gradient(115deg, rgb(0 0 0 / 26%) 12%, rgb(255 255 255 / 1%) 27%, rgb(255 255 255 / 9%) 34%, rgb(0 0 0 / 8%) 52%);
