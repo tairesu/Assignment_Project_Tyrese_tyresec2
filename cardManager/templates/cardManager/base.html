@@ -147,9 +147,8 @@
 		</section>
 		{% block content %}{% endblock content %}
 	</main>
-	<div class="p-6">
-		{% block action_tray %}
-		{% endblock %}
+	{% block action_tray %}
+	{% endblock %}
 	</div>
 	<script src="{% static 'js/jquery.js' %}?v={{  tz }}"></script>
 	<script src="{% static 'js/dropdownNav.js' %}?v={{  tz }}"></script>

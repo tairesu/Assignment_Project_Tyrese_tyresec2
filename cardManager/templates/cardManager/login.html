@@ -70,7 +70,9 @@ Login
 	</form>
 {% endblock %}
 {% block action_tray %}
-	<input class="bg-[var(--color-main)] w-full text-center py-6 rounded-md " type="submit" onclick="submitForm(this.name)" name="login" value="Login">
+	<div class="p-6">
+		<input class="bg-[var(--color-main)] w-full text-center py-6 rounded-md " type="submit" onclick="submitForm(this.name)" name="login" value="Login">
+	</div>
 {% endblock action_tray %}
 {% block extra_scripts %}
 <script src="{% static 'js/forms.js' %}?v={{ tz }}"></script>

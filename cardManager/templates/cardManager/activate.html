@@ -383,11 +383,13 @@ Let's network
 		
 {% endblock content %}
 {% block action_tray %}
-	<form action="" method="post">
-		{% csrf_token %}
-		<button type="submit" id="activateCardBtn" class="bg-[var(--color-main)] w-full text-center py-6 rounded-md font-bold instructionNumber text-lg">Sign Up or Log In to Claim Your Card</button>
-		
-	</form>
+	<div class="p-6">
+		<form action="" method="post">
+			{% csrf_token %}
+			<button type="submit" id="activateCardBtn" class="bg-[var(--color-main)] w-full text-center py-6 rounded-md font-bold instructionNumber text-lg">Sign Up or Log In to Claim Your Card</button>
+			
+		</form>
+	</div>
 {% endblock %}
 {% block extra_scripts %}
 {% endblock %}

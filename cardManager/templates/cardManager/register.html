@@ -68,9 +68,11 @@
 
 {% endblock %}
 {% block action_tray %}
-<button class="bg-[var(--color-main)] w-full text-center py-6 rounded-md " type="submit" onclick="submitForm(this.name)" name="register">
-    	Sign up
-</button>
+<div class="p-6">
+    <button class="bg-[var(--color-main)] w-full text-center py-6 rounded-md " type="submit" onclick="submitForm(this.name)" name="register">
+        Sign up
+    </button>
+</div>
 {% endblock action_tray %}
 {% load static %}
 {% block extra_scripts %}
