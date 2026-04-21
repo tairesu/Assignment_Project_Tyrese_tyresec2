@@ -56,7 +56,7 @@ TC Digital | Digital Cards
 <section class="flex flex-col gap-12 items-center" id="demo-section">
 	
 	<div class="livenCard flex w-max items-center justify-center relative">
-		<img id="card" class="object-cover rounded-md aspect-[8/5] w-[22rem]" src="{{ design_list.first.front_design.url}}"/>
+		<img class="object-cover rounded-md aspect-[8/5] w-[22rem]" src="media/cardDesigns/1000006185.jpg"/>
 		<svg
 		class="w-25 h-25 absolute left-auto top-auto bottom-auto right-auto rounded fill-[white]"
 		viewBox="0 0 17.056841 9.6996582"
@@ -482,24 +482,97 @@ TC Digital | Digital Cards
 </section>
 
 <!-- Card Design Section -->
-<section class="grid md:grid-cols-2 gap-10 items-center" id="card-design">
-	
-	<div class="flex justify-center">
-		<div class="w-[300px] h-[180px] bg-[var(--color-input-bkg)] rounded-xl flex items-center justify-center">
-			<span class="text-[var(--color-secondary)] text-sm">(card design)</span>
-		</div>
-	</div>
-	
-	<div class="flex flex-col gap-4 max-w-md">
-		<h2 class="text-2xl font-bold text-white">
-			One Card. Infinite Connections.
-		</h2>
-		
-		<p class="text-[var(--color-secondary)]">
+<section class="flex flex-col gap-12 items-center" id="card-design">
+	<!-- header & subtitle-->
+	<div class="flex flex-col gap-2 items-center">
+		<h6 class="font-bold bg-[var(--color-main)] text-transparent capitalize" style="background-clip:text">Get yours today</h6>
+		<h2 class="text-2xl font-bold capitalize">One Card. Infinite Connections.</h2>
+		<p class="text-[var(--color-secondary)] mt-2 text-center hidden">
 			Carry your entire digital presence in one sleek card. Tap once and instantly connect.
 		</p>
-		
-		<a href="#" class="bg-[var(--color-main)] text-black px-6 py-3 rounded-lg font-semibold w-fit">
+	</div>
+	<div class="flex justify-center">
+		<div class="livenCard flex w-max items-center justify-center relative">
+			<img id="card" class="object-cover rounded-md aspect-[8/5] w-[20rem]" src="/media/cardDesigns/pexels-richard-solano-57965671.jpg">
+			<svg class="w-25 h-25 absolute left-auto top-auto bottom-auto right-auto rounded fill-[white]" viewBox="0 0 17.056841 9.6996582" version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg"><defs id="cardDefs">
+				<radialGradient id="myGradient" cy="0%" cx="0%" fr="0%" r="1">
+					<stop offset="5%" stop-color="var(--color-main)"></stop>
+					<stop offset="80%" stop-color="var(--color-teal)"></stop>
+				</radialGradient>
+				</defs>
+				<g id="g1" transform="matrix(0.26458333,0,0,0.26458333,58.975847,-135.30633)"><path id="rect68-2" class="shadow" style="z-index:4;fill:var(--color-bkg);transform:translateY(2px);fill-opacity:1;stroke:#000000;stroke-width:0;stroke-dasharray:none;stroke-opacity:1" d="m -190.77981,511.39393 32.3457,18.19922 -9.46875,5.40234 -22.84765,-12.85547 -22.65235,12.92578 -9.49804,-5.34375 z m 0.041,13.47265 20.5332,11.55274 -9.24609,5.27539 -11.26172,-6.33399 -11.14258,6.35938 -9.27344,-5.21875 z m 0.041,13.19922 8.84375,4.97656 -8.7832,5.01172 -8.84375,-4.97656 z"></path></g>
+				<g id="g1" transform="matrix(0.26458333,0,0,0.26458333,58.975847,-135.30633)"><path id="rect68-2" class="shadow" style="z-index:5;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-dasharray:none;stroke-opacity:1" d="m -190.77981,511.39393 32.3457,18.19922 -9.46875,5.40234 -22.84765,-12.85547 -22.65235,12.92578 -9.49804,-5.34375 z m 0.041,13.47265 20.5332,11.55274 -9.24609,5.27539 -11.26172,-6.33399 -11.14258,6.35938 -9.27344,-5.21875 z m 0.041,13.19922 8.84375,4.97656 -8.7832,5.01172 -8.84375,-4.97656 z"></path></g>
+			</svg>
+		</div>
+	</div>
+	<div id="design" class="flex flex-col items-center  w-full flex-wrap  ">
+		<div class="grid grid-cols-4 gap-4 w-full">
+			{% for design in design_list %}
+				{% if design.front_design.url %}
+				<button onclick="setDesignChoice(this)" class="w-[max-content]">
+					<img src="{{ design.front_design.url }}" data-id="{{ design.pk }}" class="w-[4.75rem] aspect-[8/5] object-cover rounded-sm" />
+				</button>
+				{% endif %}
+			{% endfor %}
+			<button onclick="showUploadFile()" >
+				<p class=" w-[4.75rem] aspect-[8/5] object-cover rounded-md flex items-center justify-center text-[grey] text-5xl bg-[var(--color-input-bkg)]" style="border: 1px solid var(--color-input-border);">
+					+
+				</p>
+			</button>
+		</div>
+		<form action="{% url 'order_card_view' %}" class=" flex flex-col gap-12 w-3/4 hidden mt-12" method="POST" id="orderForm" enctype="multipart/form-data">
+			{% csrf_token %}
+			<div id="uploadFile" class="flex flex-col gap-6 hidden">
+				<h2 class="text-center mb-6">
+					Upload your own design
+				</h2>
+				<div class="w-full ">
+					{% if request.session.order_post %}
+					{{ form.custom_design }}
+					{% else %}
+					<input type="file" class="w-full bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4" placeholder="Upload a file" id="id_custom_design" name="custom_design">
+					
+					{% endif %}
+				</div>
+			</div>
+			
+			<div class="w-full  hidden">
+				<h2 class="mb-5">
+					How many do you need?
+				</h2>
+				
+				<input type="number" 
+				{% if form.data.card_qty %}
+				value="{{ form.data.card_qty }}" 
+				{% else %}
+				value="1"
+				{% endif %}
+				
+				class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4" min="1" max="500" id="id_card_qty" name="card_qty">
+				
+				
+			</div>
+			<input 
+			type="hidden" 
+			name="owner" 
+			value="{% if request.user %} {{ request.user.pk }} {%endif%}"
+			/>
+			<input 
+			type="hidden" 
+			name="preset_design" 
+			id="design_choice" 
+			{% if request.session.order_post %}
+			value="{{ form.data.preset_design }}"
+			{% else %}
+			value="1"{% endif %}
+			
+			/>
+			
+			
+		</form>
+	</div>
+	<div class="flex flex-col gap-4 w-full items-center">
+		<a href="#" class="text-center bg-[var(--color-main)] text-black px-6 py-4 rounded-lg font-semibold w-full">
 			Get Your Card
 		</a>
 	</div>
@@ -508,79 +581,7 @@ TC Digital | Digital Cards
 {% endblock %}
 
 {% block action_tray %}
-<section id="design" class="flex flex-col items-center  w-full m-auto gap-12 hidden">
-	
-	
-	<h2 class="mb-5 hidden">
-		Choose a Preset Design
-	</h2>
-	<div class="w-full overflow-x-auto md:flex md:justify-center md:items-center ">
-		<div class="flex flex-row md:grid md:grid-cols-[1fr_1fr_1fr_1fr] gap-2 md:gap-4 w-max">
-			{% for design in design_list %}
-			{% if design.front_design.url %}
-			<button onclick="setDesignChoice(this)" >
-				<img src="{{ design.front_design.url }}" data-id="{{ design.pk }}" class="w-[6rem] h-[3.5rem] object-cover rounded-md" />
-			</button>
-			{% endif %}
-			{% endfor %}
-			<button onclick="showUploadFile()" >
-				<p class="w-[6rem] h-[3.5rem] object-cover rounded-md flex justify-center text-5xl" style="border: 2px dashed var(--color-input-border);">
-					<svg xmlns="http://www.w3.org/2000/svg" style="fill:var(--color-input-border);width:2rem;height:3rem" viewBox="0 0 640 640"><!--!Font Awesome Free v7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M304 112L192 112C183.2 112 176 119.2 176 128L176 512C176 520.8 183.2 528 192 528L448 528C456.8 528 464 520.8 464 512L464 272L376 272C336.2 272 304 239.8 304 200L304 112zM444.1 224L352 131.9L352 200C352 213.3 362.7 224 376 224L444.1 224zM128 128C128 92.7 156.7 64 192 64L325.5 64C342.5 64 358.8 70.7 370.8 82.7L493.3 205.3C505.3 217.3 512 233.6 512 250.6L512 512C512 547.3 483.3 576 448 576L192 576C156.7 576 128 547.3 128 512L128 128zM387.4 496L252.6 496C236.8 496 224 483.2 224 467.4C224 461 226.1 454.9 230 449.8L297.6 362.9C303 356 311.3 352 320 352C328.7 352 337 356 342.4 362.9L410 449.9C413.9 454.9 416 461.1 416 467.5C416 483.3 403.2 496.1 387.4 496.1zM240 288C257.7 288 272 302.3 272 320C272 337.7 257.7 352 240 352C222.3 352 208 337.7 208 320C208 302.3 222.3 288 240 288z"/></svg>
-				</p>
-			</button>
-		</div>
-	</div>
-	<form action="{% url 'order_card_view' %}" class=" flex flex-col gap-12 w-3/4" method="POST" id="orderForm" enctype="multipart/form-data">
-		{% csrf_token %}
-		<div id="uploadFile" class="flex flex-col gap-6 hidden">
-			<h2 class="text-center mb-6">
-				Upload your own design
-			</h2>
-			<div class="w-full ">
-				{% if request.session.order_post %}
-				{{ form.custom_design }}
-				{% else %}
-				<input type="file" class="w-full bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4" placeholder="Upload a file" id="id_custom_design" name="custom_design">
-				
-				{% endif %}
-			</div>
-		</div>
-		
-		<div class="w-full  hidden">
-			<h2 class="mb-5">
-				How many do you need?
-			</h2>
-			
-			<input type="number" 
-			{% if form.data.card_qty %}
-			value="{{ form.data.card_qty }}" 
-			{% else %}
-			value="1"
-			{% endif %}
-			
-			class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4" min="1" max="500" id="id_card_qty" name="card_qty">
-			
-			
-		</div>
-		<input 
-		type="hidden" 
-		name="owner" 
-		value="{% if request.user %} {{ request.user.pk }} {%endif%}"
-		/>
-		<input 
-		type="hidden" 
-		name="preset_design" 
-		id="design_choice" 
-		{% if request.session.order_post %}
-		value="{{ form.data.preset_design }}"
-		{% else %}
-		value="1"{% endif %}
-		
-		/>
-		
-		
-	</form>
-</section>
+
 
 
 {% endblock action_tray %}
