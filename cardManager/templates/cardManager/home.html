@@ -8,11 +8,8 @@ TC Digital | Digital Cards
 	
 	<!-- LEFT -->
 	<div class="flex flex-col gap-6 max-w-xl items-center">
-		
 		<!-- Headline -->
 		<h1 class="text-center text-4xl leading-tight  md:text-6xl capitalize font-bold flex flex-col"><span>Tap Once.  </span><span class="bg-[var(--color-main)] text-transparent italic font-bold" style="background-clip:text">Share Everything.</span></h1>
-		
-		
 		<!-- Subheadline -->
 		<p class="text-lg text-[var(--color-secondary)]">
 			Instantly share your links, profiles, and contact info with a single tap. 
@@ -36,15 +33,6 @@ TC Digital | Digital Cards
 		
 	</div>
 	
-	<!-- RIGHT -->
-	<div class="flex justify-center hidden">
-		<!-- Replace with product visual -->
-		<div class=" hidden w-[280px] h-[280px] bg-[var(--color-input-bkg)] rounded-2xl flex items-center justify-center">
-			<span class="text-[var(--color-secondary)] text-sm">
-				(Tap animation / card demo)
-			</span>
-		</div>
-	</div>
 	
 {% endblock %}
 
@@ -52,7 +40,6 @@ TC Digital | Digital Cards
 
 <!--LANDING PAGE CARD DEMO  -->
 <section class="flex flex-col gap-12 items-center" id="demo-section">
-	
 	<div class="livenCard flex w-max items-center justify-center relative">
 		<img class="object-cover rounded-md aspect-[8/5] w-[22rem]" src="media/cardDesigns/1000006185.jpg"/>
 		<svg
@@ -81,36 +68,36 @@ TC Digital | Digital Cards
 		
 		style="z-index:5;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-dasharray:none;stroke-opacity:1"
 		d="m -190.77981,511.39393 32.3457,18.19922 -9.46875,5.40234 -22.84765,-12.85547 -22.65235,12.92578 -9.49804,-5.34375 z m 0.041,13.47265 20.5332,11.55274 -9.24609,5.27539 -11.26172,-6.33399 -11.14258,6.35938 -9.27344,-5.21875 z m 0.041,13.19922 8.84375,4.97656 -8.7832,5.01172 -8.84375,-4.97656 z" /></g>
-	</svg>
-</div>    
-<!-- Phone -->
-<div class="relative opacity-0" id="phone-demo">
-	
-	<!-- " Phone Screen's container " -->
-	<div class="absolute top-0 w-full h-full p-[5%]">
+		</svg>
+	</div>    
+	<!-- Phone -->
+	<div class="relative opacity-0" id="phone-demo">
 		
-		<!-- Phone Screen-->
-		<div id="demo-screen" class="flex flex-col px-2 bg-[var(--color-black)] items-center justify-center w-full h-full rounded-[8%]">
-			<!-- Content within phone Screen-->
-			<div id="demo-screen-content" class="z-5 w-full opacity-0 flex gap-2 flex-col items-center p-2 mt-6">
-				<h6 class="font-bold bg-[var(--color-main)] text-transparent capitalize " style="background-clip:text;">It's this simple</h6>
-				<h2 class="text-2xl font-bold">Tap. Connect. Share.</h2>
-				<p class="text-center mt-1">Opens your profile instantly — share your socials & more</p>
-				<!-- imgs of what you can  share-->
-				<div class=" mt-8 *:rounded-xl flex w-full pr-2 h-full gap-3 *:shrink-0 overflow-x-auto" id="demo-scroll-x">
-					<img src="{% static 'imgs/ig.png'%}" class=" w-3/4 bg-[white] h-80">
-					<img src="{% static 'imgs/linktree.png'%}" class=" w-3/4 bg-[white] h-80">
-					<img src="{% static 'imgs/resume.png'%}" class=" w-3/4 bg-[white] h-80">
+		<!-- " Phone Screen's container " -->
+		<div class="absolute top-0 w-full h-full p-[5%]">
+			
+			<!-- Phone Screen-->
+			<div id="demo-screen" class="flex flex-col px-2 bg-[var(--color-black)] items-center justify-center w-full h-full rounded-[8%]">
+				<!-- Content within phone Screen-->
+				<div id="demo-screen-content" class="z-5 w-full opacity-0 flex gap-2 flex-col items-center p-2 mt-6">
+					<h6 class="font-bold bg-[var(--color-main)] text-transparent capitalize " style="background-clip:text;">It's this simple</h6>
+					<h2 class="text-2xl font-bold">Tap. Connect. Share.</h2>
+					<p class="text-center mt-1">Opens your profile instantly — share your socials & more</p>
+					<!-- imgs of what you can  share-->
+					<div class=" mt-8 *:rounded-xl flex w-full pr-2 h-full gap-3 *:shrink-0 overflow-x-auto" id="demo-scroll-x">
+						<img src="{% static 'imgs/ig.png'%}" class=" w-3/4 bg-[white] h-80">
+						<img src="{% static 'imgs/linktree.png'%}" class=" w-3/4 bg-[white] h-80">
+						<img src="{% static 'imgs/resume.png'%}" class=" w-3/4 bg-[white] h-80">
 
+					</div>
+					
 				</div>
-				
 			</div>
 		</div>
+		<!-- Phone Bezel Image-->
+		<img src="/static/imgs/iPhone13ProMax-Graphite-Portrait.png" class="z-2 relative w-80"/>
+		
 	</div>
-	<!-- Phone Bezel Image-->
-	<img src="/static/imgs/iPhone13ProMax-Graphite-Portrait.png" class="z-2 relative w-80"/>
-	
-</div>
 </section>
 
 <!-- KEY FEATURES SECTION-->
@@ -121,7 +108,7 @@ TC Digital | Digital Cards
 		<h2 class="text-2xl font-bold capitalize">Get to know your card</h2>
 	</div>
 	<!-- Features List-->
-	<div class="grid grid-cols-2 gap-6">
+	<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
 		
 		<!-- Reusable: One Card = Infinite connections-->
 		<article class="items-center rounded-xl bg-[var(--color-input-bkg)] justify-center gap-2 p-4  py-6 flex flex-col min-h-[20dvh]">
@@ -482,7 +469,7 @@ TC Digital | Digital Cards
 <!-- Card Design Section -->
 <section class="flex flex-col gap-12 items-center" id="card-design">
 	<!-- header & subtitle-->
-	<div class="flex flex-col gap-2 items-center text-center">
+	<div class="flex flex-col gap-2 items-center">
 		<h6 class="font-bold bg-[var(--color-main)] text-transparent capitalize" style="background-clip:text">Get yours today</h6>
 		<h2 class="text-2xl font-bold capitalize">One Card. Infinite Connections.</h2>
 		<p class="text-[var(--color-secondary)] mt-2 text-center hidden">
@@ -504,16 +491,16 @@ TC Digital | Digital Cards
 		</div>
 	</div>
 	<div id="design" class="flex flex-col items-center  w-full flex-wrap  mt-2">
-		<div class="grid grid-cols-4 gap-4 w-full">
+		<div class="grid grid-cols-4 gap-4 w-full md:w-fit">
 			{% for design in design_list %}
 				{% if design.front_design.url %}
-				<button onclick="setDesignChoice(this)" class="w-[max-content]">
-					<img src="{{ design.front_design.url }}" data-id="{{ design.pk }}" class="w-[4.75rem] aspect-[8/5] object-cover rounded-sm" />
+				<button onclick="setDesignChoice(this)" class="w-full">
+					<img src="{{ design.front_design.url }}" data-id="{{ design.pk }}" class=" w-full aspect-[8/5] object-cover rounded-sm " />
 				</button>
 				{% endif %}
 			{% endfor %}
-			<button onclick="showUploadFile()" >
-				<p class=" w-[4.75rem] aspect-[8/5] object-cover rounded-md flex items-center justify-center text-[grey] text-5xl bg-[var(--color-input-bkg)]" style="border: 1px solid var(--color-input-border);">
+			<button onclick="showUploadFile()" class="w-full">
+				<p class=" w-full aspect-[8/5] object-cover rounded-md flex items-center justify-center text-[grey] text-5xl bg-[var(--color-input-bkg)] md:w-[6.75rem]" style="border: 1px solid var(--color-input-border);">
 					+
 				</p>
 			</button>
