@@ -478,7 +478,7 @@ TC Digital | Digital Cards
 	</div>
 	<div class="flex justify-center">
 		<div class="livenCard flex w-max items-center justify-center relative">
-			<img id="card" class="object-cover rounded-md aspect-[8/5] w-[20rem]" src="/media/cardDesigns/pexels-richard-solano-57965671.jpg">
+			<img id="card" class="object-cover rounded-md aspect-[8/5] w-[20rem] md:w-[25rem]" src="/media/cardDesigns/pexels-richard-solano-57965671.jpg">
 			<svg class="w-25 h-25 absolute left-auto top-auto bottom-auto right-auto rounded fill-[white]" viewBox="0 0 17.056841 9.6996582" version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg"><defs id="cardDefs">
 				<radialGradient id="myGradient" cy="0%" cx="0%" fr="0%" r="1">
 					<stop offset="5%" stop-color="var(--color-main)"></stop>
@@ -495,12 +495,12 @@ TC Digital | Digital Cards
 			{% for design in design_list %}
 				{% if design.front_design.url %}
 				<button onclick="setDesignChoice(this)" class="w-full">
-					<img src="{{ design.front_design.url }}" data-id="{{ design.pk }}" class=" w-full aspect-[8/5] object-cover rounded-sm " />
+					<img src="{{ design.front_design.url }}" data-id="{{ design.pk }}" class=" w-full max-w-[200px] aspect-[8/5] object-cover rounded-sm " />
 				</button>
 				{% endif %}
 			{% endfor %}
 			<button onclick="showUploadFile()" class="w-full">
-				<p class=" w-full aspect-[8/5] object-cover rounded-md flex items-center justify-center text-[grey] text-5xl bg-[var(--color-input-bkg)] md:w-[6.75rem]" style="border: 1px solid var(--color-input-border);">
+				<p class=" w-full max-w-[200px] aspect-[8/5] object-cover rounded-md flex items-center justify-center text-[grey] text-5xl bg-[var(--color-input-bkg)] " style="border: 1px solid var(--color-input-border);">
 					+
 				</p>
 			</button>
