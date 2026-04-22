@@ -518,10 +518,10 @@ TC Digital | Digital Cards
 				</p>
 			</button>
 		</div>
-		<form action="{% url 'order_card_view' %}" class=" flex flex-col gap-12 w-3/4 mt-12" method="POST" id="orderForm" enctype="multipart/form-data">
+		<form action="{% url 'order_card_view' %}" class=" flex flex-col gap-12 w-full mt-12" method="POST" id="orderForm" enctype="multipart/form-data">
 			{% csrf_token %}
-			<div id="uploadFile" class="flex flex-col gap-6 hidden">
-				<h2 class="text-center mb-6">
+			<div id="uploadFile" class="hidden">
+				<h2 class="text-center mb-3 font-bold">
 					Upload your own design
 				</h2>
 				<div class="w-full ">
