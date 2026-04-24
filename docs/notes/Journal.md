@@ -20,4 +20,6 @@ Adding:
 to quickly deploy my portfolio given the short deadline til' the vendor fair (9 days).
 
 *   I changed the `views.ProfileDetail()` CBV to mutate its `template_name` attr if its `profile slug` is mines (tyresec2). 
-
+*       (FIX ME): Images were not showing with my custom template
+*       (Fix): Moved Images into `static/imgs/customUserProfiles/` dir (assuming static folder remains small).  
+*       (Fix): Update `tyresec2.html` to use static tags
