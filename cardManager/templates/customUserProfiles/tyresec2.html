@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,7 +23,7 @@
             </a>
             <p class="text-white md:text-black">Tyrese Cook</p>
         </nav>
-        <section style="background: url('hero-bkg.jpg'); background-size: cover; background-position-x: 20%;"
+        <section style="background: url('{% static '/imgs/customUserProfiles/hero-bkg.jpg' %}'); background-size: cover; background-position-x: 20%;"
             class="w-100 flex flex-col w-full h-[60vh] lg:h-full justify-between md:justify-end p-4 pb-12 no-repeat md:rounded-lg lg:row-start-3">
 
             <nav style="grid-row-start: 1;" class="gap-4 flex md:hidden">
@@ -92,14 +93,14 @@
                 <div class="overflow-x-auto w-full min-h-[50vh] flex gap-4 ">
                     <div id="stack-2" class="flex flex-col gap-4 w-4/5 shrink-0 grow-1 *:rounded-lg ">
                         <div
-                            class="bg-[url('website-thumbnail.jpg')] bg-cover bg-no-repeat bg-center  h-full w-full flex flex-col justify-end text-white">
+                            class="bg-[url('{% static "/imgs/customUserProfiles/website-thumbnail.jpg" %}')] bg-cover bg-no-repeat bg-center  h-full w-full flex flex-col justify-end text-white">
                             <div class="p-4 bg-[rgba(0,0,0,0.85)]  rounded-br-lg rounded-bl-lg">
                                 <p class="font-bold  font-serif text-lg">Service</p>
                                 <p class="text-xl">Need a website?</p>
                             </div>
                         </div>
                         <div
-                            class="bg-[url('nearfield-thubnail.png')] bg-cover bg-no-repeat bg-center h-full w-full flex flex-col justify-end text-white">
+                            class="bg-[url('{% static "/imgs/customUserProfiles/nearfield-thubnail.png" %}')] bg-cover bg-no-repeat bg-center h-full w-full flex flex-col justify-end text-white">
                             <div class="p-4 bg-[rgba(0,104,124,0.85)]  rounded-br-lg rounded-bl-lg">
                                 <p class="font-bold font-serif text-lg">Product</p>
                                 <p class="text-xl">Digital Business Cards</p>
