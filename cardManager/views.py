@@ -234,6 +234,13 @@ class ProfileDetail(DetailView):
     slug_field = 'profile_slug'
     slug_url_kwarg = 'profile_slug'
 
+    def get_object(self):
+        profile = super().get_object()
+        if profile.profile_slug == 'tcook':
+            self.template_name = 'customUserProfiles/tyresec2.html'
+            print(self.template_name)
+        return profile
+
 class ProfileUpdate(LoginRequiredMixin, UpdateView):
     model = Profile
     form_class = ProfileForm
