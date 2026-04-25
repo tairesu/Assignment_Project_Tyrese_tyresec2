@@ -27,8 +27,8 @@ Login
 				<p class="text-danger text-md" >{{ error }}</p>
 			{% endfor %}
 		{% endif %}
-		<div class="flex flex-col gap-1">
-	    	<label for="id_username" class="text-bold text-lg">Username</label>
+		<div class="flex flex-col gap-2">
+	    	<label for="id_username" class="text-bold text-lg after:pl-1 after:text-[var(--color-danger)] after:content-['*']">Username</label>
 	    	<input 
 		    	type="text" 
 		    	class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4" 
@@ -41,11 +41,11 @@ Login
 		    	required
 	    	/>
 	    	{% if form.username.errors %}
-	    		<p class="text-danger text-sm" >{{ form.username.errors }}</p>
+	    		<p class="text-danger text-sm" >{{ form.username.errors.0 }}</p>
 	    	{% endif %}
     	</div>
-    	<div class="flex flex-col gap-1">
-	    	<label for="id_password" class="text-bold text-lg">Password</label>
+    	<div class="flex flex-col gap-2">
+	    	<label for="id_password" class="text-bold text-lg after:pl-1 after:text-[var(--color-danger)] after:content-['*']">Password</label>
 	    	<input 
 		    	type="password" 
 		    	class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4" 
@@ -56,7 +56,7 @@ Login
 		    	required
 	    	/>
 	    	{% if form.password.errors %}
-	    		<p class="text-danger text-sm" >{{ form.password.errors }}</p>
+	    		<p class="text-danger text-sm" >{{ form.password.errors.0 }}</p>
 	    	{% endif %}
     	</div>
     	<a 
