@@ -1,4 +1,5 @@
 #import stripe
+from types import NoneType
 import urllib.request
 import json
 from django.utils.safestring import mark_safe
@@ -187,6 +188,10 @@ def card_update(request, card_token):
         FBV for handling card update functionality
     """
     card = get_object_or_404(Card, token=card_token)
+    # Send to card detail view if card isn't claimed
+    if isinstance(card.owner,NoneType): 
+        return redirect('card_view',card_token=card_token)
+    
     initial_alias = card.alias
     if request.method == "GET":
         # Populate form with data from card model instance
