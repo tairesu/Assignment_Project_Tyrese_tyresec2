@@ -1,11 +1,11 @@
 /* Assignment 8.5 */
 
 const redirectDiv = document.querySelector("#redirectDiv");
-const redirectUrl = document.querySelector("#id_reroute_url");
+const redirectUrl = document.querySelector("#reroute_url");
 
 function toggleRedirectDiv(radioValue) {
 	console.log(radioValue);
-	let show_profile = document.querySelector("select#card_action_select").value == "yes";
+	let show_profile = document.querySelector("select#id_show_profile").value == "True";
 	if ( show_profile ) {
 		redirectDiv.classList.add("dim-out");
 		redirectUrl.value = "";

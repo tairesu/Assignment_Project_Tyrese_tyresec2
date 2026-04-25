@@ -195,7 +195,8 @@ def card_update(request, card_token):
         # Let's update the current card instance with data from forms       
         form = CardForm(request.POST, instance=card)
         owner_has_profile =  Profile.objects.filter(owner_id=card.owner.pk).exists()
-        hide_redirect_div = (card.show_profile or request.POST.get('show_profile')) and "route" not in str(form.errors)
+        show_profile = request.POST.get('show_profile') == "True"
+        hide_redirect_div = (card.show_profile or show_profile) and "route" not in str(form.errors)
         if form.is_valid():
             submitted_alias = form.cleaned_data['alias']
             """
@@ -210,15 +211,27 @@ def card_update(request, card_token):
             if alias_in_use and alias_has_changed:
                 form.add_error("alias", "A card already has this name")
             else:
-                
-                if owner_has_profile and request.POST.get('show_profile'):
-                    form.save()
-                    return redirect('dashboard_view')
-                else:
+                """ If user does not have profile and they select show profile 
+                - P & Q
+
+                P|-P|Q| Outcome
+                T F T F (Owner has profile and show_profile is selected)
+                T F F F (Owner has profile and show_profile is NOT selected)
+                F T T T (Owner doesnt have profile and show_profile is selected)
+                F T F F (Owner doesnt profile and show_profile is NOT selected)
+                True Show 
+                """
+                if not owner_has_profile and show_profile:
+                    ""
                     return redirect('profile_create_view')
+                else:
+                    form.save()
+                    print("form: ", form.is_valid())
+                    return redirect('dashboard_view')
+                    
             
 
-    
+    print("form: ", CardForm(), '\nform errors: ',form.errors, '\nform data: ',form.data)
     return render(request, 'cardManager/card_update.html', {'form': form, 'card': card, 'hide_redirect_div': hide_redirect_div})
 
 class ProfileCreate(LoginRequiredMixin, CreateView):
