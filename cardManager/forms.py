@@ -16,8 +16,8 @@ class CardForm(forms.ModelForm):
 
 	def clean(self, **kwargs):
 		data = super().clean(**kwargs)
-		is_reroute_set = self.fields['reroute_url'].clean(self.data['reroute_url'])
-		is_profile_set = data['show_profile']
+		is_reroute_set = not data['reroute_url'] == ""
+		is_profile_set = data['show_profile'] == True
 		if is_profile_set and is_reroute_set:
 			self.add_error("reroute_url","Reroute URL not needed if profile is set.")
 		elif not is_profile_set and not is_reroute_set:
