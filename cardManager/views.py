@@ -246,12 +246,13 @@ class ProfileCreate(LoginRequiredMixin, CreateView):
     template_name = 'cardManager/profile_create.html'
     
     def form_valid(self, profileForm):
+        response = super().form_valid(profileForm)
         # See if card update is halted 
         is_card_update_halted = (self.request.session.__contains__('haltedCardToken') and self.request.session.__contains__('haltedCardUpdateRequest'))
         if is_card_update_halted:
             card_update_form = CardForm(self.request.session.get('haltedCardUpdateRequest'), instance=Card.objects.get(token=self.request.session.get('haltedCardToken')))
             card_update_form.save()
-        return super().form_valid(profileForm)
+        return response
 
 
 # Render profile template using the slugs instead of pk
