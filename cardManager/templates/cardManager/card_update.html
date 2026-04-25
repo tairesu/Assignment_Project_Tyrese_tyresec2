@@ -42,9 +42,9 @@ Updating Card
     	<div class="flex flex-col gap-2">
 	    	<label for="id_show_profile" class="text-bold text-lg">Tap Action</label>
 	    	<div class="flex flex-row gap-6">
-				<select name="show_profile" id="card_action_select" onchange="toggleRedirectDiv(this.value)" class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4 w-full">
-					<option value="yes" {% if hide_redirect_div  or form.cleaned_data.show_profile %} selected {% endif %}>Show Profile</option>
-					<option value="no" {% if not hide_redirect_div and not form.cleaned_data.show_profile %} selected {% endif %}>Show Website</option>
+				<select name="show_profile" id="id_show_profile" onchange="toggleRedirectDiv(this.value)" class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4 w-full">
+					<option value="True" {% if hide_redirect_div  or form.cleaned_data.show_profile %} selected {% endif %}>Show Profile</option>
+					<option value="False" {% if not hide_redirect_div and not form.cleaned_data.show_profile %} selected {% endif %}>Show Website</option>
 				</select>
 		    </div>
     	</div>
@@ -54,13 +54,13 @@ Updating Card
 		    	type="url" 
 		    	class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4" 
 		    	placeholder="ex: https://instagram.com" 
-		    	id="id_reroute_url" 
 		    	name="reroute_url"
 		    	maxlength="{{ form.fields.reroute_url.max_length }}"
+		    	id="reroute_url" 
 		    	{% if form.data.reroute_url %} value="{{ form.data.reroute_url }}"
 		    	{% elif card.reroute_url %} value="{{ card.reroute_url }}" {% endif %}
 		    	{% if form.reroute_url.errors %} style="border-color:var(--color-danger)" {% endif %}
-	    	/>
+	    	>
 	    	{% if form.reroute_url.errors %}
 	    		<p class="text-danger text-sm" >{{ form.reroute_url.errors }}</p>
 	    	{% endif %}
