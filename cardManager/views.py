@@ -177,6 +177,7 @@ class CardUpdate(LoginRequiredMixin,UpdateView):
     slug_url_kwarg = 'card_token'
     template_name = 'cardManager/card_update.html'
     success_url = reverse_lazy('dashboard_view')
+    
 
 
 # A11: Updating a card requires a user to be logged in
@@ -223,21 +224,29 @@ def card_update(request, card_token):
                 """
                 if not owner_has_profile and show_profile:
                     ""
+                    request.session['haltedCardUpdateRequest'] = request.POST
+                    request.session['haltedCardToken'] = card.token
                     return redirect('profile_create_view')
-                else:
-                    form.save()
-                    print("form: ", form.is_valid())
-                    return redirect('dashboard_view')
+                
+                form.save()
+                return redirect('dashboard_view')
                     
             
 
-    print("form: ", CardForm(), '\nform errors: ',form.errors, '\nform data: ',form.data)
     return render(request, 'cardManager/card_update.html', {'form': form, 'card': card, 'hide_redirect_div': hide_redirect_div})
 
 class ProfileCreate(LoginRequiredMixin, CreateView):
     model = Profile
     form_class = ProfileForm
     template_name = 'cardManager/profile_create.html'
+    
+    def form_valid(self, profileForm):
+        # See if card update is halted 
+        is_card_update_halted = (self.request.session.__contains__('haltedCardToken') and self.request.session.__contains__('haltedCardUpdateRequest'))
+        if is_card_update_halted:
+            card_update_form = CardForm(self.request.session.get('haltedCardUpdateRequest'), instance=Card.objects.get(token=self.request.session.get('haltedCardToken')))
+            card_update_form.save()
+        return super().form_valid(profileForm)
 
 
 # Render profile template using the slugs instead of pk
