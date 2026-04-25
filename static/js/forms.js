@@ -4,7 +4,8 @@ const redirectDiv = document.querySelector("#redirectDiv");
 const redirectUrl = document.querySelector("#id_reroute_url");
 
 function toggleRedirectDiv(radioValue) {
-	let show_profile = document.querySelector("input#yes").checked;
+	console.log(radioValue);
+	let show_profile = document.querySelector("select#card_action_select").value == "yes";
 	if ( show_profile ) {
 		redirectDiv.classList.add("dim-out");
 		redirectUrl.value = "";
