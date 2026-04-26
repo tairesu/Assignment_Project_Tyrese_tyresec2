@@ -34,17 +34,17 @@ Create a Profile
 	    		<p class="text-danger text-sm" >{{ form.bio.errors.0 }}</p>
 	    	{% endif %}
 		</div>
-	    <div class="flex flex-col gap-2">
+	    <div class="flex flex-col gap-2 hidden">
 	    	<label for="id_profile_slug" class="text-bold text-lg">Unique Slug</label>
 	    	<input 
 		    	type="text" 
-		    	class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4" 
+		    	class="hidden bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4" 
 		    	id="id_profile_slug" 
 		    	name="profile_slug" 
 		    	maxlength="{{ form.fields.profile_slug.max_length }}" 
-		    	{% if form.profile_slug.value %} value="{{ form.profile_slug.value }}" {% endif %}
+		    	value="{{ request.user.username }}"
 		    	{% if form.profile_slug.errors %} style="border-color:var(--color-danger)" {% endif %}
-		    	required/>
+		    	/>
 	    	{% if form.profile_slug.errors %}
 	    		<p class="text-danger text-sm" >{{ form.profile_slug.errors.0 }}</p>
 	    	{% endif %}
