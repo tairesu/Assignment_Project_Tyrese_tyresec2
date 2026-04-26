@@ -137,13 +137,12 @@
 		
 	</div>
 	<main class="h-[100%] flex flex-col @container w-full py-12 px-6 gap-24 overflow-y-scroll landscape:w-7/9 landscape:mx-auto  ">
-		<section id="hero" class="flex flex-col justify-center items-center text-center pt-16">
+		<section id="hero" class="flex flex-col justify-center items-center text-center pt-16 gap-12 [&_h2]:capitalize">
 			{% block hero_header %}
 	
 			{% endblock %}
-			<h2 class="text-3xl md:text-5xl">
-				{% block hero_text %}{% endblock %}
-			</h2>
+			
+			{% block hero_text %}{% endblock %}
 		</section>
 		{% block content %}{% endblock content %}
 	</main>
