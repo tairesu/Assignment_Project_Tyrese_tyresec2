@@ -1,15 +1,15 @@
 {% extends 'cardManager/base.html' %}
 {% block hero_text %}
-{% if request.session.activating_card_design %}
-    Sign up to claim this card
+    {% if request.session.activating_card_design %}
+    <h2 class="text-3xl md:text-5xl">Sign-up to claim this card</h2>
     {% else %}
-    Sign Up 
+    <h2 class="text-3xl md:text-5xl">Sign-Up</h2>
     {% endif %}
 {% endblock %}
 {% block hero_header %}
 {% if request.session.activating_card_design %}
         <div class="card flex items-center justify-center rounded-md ">
-            <img id="card" class=" object-cover w-[12rem] rounded-md aspect-[8/5]" src="{{ request.session.activating_card_design }}"/>
+            <img id="card" class=" object-cover w-[16rem] rounded-md aspect-[8/5]" src="{{ request.session.activating_card_design }}"/>
         </div>
     {% endif %}
     

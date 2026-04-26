@@ -5,15 +5,15 @@ Login
 {% endblock %}
 {% block hero_text %}
     {% if request.session.activating_card_design %}
-    Login to claim this card
+    <h2 class="text-3xl md:text-5xl">Login to claim this card</h2>
     {% else %}
-    We missed you
+    <h2 class="text-3xl md:text-5xl">We missed you</h2>
     {% endif %}
 {% endblock %}
 {% block hero_header %}
     {% if request.session.activating_card_design %}
         <div class="card flex items-center justify-center rounded-md ">
-            <img id="card" class=" object-cover w-[12rem] rounded-md aspect-[8/5]" src="{{ request.session.activating_card_design }}"/>
+            <img id="card" class=" object-cover w-[16rem] rounded-md aspect-[8/5]" src="{{ request.session.activating_card_design }}"/>
         </div>
     {% endif %}
     
@@ -27,8 +27,8 @@ Login
 				<p class="text-danger text-md" >{{ error }}</p>
 			{% endfor %}
 		{% endif %}
-		<div class="flex flex-col gap-2">
-	    	<label for="id_username" class="text-bold text-lg after:pl-1 after:text-[var(--color-danger)] after:content-['*']">Username</label>
+		<div class="flex flex-col gap-1">
+	    	<label for="id_username" class="text-bold text-lg">Username</label>
 	    	<input 
 		    	type="text" 
 		    	class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4" 
@@ -41,11 +41,11 @@ Login
 		    	required
 	    	/>
 	    	{% if form.username.errors %}
-	    		<p class="text-danger text-sm" >{{ form.username.errors.0 }}</p>
+	    		<p class="text-danger text-sm" >{{ form.username.errors }}</p>
 	    	{% endif %}
     	</div>
-    	<div class="flex flex-col gap-2">
-	    	<label for="id_password" class="text-bold text-lg after:pl-1 after:text-[var(--color-danger)] after:content-['*']">Password</label>
+    	<div class="flex flex-col gap-1">
+	    	<label for="id_password" class="text-bold text-lg">Password</label>
 	    	<input 
 		    	type="password" 
 		    	class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4" 
@@ -56,7 +56,7 @@ Login
 		    	required
 	    	/>
 	    	{% if form.password.errors %}
-	    		<p class="text-danger text-sm" >{{ form.password.errors.0 }}</p>
+	    		<p class="text-danger text-sm" >{{ form.password.errors }}</p>
 	    	{% endif %}
     	</div>
     	<a 
