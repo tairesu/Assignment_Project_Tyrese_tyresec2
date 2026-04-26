@@ -256,7 +256,7 @@ class ProfileCreate(LoginRequiredMixin, CreateView):
 
 
 # Render profile template using the slugs instead of pk
-class ProfileDetail(DetailView):
+class ProfileDetail(DetailView): 
     model = Profile
     template_name = 'cardManager/profile.html'
     slug_field = 'profile_slug'
@@ -618,15 +618,12 @@ def signup_view(request):
         form = OwnerSignUpForm(request.POST)
         if form.is_valid():
             new_owner = form.save()
-            print(f"POST signup_view() new_owner: {new_owner}")
             login(request, new_owner)
             if request.GET.get('next'):
                 return redirect(f"{request.GET.get('next')}")
-            else:
-                return redirect('dashboard_view')
+            return redirect('dashboard_view')
         else:
-            # If signup form is invalid, send it back
-            print(f"\n\tForm:{form}\n fields: {form.fields['first_name'].bound_data}\n")
+            # If signup form is invalid, send it back\
             return render(request, 'cardManager/register.html', {'form': form})
 
     else:
