@@ -107,7 +107,7 @@ def card_detail(request,card_token):
             
         if is_owned and not card.show_profile and is_redirecting:
             return redirect(card.reroute_url)
-        elif is_owned and card.show_profile:
+        elif is_owned and card.show_profile and card.owner.profile.profile_slug:
             return redirect('profile_view', profile_slug=card.owner.profile.profile_slug)
         elif is_owned and not is_redirecting:
             return redirect('card_update_view',card_token=card_token)
