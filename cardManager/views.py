@@ -53,7 +53,7 @@ class HomePage(ListView):
         context = super().get_context_data(**kwargs)
         context['design_list'] = Design.objects.filter(is_public=True)
         return context
-
+    
 
 def order_create(request):
     if request.method == "GET":
@@ -61,6 +61,10 @@ def order_create(request):
         return render(request, 'cardManager/home.html', {'form':form, 'design_list': Design.objects.filter(is_public=True)})
 
     elif request.method == "POST":
+        is_custom_design_present = (len(request.FILES.keys()) > 0)
+        payment_link = "https://buy.stripe.com/4gw6os1x2ajocFi002" if is_custom_design_present else "https://buy.stripe.com/14k6osa3y2QWgVy8wG"
+        print("Prepping order with post data", request.POST)
+        print("Sending Customer to ", payment_link)
         form = RequestForm(request.POST, request.FILES)
         if request.user.is_authenticated and form.is_valid():
             # Send authenticated users to the dashboard on form completion
@@ -80,7 +84,7 @@ def order_create(request):
             request.session['order_post'] = request.POST
             return redirect(f"{reverse('signup_view')}?next={request.path}")
         else:
-            return render(request, 'cardManager/home.html', {'form':form, 'design_list': Design.objects.filter(is_public=True)}) 
+            return render(request, 'cardManager/home.html', {'form':form, 'design_list': Design.objects.filter(is_public=True), 'order_in_progress': True}) 
             
 
     
