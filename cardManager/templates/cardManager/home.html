@@ -41,7 +41,7 @@ TC Digital | Digital Cards
 <!--LANDING PAGE CARD DEMO  -->
 <section class="flex flex-col gap-12 items-center" id="demo-section">
 	<div class="livenCard flex w-max items-center justify-center relative">
-		<img class="object-cover rounded-md aspect-[8/5] w-[22rem]" src="media/cardDesigns/1000006185.jpg"/>
+		<img class="object-cover rounded-md aspect-[8/5] w-[22rem]" src="{% get_media_prefix %}cardDesigns/1000006185.jpg"/>
 		<svg
 		class="w-25 h-25 absolute left-auto top-auto bottom-auto right-auto rounded fill-[white]"
 		viewBox="0 0 17.056841 9.6996582"
@@ -478,7 +478,7 @@ TC Digital | Digital Cards
 	</div>
 	<div class="flex justify-center">
 		<div class="livenCard flex w-max items-center justify-center relative">
-			<img id="card" class="object-cover rounded-md aspect-[8/5] w-[20rem] md:w-[25rem]" src="/media/cardDesigns/pexels-richard-solano-57965671.jpg">
+			<img id="card" class="object-cover rounded-md aspect-[8/5] w-[20rem] md:w-[25rem]" src="{% get_media_prefix %}cardDesigns/pexels-richard-solano-57965671.jpg">
 			<svg class="w-25 h-25 absolute left-auto top-auto bottom-auto right-auto rounded fill-[white]" viewBox="0 0 17.056841 9.6996582" version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg"><defs id="cardDefs">
 				<radialGradient id="myGradient" cy="0%" cx="0%" fr="0%" r="1">
 					<stop offset="5%" stop-color="var(--color-main)"></stop>
@@ -557,9 +557,9 @@ TC Digital | Digital Cards
 		</form>
 	</div>
 	<div class="flex flex-col gap-4 w-full items-center">
-		<a href="#" class="text-center bg-[var(--color-main)] text-black px-6 py-4 rounded-lg font-semibold w-full">
+		<button onclick="submitForm(this.name)" name="order" class="text-center bg-[var(--color-main)] text-black px-6 py-4 rounded-lg font-semibold w-full">
 			Get Your Card
-		</a>
+		</button>
 	</div>
 	
 </section>
