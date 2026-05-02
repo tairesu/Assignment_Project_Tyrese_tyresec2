@@ -1,6 +1,6 @@
 const card = document.querySelector('#card');
 const design_input = document.querySelector("input#design_choice");
-
+const custom_design = document.querySelector("input#id_custom_design");
 
 function preselectDesignChoice(design_id){
     if(design_id != '') {
@@ -24,4 +24,6 @@ function showUploadFile() {
 }
 function hideUploadFile() {
     $('#uploadFile').animate({height:'hide'},200);
+    /* Reset uploadfile form */
+    custom_design.value = null;
 }
