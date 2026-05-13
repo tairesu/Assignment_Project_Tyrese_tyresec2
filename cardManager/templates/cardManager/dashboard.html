@@ -15,7 +15,7 @@
 		{% include "cardManager/components/dataSection.html" with header="Pending orders" component="cardManager/components/pending_orders.html" list=pending_orders %}
 		
 		<!--  Claimed Cards -->
-		{% include "cardManager/components/dataSection.html" with header="Claimed Cards" cols="1fr_1fr_1fr_1fr" component="cardManager/components/user_cards_list.html" list=claimed_cards %}
+		{% include "cardManager/components/dataSection.html" with header="Claimed Cards" cols="1fr_1fr_1fr_1fr" component="cardManager/components/user_cards_list.html" list=claimed_cards display="verbose" %}
 		
 	{% endif %}
 		
