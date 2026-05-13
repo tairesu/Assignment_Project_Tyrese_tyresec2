@@ -7,7 +7,7 @@
 {% endblock %}
 {% block content %}
 <div class="flex flex-col gap-18">
-	
+
 	<!-- Admins can see Pending Orders, All Claimed Cards-->		
 	{% if request.user.is_superuser %}
 
@@ -34,7 +34,7 @@
 		</div>
 	{% endif %}
 
-
+	
 	<div class="flex flex-col gap-6">
 		<h2 class="text-2xl ">Recent Activity</h2>
 		<div class="activity flex flex-col gap-4  md:grid md:grid-cols-[1fr_1fr] xl:grid-cols-[1fr_1fr_1fr]">
@@ -48,7 +48,7 @@
 			<h2 class="text-2xl">My Cards</h2>
 			<span class="bg-[var(--color-main)] text-bold py-1 px-3 text-center rounded-full ">{{ user_cards|length }}</span>
 		</div>
-		<div id="user-cards" class="flex flex-wrap flex-col gap-6  md:m-auto md:grid md:grid-cols-[1fr_1fr_1fr] md:gap-4">
+		<div id="user-cards" class="flex flex-wrap flex-col gap-6  md:grid md:grid-cols-[1fr_1fr_1fr] md:gap-4">
 		{% include "cardManager/components/user_cards_list.html" with card_list=user_cards %}
 		</div>
 	</div>
