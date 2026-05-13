@@ -1,0 +1,16 @@
+{% for order in pending_orders %}
+	<div class="flex flex-row items-center gap-4 rounded-sm p-2 card-order">
+		<img class="mini-card rounded-sm" src="
+		{% if order.custom_design %}
+			{{ order.custom_design.url }}
+		{% elif order.preset_design %}
+			{{ order.preset_design.front_design.url }} 
+		{% endif %}"/>
+		<div>
+			<p class="font-bold">{{ order.owner }}</p>
+			<a href="{{ order.get_absolute_url }}" class="text-(--color-main)">View</a>
+		</div>
+	</div>
+	{% empty %}
+	<p>Looks like there aren't any orders yet.</p>
+{% endfor %}
