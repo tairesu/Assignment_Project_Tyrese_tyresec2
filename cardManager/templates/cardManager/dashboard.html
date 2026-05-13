@@ -28,9 +28,7 @@
 				<h2 class="text-2xl">Claimed Cards</h2>
 				<span class="bg-[var(--color-main)] text-bold py-1 px-3 text-center rounded-full ">{{ claimed_cards_list|length }}</span>
 			</div>
-			<div class="w-full grid grid-cols-1 gap-4  md:grid-cols-3">
-				{% include "cardManager/components/user_cards_list.html" with card_list=claimed_cards%}
-			</div>
+			{% include "cardManager/components/user_cards_list.html" with card_list=claimed_cards  cols="1fr_1fr_1fr_1fr" %}
 		</div>
 	{% endif %}
 
@@ -48,9 +46,7 @@
 			<h2 class="text-2xl">My Cards</h2>
 			<span class="bg-[var(--color-main)] text-bold py-1 px-3 text-center rounded-full ">{{ user_cards|length }}</span>
 		</div>
-		<div id="user-cards" class="flex flex-wrap flex-col gap-6  md:grid md:grid-cols-[1fr_1fr_1fr] md:gap-4">
-		{% include "cardManager/components/user_cards_list.html" with card_list=user_cards %}
-		</div>
+		{% include "cardManager/components/user_cards_list.html" with card_list=user_cards cols="1fr_1fr_1fr" %}
 	</div>
 	<div class="flex flex-col gap-6">
 		<div class="flex flex-row gap-4 items-center ">
