@@ -1,4 +1,5 @@
-{% for order in pending_orders %}
+<div class="w-full grid grid-cols-1 gap-4  md:grid-cols-3">
+{% for order in list %}
 	<div class="flex flex-row items-center gap-4 rounded-sm p-2 card-order">
 		<img class="mini-card rounded-sm" src="
 		{% if order.custom_design %}
@@ -14,3 +15,4 @@
 	{% empty %}
 	<p>Looks like there aren't any orders yet.</p>
 {% endfor %}
+</div>

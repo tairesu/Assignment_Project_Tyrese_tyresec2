@@ -1,5 +1,6 @@
 <!--  Recent Card Activity -->
-{% for activity in recent_activities %}
+<div class="activity flex flex-col gap-4  md:grid md:grid-cols-[1fr_1fr] xl:grid-cols-[1fr_1fr_1fr]">
+{% for activity in list %}
 	<div class="flex flex-row items-center gap-2">
 		<div>
 			<img src="{{ activity.card.design.front_design.url }}" class="w-[3rem] h-[1.7rem] rounded-sm">
@@ -16,3 +17,4 @@
 {% empty %}
 	<p>No recent activity yet</p>
 {% endfor %}
+</div>
