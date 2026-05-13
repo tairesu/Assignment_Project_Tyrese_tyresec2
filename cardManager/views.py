@@ -298,9 +298,11 @@ class UserDashboard(LoginRequiredMixin, ContextMixin, View):
         context['user_cards'] = owner_cards
         context['recent_activities'] = recent_activities
         context['requested_cards'] = owner_requested_cards
+        
         #A9: Setting up pending orders data  
         if self.request.user.is_authenticated:
             context['pending_orders'] = Request.objects.all()
+            context['claimed_cards'] = Card.objects.exclude(Q(owner_id=None) | Q(owner_id=owner_id))
         return context
 
 
