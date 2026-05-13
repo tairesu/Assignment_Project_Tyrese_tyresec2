@@ -11,50 +11,22 @@
 	<!-- Admins can see Pending Orders, All Claimed Cards-->		
 	{% if request.user.is_superuser %}
 
-	<!--  Pending Orders -->
-		<div class="flex flex-col gap-6">
-			<div class="flex flex-row gap-4 items-center ">
-				<h2 class="text-2xl">Pending Orders</h2>
-				<span class="bg-[var(--color-main)] text-bold py-1 px-3 text-center rounded-full ">{{ pending_orders|length }}</span>
-			</div>
-			<div class="w-full grid grid-cols-1 gap-4  md:grid-cols-3">
-				{% include "cardManager/components/pending_orders.html" %}
-			</div>
-		</div>
-
-	<!--  Claimed Cards -->
-		<div class="flex flex-col gap-6">
-			<div class="flex flex-row gap-4 items-center ">
-				<h2 class="text-2xl">Claimed Cards</h2>
-				<span class="bg-[var(--color-main)] text-bold py-1 px-3 text-center rounded-full ">{{ claimed_cards_list|length }}</span>
-			</div>
-			{% include "cardManager/components/user_cards_list.html" with card_list=claimed_cards  cols="1fr_1fr_1fr_1fr" %}
-		</div>
+		<!--  Pending Orders -->
+		{% include "cardManager/components/dataSection.html" with header="Pending orders" component="cardManager/components/pending_orders.html" list=pending_orders %}
+		
+		<!--  Claimed Cards -->
+		{% include "cardManager/components/dataSection.html" with header="Claimed Cards" cols="1fr_1fr_1fr_1fr" component="cardManager/components/user_cards_list.html" list=claimed_cards %}
+		
 	{% endif %}
-
+		
+	<!--  Recent Activity Cards -->
+	{% include "cardManager/components/dataSection.html" with header="Recent Activity"  component="cardManager/components/card_activity.html" list=recent_activities %}
 	
-	<div class="flex flex-col gap-6">
-		<h2 class="text-2xl ">Recent Activity</h2>
-		<div class="activity flex flex-col gap-4  md:grid md:grid-cols-[1fr_1fr] xl:grid-cols-[1fr_1fr_1fr]">
-			{% include "cardManager/components/card_activity.html" %}
-		</div>
-	</div>
-
-	<div class="flex flex-col gap-6">
-
-		<div class="flex flex-row gap-4 items-center">
-			<h2 class="text-2xl">My Cards</h2>
-			<span class="bg-[var(--color-main)] text-bold py-1 px-3 text-center rounded-full ">{{ user_cards|length }}</span>
-		</div>
-		{% include "cardManager/components/user_cards_list.html" with card_list=user_cards cols="1fr_1fr_1fr" %}
-	</div>
-	<div class="flex flex-col gap-6">
-		<div class="flex flex-row gap-4 items-center ">
-			<h2 class="text-2xl">Arriving Soon</h2>
-			<span class="bg-[var(--color-main)] text-bold py-1 px-3 text-center rounded-full ">{{ requested_cards|length }}</span>
-		</div>
-		{% include "cardManager/components/requested_card_list.html" %}
-	</div>
+	<!--  User Cards -->
+	{% include "cardManager/components/dataSection.html" with header="My Cards"  cols="1fr_1fr_1fr_1fr"  component="cardManager/components/user_cards_list.html" list=user_cards %}
+	
+	<!--  Arriving Soon -->
+	{% include "cardManager/components/dataSection.html" with header="Arriving Soon" component="cardManager/components/requested_card_list.html" list=requested_cards %}
 	
 </div>
 {% endblock %}

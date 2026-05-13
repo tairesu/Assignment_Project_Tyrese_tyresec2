@@ -1,6 +1,6 @@
-{% if card_list|length > 0 %}
+{% if list|length > 0 %}
 <div id="user-cards" class="flex flex-wrap flex-col gap-6  md:grid md:grid-cols-[{{ cols }}] md:gap-4">
-	{% for card in card_list %}
+	{% for card in list %}
 		<div class="flex flex-row items-center gap-4 ">
 			<a href="{{ card.get_update_url }}" class="relative md-card can-expand rounded-md w-full h-full bg-[url('{{ card.design.front_design.url }}')]">
 			

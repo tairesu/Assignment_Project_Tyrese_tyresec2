@@ -1,0 +1,7 @@
+<section class="flex flex-col gap-6">
+	<div class="flex flex-row gap-4 items-center ">
+		<h2 class="text-2xl">{{ header|title }}</h2>
+		<span class="bg-[var(--color-main)] text-bold py-1 px-3 text-center rounded-full ">{{ list|length }}</span>
+	</div>
+	{% include component with list=list %}
+</section>
