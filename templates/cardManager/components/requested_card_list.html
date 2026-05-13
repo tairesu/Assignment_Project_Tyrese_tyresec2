@@ -1,0 +1,22 @@
+<!--  Cards User Ordered -->
+<div class="flex flex-row w-full overflow-x-auto gap-4 ">
+	{% for card_request in requested_cards %}
+		<div class="text-nowrap flex flex-col items-center gap-4 opacity-[0.3] ">
+			<img 
+				class="md-card rounded-sm" 
+				src="
+				
+				{% if card_request.custom_design %}
+					{{ card_request.custom_design.url }}
+				{% elif card_request.preset_design %}
+					{{ card_request.preset_design.front_design.url }} 
+				{% endif %}"/>
+			
+			<div>
+			<p class="font-bold">On it's way</p>
+			<p class=" text-sm text-[var(--color-grey)]">Ordered: {{ card_request.date_created|date:"m/j/y"}}</p>
+			</div>
+			
+		</div>
+	{% endfor %}
+</div>

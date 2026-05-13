@@ -1,0 +1,18 @@
+<!--  Recent Card Activity -->
+{% for activity in recent_activities %}
+	<div class="flex flex-row items-center gap-2">
+		<div>
+			<img src="{{ activity.card.design.front_design.url }}" class="w-[3rem] h-[1.7rem] rounded-sm">
+		</div>
+		<div class="flex flex-col">
+			{% if activity.card.alias %}
+			<p>{{ activity.card.alias }} was tapped</p>
+			{% else %}
+			<p>{{ activity.card }} was tapped</p>
+		{% endif %}
+			<p class="text-xs">{{ activity.date_used|date:"h:i a m/j/y" }} </p>
+		</div>
+	</div>
+{% empty %}
+	<p>No recent activity yet</p>
+{% endfor %}
