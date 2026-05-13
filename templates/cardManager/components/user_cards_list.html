@@ -22,7 +22,7 @@
 					{% comment %} Only the Admins can get display == "verbose" {% endcomment %}
 					{% if display == "verbose" %}
 							<a href="{{ card.get_absolute_url }}" class="text-(--color-secondary)">Test</a>
-							<a href="{{ card.get_absolute_url }}" class="text-[gray]">Get QR</a>
+							<a href="{{ card.get_tools_url }}" class="text-[gray]">Get QR</a>
 						
 					{% else %}
 						<a href="{{ card.get_update_url }}" class="text-(--color-main)">Edit</a>

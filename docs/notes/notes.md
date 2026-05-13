@@ -458,6 +458,23 @@ This view is attached to the '*api/daily_usage/*' url path. It's an API that ret
 
 This view is attached to the '*api/daily_usage/bar_graph.png*' url path, and it grabs the Json from [daily_usage](#daily_usage), parses it, and returns a matplotlib bar graph as a .png file. (From there, I can embed the .png into my `img` src)
 
+## CardAdminTools() May 13 2026
+
+When Shawn ordered 3 cards, I spent the most of the time creating the designs, and the qrs.
+
+I will mod the platform to gen the correct qr using the card token of the card passed into this view. (I originally used a helper gen_card_token )
+
+This view provides tools and stats for a given card. 
+Tools: Download Source Images, Download card QR
+Stats: Scrollable Card Usage table
+
+### Changes 
++	models.Card.get_tools_url
++	card/<str:card_token>/admin-tools/ urlpattern (name is card_admin_tools_view)
++	Views.CardAdminTools()
++	card_admin_tools.html
++	using get_tools_url dunder in user_cards_list.html
+
 # Forms
 
 Earlier in the development of this application, I purged my forms to focus on understanding how form works in Django. For Assignment 8 I need to come up with 3 Forms:  
