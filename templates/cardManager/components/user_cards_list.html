@@ -1,24 +1,11 @@
 {% if list|length > 0 %}
 <div id="user-cards" class="flex flex-wrap flex-col gap-6  md:grid md:grid-cols-[{{ cols }}] md:gap-4">
 	{% for card in list %}
-		<div class="flex flex-row items-center gap-4 ">
-			<a href="{{ card.get_update_url }}" class="relative md-card can-expand rounded-md w-full h-full bg-[url('{{ card.design.front_design.url }}')]">
-			
-				<div class="hidden md:flex justify-center card-overlay w-full h-full absolute flex-col items-center">
-					{% if card.alias %}
-						<p class="font-bold text-lg">{{ card.alias }}</p>
-						{% else %}
-						<p class="font-bold text-lg">{{ card }}</p>
-					{% endif %}
-					{% if card.show_profile %}
-						<p class="text-darkgrey">Points to your profile</p>
-					{% elif not card.show_profile and card.reroute_url %}
-						<p class="text-darkgrey">{{ card.reroute_url }}</p>
-					{% else %}
-					{% endif %}
-				</div>
+		<div class="flex flex-row items-center gap-4 relative group ">
+			<a href="{{ card.get_update_url }}" class="group relative md-card can-expand rounded-md w-full h-full bg-[url('{{ card.design.front_design.url }}')]">
+			<div class="card-overlay  absolute  w-full h-full md:group-hover:bg-[rgba(0,0,0,0.6)] "></div>
 			</a>
-			<div class="md:hidden">
+			<div class="transition-all duration-300 md:w-full md:flex md:flex-col md:items-center md:justify-center md:h-full md:opacity-0 md:absolute md:top-0 md:group-hover:opacity-100 md:group-hover:bg-[rgba(0,0,0,0.6)] ">
 				{% if card.alias %}
 					<p class="font-bold text-lg">{{ card.alias }}</p>
 					{% else %}
@@ -27,11 +14,28 @@
 				{% if card.show_profile %}
 					<p class="text-darkgrey">Points to your profile</p>
 				{% elif not card.show_profile and card.reroute_url %}
-					<p class="text-darkgrey">{{ card.reroute_url }}</p>
+					<p class="text-darkgrey">{{ card.reroute_url|slice:"8:" }}</p>
 				{% else %}
 				{% endif %}
-				<a href="{{ card.get_update_url }}" class="text-(--color-main)">Edit</a>
+				<div class="flex gap-2">
+					
+					{% comment %} Only the Admins can get display == "verbose" {% endcomment %}
+					{% if display == "verbose" %}
+							<a href="{{ card.get_absolute_url }}" class="text-(--color-secondary)">Test</a>
+							<a href="{{ card.get_absolute_url }}" class="text-[gray]">Get QR</a>
+						
+					{% else %}
+						<a href="{{ card.get_update_url }}" class="text-(--color-main)">Edit</a>
+					{% endif %}
+				</div>
+
+				{% if display == "verbose" %}
+				<div class="flex flex-col">
+					<span class="text-[gray] ">{{ card.usage.count}} Uses</span>
+				</div>
+				{% endif %}
 			</div>
+			
 		</div>
 		{% empty %}
 		<p>Looks like there aren't any cards here.</p>
