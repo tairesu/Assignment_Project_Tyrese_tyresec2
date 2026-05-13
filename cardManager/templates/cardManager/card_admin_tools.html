@@ -1,0 +1,66 @@
+{% extends 'cardManager/base.html' %}
+{% load static  %}
+{% block title %}
+	Admin Tools
+{% endblock %}
+{% block content %}
+<div class="flex flex-row justify-center gap-2 mb-6">
+    <img 
+    class="w-[16rem] h-[11rem] rounded-sm" 
+    src="
+    /media/{{ card.design.front_design }} 
+    "/>
+</div>
+<div class="text-center mb-20">
+    <h2 class="text-3xl mb-3">
+        {{ card.owner }} wants {% if card.card_qty == 1 %}a card{% else %} {{ card.card_qty }} cards {%endif%}
+    </h2>
+    <p>{{ card.date_created|date:"M j, Y" }}</p>
+</div>
+<div class="flex flex-col gap-2 mb-20">
+    <label for="id_name" class="text-bold text-lg">Dynamic URI</label>
+    <input type="text" class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4 w-full" value="{{ generated_url }}" disabled>
+</div>
+<div class="flex flex-col gap-4">
+    <a 
+        href="{% if card.preset_design %}
+            {{ card.preset_design.front_design.url }} 
+        {% elif card.custom_design %}
+            {{ card.custom_design.url }}
+        {% endif %}"
+        class="text-[var(--color-main)]"
+        download
+    >
+        <button class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4 w-full">Download Source Image</button>
+    </a>
+    {% if qr_svg %}
+        <a class="text-[var(--color-main)]" id="qr_anchor" download><button class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4 w-full">Download QR</button></a>
+    {% endif %}
+    
+</div>
+
+</a>
+{% endblock %}
+{% block extra_scripts %}
+    {% if qr_svg %}
+    <script type="text/javascript">
+    const svgData = "{{ qr_svg|escapejs }}";
+    const qr_anchor = document.querySelector("#qr_anchor");
+
+    qr_anchor.addEventListener('click', () => {
+        /* Create a temporary url for the api's qr code   */
+        let qr = new Blob([svgData], {type: 'image/svg+xml' });
+        let blobUrl = URL.createObjectURL(qr);
+
+        /* Create an invisible anchor pointing to that url  */
+        let temp_anchor = document.createElement("a");
+        temp_anchor.href = blobUrl;
+        temp_anchor.download = "{{ card.owner.first_name|escapejs }}_qr_code.svg";
+        /* And trigger the invisible anchor */
+        temp_anchor.click();
+        /* Remove temporary URL */
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 100);
+    });
+    {% endif %}
+    </script>
+{% endblock %}

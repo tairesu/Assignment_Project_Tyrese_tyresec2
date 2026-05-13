@@ -525,6 +525,30 @@ def daily_usage_png(request):
     buf.seek(0)
     return HttpResponse(buf.getvalue(), content_type="image/png")
 
+class CardAdminToolsView(LoginRequiredMixin, DetailView):
+    model = Card
+    template_name = 'cardManager/card_admin_tools.html'
+    slug_url_kwarg = 'card_token'
+    slug_field = 'token'
+
+    """ Pass Qr Code """
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        card = super().get_object()
+
+        generated_url = self.request.build_absolute_uri(reverse("homepage_view")) + "card/" + card.token
+        context['generated_url'] = generated_url
+        api_url = f"https://api.qrserver.com/v1/create-qr-code/?size=150x150&format=svg&data={generated_url}"
+        #https://stackoverflow.com/questions/16511337/correct-way-to-try-except-using-python-requests-module
+        try:
+
+            qr_svg = requests.get(api_url)
+            if qr_svg.status_code == 200:
+                context["qr_svg"] = mark_safe(qr_svg.text)
+        finally:
+            return context
+
+
 class OrderDetail(LoginRequiredMixin, DetailView):
     model = Request
     template_name = 'cardManager/order_detail.html'

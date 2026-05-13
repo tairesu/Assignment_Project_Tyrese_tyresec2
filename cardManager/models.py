@@ -75,6 +75,10 @@ class Card(models.Model):
 
 	def get_update_url(self):
 		return reverse('card_update_view', kwargs={'card_token': self.token})
+	
+	def get_tools_url(self):
+		return reverse('card_admin_tools_view', kwargs={'card_token': self.token})
+
 
 
 class Usage(models.Model):
