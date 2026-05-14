@@ -23,20 +23,29 @@
             {% endif %} 
         </span>
     </h2>
-    <div class="relative">
-        <img 
-        class="w-[20rem]  aspect-[8/5] rounded-sm" 
-        src="
-        /media/{{ card.design.front_design }} 
-        "/>
-        {% if qr_svg %}
-            <div class="flex items-center justify-center w-full h-full absolute top-0 bottom-0 ">
-                <span class="block bg-white p-2 rounded-xl w-fit">
-                    {{ qr_svg }}
-                </span>
+    <div id="card-scene" class="relative w-full aspect-[8/5] perspective-[2000px]">
+        <div id="card-designs" class="w-full h-fit grid place-items-center" style="transform-style: preserve-3d;
+  transition: transform 0.3s ease;">
+            <img 
+            class="w-[20rem]  aspect-[8/5] rounded-sm absolute top-0 translate-z-[0.5px]" 
+            src="
+            /media/{{ card.design.front_design }} 
+            "/>
+            <div class="absolute top-0 translate-z-[-0.5px]" style="transform:rotateY(180deg)">
+                <img 
+                class="w-[20rem]  aspect-[8/5] rounded-sm relative " 
+                src="
+                /media/{{ card.design.rear_design }} 
+                "/>
+                {% if qr_svg %}
+                    <div class="flex items-center justify-center w-full h-full absolute top-0 bottom-0 ">
+                        <span class="block bg-white p-2 rounded-xl w-fit">
+                            {{ qr_svg }}
+                        </span>
+                    </div>
+                {% endif %}
             </div>
-        {% endif %}
-
+        </div>
     </div>
     <div class="flex flex-col gap-4 items-start text-left w-full">
         
