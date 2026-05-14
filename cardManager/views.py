@@ -538,7 +538,7 @@ class CardAdminToolsView(LoginRequiredMixin, DetailView):
 
         generated_url = self.request.build_absolute_uri(reverse("homepage_view")) + "card/" + card.token
         context['generated_url'] = generated_url
-        api_url = f"https://api.qrserver.com/v1/create-qr-code/?size=150x150&format=svg&data={generated_url}"
+        api_url = f"https://api.qrserver.com/v1/create-qr-code/?size=95x95&format=svg&data={generated_url}"
         #https://stackoverflow.com/questions/16511337/correct-way-to-try-except-using-python-requests-module
         try:
 
