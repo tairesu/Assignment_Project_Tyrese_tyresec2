@@ -3,44 +3,81 @@
 {% block title %}
 	Admin Tools
 {% endblock %}
-{% block content %}
-<div class="flex flex-row justify-center gap-2 mb-6">
-    <img 
-    class="w-[16rem] h-[11rem] rounded-sm" 
-    src="
-    /media/{{ card.design.front_design }} 
-    "/>
-</div>
-<div class="text-center mb-20">
-    <h2 class="text-3xl mb-3">
-        {{ card.owner }} wants {% if card.card_qty == 1 %}a card{% else %} {{ card.card_qty }} cards {%endif%}
-    </h2>
-    <p>{{ card.date_created|date:"M j, Y" }}</p>
-</div>
-<div class="flex flex-col gap-2 mb-20">
-    <label for="id_name" class="text-bold text-lg">Dynamic URI</label>
-    <input type="text" class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4 w-full" value="{{ generated_url }}" disabled>
-</div>
-<div class="flex flex-col gap-4">
-    <a 
-        href="{% if card.preset_design %}
-            {{ card.preset_design.front_design.url }} 
-        {% elif card.custom_design %}
-            {{ card.custom_design.url }}
-        {% endif %}"
-        class="text-[var(--color-main)]"
-        download
-    >
-        <button class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4 w-full">Download Source Image</button>
-    </a>
-    {% if qr_svg %}
-        <a class="text-[var(--color-main)]" id="qr_anchor" download><button class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4 w-full">Download QR</button></a>
-    {% endif %}
-    
-</div>
 
-</a>
+{% block hero_header %}
+<div class="flex flex-col md:flex-row gap-12 items-center">
+    <h2 class="text-3xl md:text-4xl capitalize font-bold ">
+        <span> 
+            {% if card.owner.first_name %}
+                {{ card.owner.first_name }}'s
+            {% else %}
+                {{ card.owner.usernames }}'s
+            {% endif %}
+        </span>
+        <span class="bg-[var(--color-main)] text-transparent skew-3 italic font-bold" style="background-clip:text;transform:skewX(50deg)">
+            {% if card.alias %}
+                {{ card.alias }}
+                {% if "card" not in card.alias|lower %} Card{% endif %}
+            {% else %}
+                Card
+            {% endif %} 
+        </span>
+    </h2>
+    <div class="relative">
+        <img 
+        class="w-[20rem]  aspect-[8/5] rounded-sm" 
+        src="
+        /media/{{ card.design.front_design }} 
+        "/>
+        {% if qr_svg %}
+            <div class="flex items-center justify-center w-full h-full absolute top-0 bottom-0 ">
+                <span class="block bg-white p-2 rounded-xl w-fit">
+                    {{ qr_svg }}
+                </span>
+            </div>
+        {% endif %}
+
+    </div>
+    <div class="flex flex-col gap-4 items-start text-left w-full">
+        
+        <div class="text-start text-white grid grid-cols-[auto_auto] gap-x-4 gap-y-2 w-fit">
+            {% with cards=card.usage.all|dictsort:"date_used"|last %}
+                <span class="text-end text-grey opacity-70">Total Uses</span>
+                <span> {{ card.usage.count }}</span>
+                <span class="text-end text-grey opacity-70">Last Used</span>
+                <span> {{ cards.date_used }}</span> 
+                <span class="text-end text-grey opacity-70">QR URL</span>
+                {% if "https://" in generated_url %}
+                    <span class="truncate">{{ generated_url|slice:"8:" }}</span>
+                {% elif "http://" in generated_url %}
+                    <span class="truncate">{{ generated_url|slice:"7:" }}</span>
+                {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+</div>
 {% endblock %}
+{% block content %}
+
+{% endblock %}
+
+{% block action_tray %}
+	<div class="p-6 w-full *w-full flex flex-col gap-4">
+		<a 
+            class="bg-[var(--color-main)] w-full text-center py-6 rounded-md font-bold instructionNumber text-lg"
+            href="{% if card.design.front_design %}
+                {{ card.design.front_design.url }} 
+                {% endif %}"
+            download
+         >
+            Download Design
+        </a>
+        {% if qr_svg %}
+            <a class="text-[var(--color-main)]" id="qr_anchor" download><button class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4 w-full">Download QR</button></a>
+        {% endif %}
+	</div>
+{% endblock %}
+
 {% block extra_scripts %}
     {% if qr_svg %}
     <script type="text/javascript">
