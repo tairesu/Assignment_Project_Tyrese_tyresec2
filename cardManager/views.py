@@ -105,8 +105,9 @@ def card_detail(request,card_token):
         card = Card.objects.get(token=card_token)
         is_owned = not (card.owner == None)
         is_redirecting = not (card.reroute_url == "")
+        track_scan = 'test' in request.GET
 
-        if is_owned:
+        if is_owned and not track_scan:
             __add_to_usage(request, card) 
             
         if is_owned and not card.show_profile and is_redirecting:
