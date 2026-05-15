@@ -32,12 +32,12 @@ scene.addEventListener('pointermove', (e) => {
     deltaX = e.clientX - currentX;
     currentX = e.clientX;
     setRotateY(deltaX)
-    console.log(' pointerx=', currentX, '\nDelta pointerx=:', deltaX,  '\ne.pageX=', e.pageX, '\nele rotation=', currentRotation)
+    //console.log(' pointerx=', currentX, '\nDelta pointerx=:', deltaX,  '\ne.pageX=', e.pageX, '\nele rotation=', currentRotation)
 })
 
 /* When user leaves the scene */
 scene.addEventListener('pointerup', (e) => {
-    console.log('Pointer X Left @ ', e.clientX);
+    //console.log('Pointer X Left @ ', e.clientX);
     isSwiping = false;
     
 })

@@ -14,7 +14,7 @@
                 {{ card.owner.usernames }}'s
             {% endif %}
         </span>
-        <span class="bg-[var(--color-main)] text-transparent skew-3 italic font-bold" style="background-clip:text;transform:skewX(50deg)">
+        <span class="bg-[var(--color-main)] text-transparent text-nowrap skew-3 italic font-bold" style="background-clip:text;transform:skewX(50deg)">
             {% if card.alias %}
                 {{ card.alias }}
                 {% if "card" not in card.alias|lower %} Card{% endif %}
@@ -72,7 +72,10 @@
 
 {% block action_tray %}
 	<div class="p-6 w-full *w-full flex flex-col gap-4">
-		<a 
+        {% if qr_svg %}
+        <a class="text-[var(--color-main)]" id="qr_anchor" download><button class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4 w-full">Download QR</button></a>
+        {% endif %}
+        <a 
             class="bg-[var(--color-main)] w-full text-center py-6 rounded-md font-bold instructionNumber text-lg"
             href="{% if card.design.front_design %}
                 {{ card.design.front_design.url }} 
@@ -81,9 +84,6 @@
          >
             Download Design
         </a>
-        {% if qr_svg %}
-            <a class="text-[var(--color-main)]" id="qr_anchor" download><button class="bg-[var(--color-input-bkg)] border-solid border-[1px] border-[var(--color-input-border)] rounded-md p-4 w-full">Download QR</button></a>
-        {% endif %}
 	</div>
 {% endblock %}
 
