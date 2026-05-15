@@ -36,15 +36,15 @@
 								{% endif %} 
 						</p>
 					{% endif %}
-					<div class="flex gap-2 text-[#28F9F5] text-sm md:text-base font-bold *:opacity-70">
+					<div class="flex gap-2 text-[#28F9F5] text-sm md:text-base font-bold *:opacity-70 *:bg-[var(--color-contrast)]">
 						
 						{% if admin_tools %}
-								<a href="{{ card.get_absolute_url }}?test" class="">Test</a>
-								<a href="{{ card.get_tools_url }}" class="">Get QR</a>
-							
+							<a href="{{ card.get_tools_url }}" class="">Tools</a>
+						
 						{% else %}
-							<a href="{{ card.get_update_url }}" class="text-(--color-main)">Edit</a>
+							<a href="{{ card.get_update_url }}">Edit</a>
 						{% endif %}
+							<a href="{{ card.get_absolute_url }}?test" >Test</a>
 					</div>
 
 					{% if admin_tools %}
