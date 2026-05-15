@@ -1,47 +1,65 @@
 {% if list|length > 0 %}
-<div id="user-cards" class="flex flex-wrap flex-col gap-6  md:grid md:grid-cols-[{{ cols }}] md:gap-4">
-	{% for card in list %}
-		<div class="flex flex-row items-center gap-4 relative group ">
-			<a href="{{ card.get_update_url }}" class="group relative md-card can-expand rounded-md w-full h-full bg-[url('{{ card.design.front_design.url }}')]">
-			<div class="card-overlay  absolute  w-full h-full md:group-hover:bg-[rgba(0,0,0,0.6)] "></div>
-			</a>
-			<div class="transition-all duration-300 md:w-full md:flex md:flex-col md:items-center md:justify-center md:h-full md:opacity-0 md:absolute md:top-0 md:group-hover:opacity-100 md:group-hover:bg-[rgba(0,0,0,0.6)] ">
-				{% if card.alias %}
-					<p class="font-bold text-lg">{{ card.alias }}</p>
-					{% else %}
-					<p class="font-bold text-lg">{{ card }}</p>
-				{% endif %}
-				{% if card.show_profile %}
-					<p class="text-darkgrey">Points to your profile</p>
-				{% elif not card.show_profile and card.reroute_url %}
-					<p class="text-darkgrey">{{ card.reroute_url|slice:"8:" }}</p>
-				{% else %}
-				{% endif %}
-				<div class="flex gap-2">
+
+	<div id="user-cards" class=" {% if admin_tools  %}grid grid-cols-2 {% else %} flex flex-wrap flex-col {% endif %}gap-6  md:grid md:grid-cols-[{{ cols }}] md:gap-4">
+		{% for card in list %}
+			<div class="flex items-center{% if admin_tools  %} flex-col items-start {% endif %} gap-4 relative group ">
+				<a href="{% if admin_tools  %}{{ card.get_tools_url }}{% else %} {{ card.get_update_url }}{% endif %}" class="group relative  w-full aspect-[8/5] {% if not admin_tools %} md-card h-full {% endif %} can-expand rounded-md  bg-[url('{{ card.design.front_design.url }}')] bg-cover bg-center">
+					<div class="card-overlay  absolute  w-full h-full md:group-hover:bg-[rgba(0,0,0,0.8)] "></div>
+				</a>
+				<div class="transition-all duration-300 w-full md:flex md:flex-col md:items-center md:justify-center md:h-full md:opacity-0 md:absolute md:top-0 md:group-hover:opacity-100 md:group-hover:bg-[rgba(0,0,0,0.6)] p-2 ">
+					{% if not admin_tools %}
 					
-					{% comment %} Only the Admins can get display == "verbose" {% endcomment %}
-					{% if display == "verbose" %}
-							<a href="{{ card.get_absolute_url }}" class="text-(--color-secondary)">Test</a>
-							<a href="{{ card.get_tools_url }}" class="text-[gray]">Get QR</a>
-						
+						{% if card.alias %}
+							<p class="font-bold text-lg">{{ card.alias }}</p>
+							{% else %}
+							<p class="font-bold text-lg">{{ card }}</p>
+						{% endif %}
+
+						{% if card.show_profile %}
+							<p class="text-darkgrey">Points to your profile</p>
+						{% elif not card.show_profile and card.reroute_url %}
+							<p class="text-darkgrey">{{ card.reroute_url|slice:"8:" }}</p>
+						{% endif %}
+
 					{% else %}
-						<a href="{{ card.get_update_url }}" class="text-(--color-main)">Edit</a>
+						<p class="truncate w-full md:text-lg md:text-center md:font-bold">
+								{% if card.owner.first_name %}
+									{{ card.owner.first_name }}'s
+								{% else %}
+									{{ card.owner.username }}'s
+									{% endif %}
+								{% if card.alias %}
+									{{ card.alias }}
+									{% if "card" not in card.alias|lower %} Card{% endif %}
+								{% else %}
+								Card
+								{% endif %} 
+						</p>
+					{% endif %}
+					<div class="flex gap-2 text-[#28F9F5] text-sm md:text-base font-bold *:opacity-70">
+						
+						{% if admin_tools %}
+								<a href="{{ card.get_absolute_url }}" class="">Test</a>
+								<a href="{{ card.get_tools_url }}" class="">Get QR</a>
+							
+						{% else %}
+							<a href="{{ card.get_update_url }}" class="text-(--color-main)">Edit</a>
+						{% endif %}
+					</div>
+
+					{% if admin_tools %}
+					<div class="flex flex-col">
+						<span class="text-[gray] ">{{ card.usage.count}} Uses</span>
+					</div>
 					{% endif %}
 				</div>
-
-				{% if display == "verbose" %}
-				<div class="flex flex-col">
-					<span class="text-[gray] ">{{ card.usage.count}} Uses</span>
-				</div>
-				{% endif %}
+				
 			</div>
-			
-		</div>
-		{% empty %}
-		<p>Looks like there aren't any cards here.</p>
-	{% endfor %}
-</div>
+			{% empty %}
+			<p>Looks like there aren't any cards here.</p>
+		{% endfor %}
+	</div>
 {% else %}
 
-<p class="w-full">Looks like there aren't any cards here.</p>
+		<p class="w-full">Looks like there aren't any cards here.</p>
 {% endif %}
