@@ -6,7 +6,7 @@
 				<a href="{% if admin_tools  %}{{ card.get_tools_url }}{% else %} {{ card.get_update_url }}{% endif %}" class="group relative  w-full aspect-[8/5] {% if not admin_tools %} md-card h-full {% endif %} can-expand rounded-md  bg-[url('{{ card.design.front_design.url }}')] bg-cover bg-center">
 					<div class="card-overlay  absolute  w-full h-full md:group-hover:bg-[rgba(0,0,0,0.8)] "></div>
 				</a>
-				<div class="transition-all duration-300 w-full md:flex md:flex-col md:items-center md:justify-center md:h-full md:opacity-0 md:absolute md:top-0 md:group-hover:opacity-100 md:group-hover:bg-[rgba(0,0,0,0.6)] p-2 ">
+				<div class="transition-all duration-300 w-full md:flex md:flex-col md:items-center md:justify-center md:h-full md:opacity-0 md:absolute md:top-0 md:group-hover:opacity-100 md:group-hover:bg-[rgba(0,0,0,0.6)] pl-1">
 					{% if not admin_tools %}
 					
 						{% if card.alias %}
@@ -22,7 +22,7 @@
 						{% endif %}
 
 					{% else %}
-						<p class="truncate w-full md:text-lg md:text-center md:font-bold">
+						<p class="truncate w-full text-lg md:text-lg md:text-center md:font-bold">
 								{% if card.owner.first_name %}
 									{{ card.owner.first_name }}'s
 								{% else %}
