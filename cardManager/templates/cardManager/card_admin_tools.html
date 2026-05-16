@@ -66,6 +66,8 @@
                     <span class="truncate">{{ card.reroute_url }}</span>
                 {% elif card.show_profile %}
                     <span class="truncate">Showing Profile</span>
+                {% else %}
+                    <span class="text-warning">Nothing Specified</span>
                 {% endif %} 
                 <span class="text-end text-grey opacity-70">QR URL</span>
                 {% if "https://" in generated_url %}
