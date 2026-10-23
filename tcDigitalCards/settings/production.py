@@ -12,10 +12,9 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from .base import *
 
 DEBUG = False
-ALLOWED_HOSTS = ['0.0.0.0','localhost', '127.0.0.1', 'tcdigital.blake4it.com']
+ALLOWED_HOSTS = ['cards.tyrese.site', '0.0.0.0','localhost', '127.0.0.1', 'tcdigital.blake4it.com']
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
