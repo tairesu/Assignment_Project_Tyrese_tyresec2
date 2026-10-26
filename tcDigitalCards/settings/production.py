@@ -25,7 +25,7 @@ MIDDLEWARE = [
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 USE_X_FORWARDED_HOST = False
 CSRF_TRUSTED_ORIGINS = [
-    "https://tcdigital.blake4it.com",
+    "https://cards.tyrese.site",
 ]
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
